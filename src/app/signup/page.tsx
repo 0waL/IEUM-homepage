@@ -100,14 +100,14 @@ export default function SignupPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">이메일</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">아이디</label>
               <input
-                type="email"
+                type="text"
                 name="email"
                 value={form.email}
                 onChange={handleChange}
                 required
-                placeholder="example@gnsa.app"
+                placeholder="hong123"
                 className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
             </div>

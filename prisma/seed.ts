@@ -5,14 +5,23 @@ import { randomBytes } from "crypto";
 const prisma = new PrismaClient();
 
 async function main() {
-  // Create admin user
-  const hashedPassword = await bcrypt.hash("ieum2024!", 12);
+  // 기존 admin 계정(이메일 형식) 정리
+  const oldAdmins = await prisma.user.findMany({
+    where: { email: { in: ["admin@gnsa.app", "admin@gshs.app"] } },
+  });
+  for (const old of oldAdmins) {
+    await prisma.postTag.deleteMany({ where: { post: { authorId: old.id } } });
+    await prisma.post.deleteMany({ where: { authorId: old.id } });
+    await prisma.user.delete({ where: { id: old.id } });
+  }
+
+  const hashedPassword = await bcrypt.hash("1234", 12);
 
   const admin = await prisma.user.upsert({
-    where: { email: "admin@gnsa.app" },
-    update: {},
+    where: { email: "admin" },
+    update: { password: hashedPassword, name: "관리자", role: "admin" },
     create: {
-      email: "admin@gnsa.app",
+      email: "admin",
       name: "관리자",
       password: hashedPassword,
       role: "admin",
@@ -20,7 +29,7 @@ async function main() {
   });
 
   console.log("Admin user created:", admin.email);
-  console.log("Admin password: ieum2024!");
+  console.log("Admin password: 1234");
 
   // Create initial invite token
   const initialToken = randomBytes(16).toString("hex");

@@ -25,7 +25,7 @@ export default function LoginPage() {
     });
 
     if (result?.error) {
-      setError("이메일 또는 비밀번호가 올바르지 않습니다.");
+      setError("아이디 또는 비밀번호가 올바르지 않습니다.");
       setLoading(false);
     } else {
       // 세션에서 role 확인 후 리다이렉트
@@ -65,13 +65,13 @@ export default function LoginPage() {
               </div>
             )}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">이메일</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1.5">아이디</label>
               <input
-                type="email"
+                type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                placeholder="example@gnsa.app"
+                placeholder="admin"
                 className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
             </div>
