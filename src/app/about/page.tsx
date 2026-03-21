@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Code2, Users, Trophy, Heart, BookOpen, Zap } from "lucide-react";
+import { FadeIn } from "@/components/FadeIn";
 
 export const metadata: Metadata = {
   title: "소개",
@@ -29,7 +30,7 @@ export default function AboutPage() {
       {/* Mission */}
       <section className="py-24 bg-zinc-900">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
+          <FadeIn className="grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
             <div>
               <h2 className="text-3xl font-extrabold text-white mb-5">우리의 미션</h2>
               <p className="text-zinc-400 leading-relaxed mb-4">
@@ -52,17 +53,17 @@ export default function AboutPage() {
                 기술로 사람과 사람을, 학교와 학생을 연결합니다
               </p>
             </div>
-          </div>
+          </FadeIn>
         </div>
       </section>
 
       {/* Values */}
       <section className="py-24 bg-zinc-950">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
+          <FadeIn className="text-center mb-14">
             <h2 className="section-title">핵심 가치</h2>
             <p className="section-subtitle">이음이 추구하는 것들</p>
-          </div>
+          </FadeIn>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
               {
@@ -70,39 +71,46 @@ export default function AboutPage() {
                 title: "실전 경험",
                 desc: "교과서 밖에서, 실제로 사용되는 서비스를 직접 만들며 배웁니다.",
                 gradient: "from-blue-500 to-cyan-500",
+                delay: 0,
               },
               {
                 icon: Users,
                 title: "팀워크",
                 desc: "혼자가 아닌 팀으로, 서로의 강점을 모아 더 큰 것을 만듭니다.",
                 gradient: "from-green-500 to-emerald-500",
+                delay: 80,
               },
               {
                 icon: Trophy,
                 title: "성장",
                 desc: "스터디, 해커톤, 공모전을 통해 지속적으로 실력을 키워갑니다.",
                 gradient: "from-amber-500 to-yellow-500",
+                delay: 160,
               },
               {
                 icon: Heart,
                 title: "기여",
                 desc: "우리가 만드는 서비스로 학교 구성원의 삶을 더 편리하게 만듭니다.",
                 gradient: "from-rose-500 to-pink-500",
+                delay: 0,
               },
               {
                 icon: BookOpen,
                 title: "지식 공유",
                 desc: "배운 것을 나누고, 함께 공부하며 집단 지성을 키웁니다.",
                 gradient: "from-primary-500 to-violet-500",
+                delay: 80,
               },
               {
                 icon: Zap,
                 title: "도전",
                 desc: "새로운 기술과 아이디어에 두려워하지 않고 도전합니다.",
                 gradient: "from-orange-500 to-red-500",
+                delay: 160,
               },
             ].map((item) => (
-              <div key={item.title} className="card p-7 hover:border-zinc-700 transition-all duration-300 hover:-translate-y-0.5">
+              <FadeIn key={item.title} delay={item.delay}>
+              <div className="card p-7 hover:border-zinc-700 transition-all duration-300 hover:-translate-y-0.5 h-full">
                 <div
                   className={`w-11 h-11 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center mb-4 shadow-lg`}
                 >
@@ -111,6 +119,7 @@ export default function AboutPage() {
                 <h3 className="font-bold text-white mb-2">{item.title}</h3>
                 <p className="text-zinc-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
+              </FadeIn>
             ))}
           </div>
         </div>

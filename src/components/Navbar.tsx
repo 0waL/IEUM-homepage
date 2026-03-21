@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { Menu, X, ExternalLink } from "lucide-react";
+import { LogoutButton } from "./LogoutButton";
 
 const navLinks = [
   { href: "/", label: "홈" },
@@ -59,12 +60,15 @@ export function Navbar() {
           {/* Right side */}
           <div className="hidden md:flex items-center gap-2">
             {session ? (
-              <Link
-                href="/admin"
-                className="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-semibold hover:bg-primary-500 transition-colors"
-              >
-                관리자
-              </Link>
+              <>
+                <Link
+                  href="/admin"
+                  className="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-semibold hover:bg-primary-500 transition-colors"
+                >
+                  관리자
+                </Link>
+                <LogoutButton />
+              </>
             ) : (
               <Link
                 href="/login"
@@ -111,13 +115,18 @@ export function Navbar() {
             </a>
             <div className="pt-2 border-t border-zinc-800">
               {session ? (
-                <Link
-                  href="/admin"
-                  onClick={() => setMobileOpen(false)}
-                  className="block px-4 py-2.5 text-sm font-semibold text-primary-400"
-                >
-                  관리자 대시보드
-                </Link>
+                <>
+                  <Link
+                    href="/admin"
+                    onClick={() => setMobileOpen(false)}
+                    className="block px-4 py-2.5 text-sm font-semibold text-primary-400"
+                  >
+                    관리자 대시보드
+                  </Link>
+                  <div className="px-4 py-2.5">
+                    <LogoutButton />
+                  </div>
+                </>
               ) : (
                 <Link
                   href="/login"

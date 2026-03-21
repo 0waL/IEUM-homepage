@@ -26,8 +26,8 @@ export function AdminNav() {
             href={link.href}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               isActive
-                ? "bg-primary-50 text-primary-700"
-                : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                ? "bg-primary-600/20 text-primary-400"
+                : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800"
             }`}
           >
             {link.label}

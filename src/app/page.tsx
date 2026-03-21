@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { ArrowRight, Code2, Users, Lightbulb, ExternalLink, Zap } from "lucide-react";
 import { PostCard } from "@/components/PostCard";
+import { FadeIn } from "@/components/FadeIn";
 
 export const revalidate = 60;
 
@@ -113,10 +114,10 @@ export default async function HomePage() {
       {/* What we do */}
       <section className="py-28 bg-zinc-950">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
+          <FadeIn className="text-center mb-16">
             <h2 className="section-title">우리가 하는 일</h2>
             <p className="section-subtitle">기술로 학교를 더 편리하게</p>
-          </div>
+          </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {[
               {
@@ -125,6 +126,7 @@ export default async function HomePage() {
                 desc: "gshs.app을 포함한 학교 학생들을 위한 웹 서비스를 직접 기획하고 개발합니다. React, Next.js, Node.js 등 최신 기술 스택을 활용합니다.",
                 gradient: "from-blue-500 to-cyan-500",
                 glow: "group-hover:shadow-blue-900/40",
+                delay: 0,
               },
               {
                 icon: Users,
@@ -132,6 +134,7 @@ export default async function HomePage() {
                 desc: "서로의 지식을 나누는 스터디와 세미나를 정기적으로 진행합니다. 개발, 디자인, 알고리즘 등 다양한 주제를 다룹니다.",
                 gradient: "from-primary-500 to-violet-500",
                 glow: "group-hover:shadow-primary-900/40",
+                delay: 100,
               },
               {
                 icon: Lightbulb,
@@ -139,11 +142,12 @@ export default async function HomePage() {
                 desc: "다양한 해커톤과 공모전에 참여해 실력을 키우고 팀워크를 다집니다. 외부 활동을 통해 시야를 넓힙니다.",
                 gradient: "from-amber-500 to-orange-500",
                 glow: "group-hover:shadow-orange-900/40",
+                delay: 200,
               },
             ].map((item) => (
+              <FadeIn key={item.title} delay={item.delay}>
               <div
-                key={item.title}
-                className="group card p-7 hover:border-zinc-700 transition-all duration-300 hover:-translate-y-1"
+                className="group card p-7 hover:border-zinc-700 transition-all duration-300 hover:-translate-y-1 h-full"
               >
                 <div
                   className={`w-12 h-12 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center mb-5 shadow-lg ${item.glow} transition-shadow`}
@@ -153,6 +157,7 @@ export default async function HomePage() {
                 <h3 className="text-lg font-bold text-white mb-2">{item.title}</h3>
                 <p className="text-zinc-400 text-sm leading-relaxed">{item.desc}</p>
               </div>
+              </FadeIn>
             ))}
           </div>
         </div>
@@ -161,6 +166,7 @@ export default async function HomePage() {
       {/* Featured project */}
       <section className="py-28 bg-zinc-900">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeIn>
           <div className="relative overflow-hidden rounded-2xl border border-zinc-700 bg-gradient-to-br from-primary-950 via-zinc-900 to-zinc-900">
             {/* Glow */}
             <div className="absolute top-0 left-0 w-64 h-64 bg-primary-700/20 rounded-full blur-[80px] pointer-events-none" />
@@ -196,6 +202,7 @@ export default async function HomePage() {
               </div>
             </div>
           </div>
+          </FadeIn>
         </div>
       </section>
 
@@ -203,7 +210,7 @@ export default async function HomePage() {
       {posts.length > 0 && (
         <section className="py-28 bg-zinc-950">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-end justify-between mb-12">
+            <FadeIn className="flex items-end justify-between mb-12">
               <div>
                 <h2 className="section-title">최근 활동</h2>
                 <p className="section-subtitle">이음의 최신 소식</p>
@@ -215,10 +222,12 @@ export default async function HomePage() {
                 전체 보기
                 <ArrowRight size={16} />
               </Link>
-            </div>
+            </FadeIn>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {posts.map((post) => (
-                <PostCard key={post.id} post={post} />
+              {posts.map((post, i) => (
+                <FadeIn key={post.id} delay={i * 100}>
+                  <PostCard post={post} />
+                </FadeIn>
               ))}
             </div>
           </div>
@@ -227,7 +236,7 @@ export default async function HomePage() {
 
       {/* Join CTA */}
       <section className="py-28 bg-zinc-900 border-t border-zinc-800">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <FadeIn className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-extrabold text-white mb-4 tracking-tight">
             이음과 함께 만들어요
           </h2>
@@ -243,7 +252,7 @@ export default async function HomePage() {
             멤버 보기
             <ArrowRight size={18} />
           </Link>
-        </div>
+        </FadeIn>
       </section>
     </>
   );
