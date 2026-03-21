@@ -6,11 +6,11 @@ import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
   title: {
-    default: "이음(IEUM) - 경기과학고 IT 동아리",
+    default: "이음(IEUM) - 경남과학고 IT 동아리",
     template: "%s | 이음(IEUM)",
   },
   description:
-    "경기과학고 IT 동아리 이음(IEUM)의 공식 홈페이지입니다. gshs.app을 비롯한 다양한 서비스를 개발하고 있습니다.",
+    "경남과학고 IT 동아리 이음(IEUM)의 공식 홈페이지입니다. gshs.app을 비롯한 다양한 서비스를 개발하고 있습니다.",
   openGraph: {
     type: "website",
     locale: "ko_KR",

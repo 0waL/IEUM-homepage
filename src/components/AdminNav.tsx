@@ -7,6 +7,7 @@ const adminLinks = [
   { href: "/admin", label: "대시보드" },
   { href: "/admin/posts", label: "게시글" },
   { href: "/admin/members", label: "멤버" },
+  { href: "/admin/tokens", label: "초대 토큰" },
 ];
 
 export function AdminNav() {

@@ -130,7 +130,7 @@ export default async function MembersPage() {
           <p className="text-gray-500 leading-relaxed">
             매년 신입부원을 모집합니다. 개발, 디자인, 기획 등 다양한 분야에서
             <br />
-            함께할 경기과학고 학생을 기다립니다.
+            함께할 경남과학고 학생을 기다립니다.
           </p>
         </div>
       </section>

@@ -11,7 +11,7 @@ import { TogglePublishButton } from "@/components/admin/TogglePublishButton";
 
 export default async function AdminPostsPage() {
   const session = await getServerSession(authOptions);
-  if (!session) redirect("/admin/login");
+  if (!session) redirect("/login");
 
   const posts = await prisma.post.findMany({
     orderBy: { createdAt: "desc" },

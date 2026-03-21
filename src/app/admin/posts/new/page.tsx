@@ -5,7 +5,7 @@ import { PostForm } from "@/components/admin/PostForm";
 
 export default async function NewPostPage() {
   const session = await getServerSession(authOptions);
-  if (!session) redirect("/admin/login");
+  if (!session) redirect("/login");
 
   return (
     <div>

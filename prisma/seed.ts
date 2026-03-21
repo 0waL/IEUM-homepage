@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { randomBytes } from "crypto";
 
 const prisma = new PrismaClient();
 
@@ -8,10 +9,10 @@ async function main() {
   const hashedPassword = await bcrypt.hash("ieum2024!", 12);
 
   const admin = await prisma.user.upsert({
-    where: { email: "admin@gshs.app" },
+    where: { email: "admin@gnsa.app" },
     update: {},
     create: {
-      email: "admin@gshs.app",
+      email: "admin@gnsa.app",
       name: "관리자",
       password: hashedPassword,
       role: "admin",
@@ -19,15 +20,30 @@ async function main() {
   });
 
   console.log("Admin user created:", admin.email);
+  console.log("Admin password: ieum2024!");
+
+  // Create initial invite token
+  const initialToken = randomBytes(16).toString("hex");
+  await prisma.inviteToken.upsert({
+    where: { token: "ieum-initial-invite-token" },
+    update: {},
+    create: {
+      token: "ieum-initial-invite-token",
+      createdBy: admin.id,
+      note: "초기 설정용 토큰",
+    },
+  });
+
+  console.log("Initial invite token: ieum-initial-invite-token");
 
   // Create sample members
   const members = [
     {
       name: "김이음",
       role: "회장",
-      bio: "이음 동아리를 이끌고 있습니다. gshs.app 개발을 담당하고 있어요.",
+      bio: "이음 동아리를 이끌고 있습니다. gnsa.app 개발을 담당하고 있어요.",
       github: "https://github.com",
-      email: "president@gshs.app",
+      email: "president@gnsa.app",
       year: 2023,
       order: 1,
       active: true,
@@ -86,9 +102,9 @@ async function main() {
   });
 
   const tag2 = await prisma.tag.upsert({
-    where: { name: "gshs.app" },
+    where: { name: "gnsa.app" },
     update: {},
-    create: { name: "gshs.app" },
+    create: { name: "gnsa.app" },
   });
 
   const tag3 = await prisma.tag.upsert({
@@ -104,18 +120,18 @@ async function main() {
       title: "이음 동아리를 소개합니다",
       slug: "introducing-ieum",
       excerpt:
-        "경기과학고 이음 동아리는 학교 서비스 개발과 IT 역량 강화를 목표로 활동하고 있습니다.",
+        "경남과학고 이음 동아리는 학교 서비스 개발과 IT 역량 강화를 목표로 활동하고 있습니다.",
       content: `# 이음 동아리를 소개합니다
 
-이음(IEUM)은 경기과학고에서 활동하는 IT 개발 동아리입니다.
+이음(IEUM)은 경남과학고에서 활동하는 IT 개발 동아리입니다.
 
 ## 우리가 하는 일
 
 저희 이음은 학교 학생들의 삶을 더 편리하게 만들기 위한 다양한 서비스를 개발하고 운영합니다.
 
-### 주요 프로젝트: gshs.app
+### 주요 프로젝트: gnsa.app
 
-**gshs.app**은 경기과학고 학생들을 위한 종합 정보 플랫폼입니다. 급식, 시간표, 공지사항 등 학생들이 필요한 정보를 한 곳에서 확인할 수 있습니다.
+**gnsa.app**은 경남과학고 학생들을 위한 종합 정보 플랫폼입니다. 급식, 시간표, 공지사항 등 학생들이 필요한 정보를 한 곳에서 확인할 수 있습니다.
 
 ## 활동 내용
 
@@ -139,16 +155,16 @@ async function main() {
   });
 
   await prisma.post.upsert({
-    where: { slug: "gshs-app-v2-launch" },
+    where: { slug: "gnsa-app-v2-launch" },
     update: {},
     create: {
-      title: "gshs.app v2.0 출시",
-      slug: "gshs-app-v2-launch",
+      title: "gnsa.app v2.0 출시",
+      slug: "gnsa-app-v2-launch",
       excerpt:
-        "더 빠르고 편리해진 gshs.app v2.0이 출시되었습니다. Next.js 14로 전면 리뉴얼했어요.",
-      content: `# gshs.app v2.0 출시
+        "더 빠르고 편리해진 gnsa.app v2.0이 출시되었습니다. Next.js 14로 전면 리뉴얼했어요.",
+      content: `# gnsa.app v2.0 출시
 
-드디어 **gshs.app v2.0**이 출시되었습니다! 🎉
+드디어 **gnsa.app v2.0**이 출시되었습니다! 🎉
 
 ## 무엇이 바뀌었나요?
 

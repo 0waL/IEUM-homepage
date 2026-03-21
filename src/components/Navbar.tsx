@@ -67,7 +67,7 @@ export function Navbar() {
               </Link>
             ) : (
               <Link
-                href="/admin/login"
+                href="/login"
                 className="px-4 py-2 border border-gray-200 text-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
               >
                 로그인
@@ -120,7 +120,7 @@ export function Navbar() {
                 </Link>
               ) : (
                 <Link
-                  href="/admin/login"
+                  href="/login"
                   onClick={() => setMobileOpen(false)}
                   className="block px-4 py-2.5 text-sm font-medium text-gray-600"
                 >

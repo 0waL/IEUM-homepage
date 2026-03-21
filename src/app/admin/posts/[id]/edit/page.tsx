@@ -10,7 +10,7 @@ interface Props {
 
 export default async function EditPostPage({ params }: Props) {
   const session = await getServerSession(authOptions);
-  if (!session) redirect("/admin/login");
+  if (!session) redirect("/login");
 
   const post = await prisma.post.findUnique({
     where: { id: params.id },

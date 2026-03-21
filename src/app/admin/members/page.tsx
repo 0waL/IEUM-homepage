@@ -8,7 +8,7 @@ import { DeleteMemberButton } from "@/components/admin/DeleteMemberButton";
 
 export default async function AdminMembersPage() {
   const session = await getServerSession(authOptions);
-  if (!session) redirect("/admin/login");
+  if (!session) redirect("/login");
 
   const members = await prisma.member.findMany({
     orderBy: [{ active: "desc" }, { order: "asc" }],

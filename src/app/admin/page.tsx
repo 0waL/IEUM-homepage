@@ -7,7 +7,7 @@ import { FileText, Users, Eye, Plus } from "lucide-react";
 
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions);
-  if (!session) redirect("/admin/login");
+  if (!session) redirect("/login");
 
   const [totalPosts, publishedPosts, memberCount] = await Promise.all([
     prisma.post.count(),

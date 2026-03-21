@@ -37,7 +37,7 @@ export default async function HomePage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 rounded-full text-sm mb-6 backdrop-blur-sm border border-white/20">
               <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-              경기과학고 IT 동아리
+              경남과학고 IT 동아리
             </div>
             <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight tracking-tight">
               이음
@@ -48,7 +48,7 @@ export default async function HomePage() {
             <p className="text-xl md:text-2xl text-primary-100 mb-8 leading-relaxed">
               연결하다, 잇다, 이음.
               <br />
-              학교와 기술을 잇는 경기과학고 IT 동아리입니다.
+              학교와 기술을 잇는 경남과학고 IT 동아리입니다.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
@@ -141,7 +141,7 @@ export default async function HomePage() {
                 <div className="text-primary-200 text-sm font-medium mb-2">대표 프로젝트</div>
                 <h2 className="text-3xl font-extrabold mb-3">gshs.app</h2>
                 <p className="text-primary-100 leading-relaxed mb-6">
-                  경기과학고 학생들을 위한 종합 정보 플랫폼. 급식, 시간표, 공지사항 등
+                  경남과학고 학생들을 위한 종합 정보 플랫폼. 급식, 시간표, 공지사항 등
                   학생들이 필요한 모든 정보를 한 곳에서 확인할 수 있습니다.
                 </p>
                 <a
@@ -200,7 +200,7 @@ export default async function HomePage() {
             이음과 함께 만들어요
           </h2>
           <p className="text-gray-500 text-lg mb-8">
-            개발에 관심 있는 경기과학고 학생이라면 누구든 환영합니다.
+            개발에 관심 있는 경남과학고 학생이라면 누구든 환영합니다.
             <br />
             함께 더 나은 학교 서비스를 만들어봐요.
           </p>

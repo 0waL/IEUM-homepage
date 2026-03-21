@@ -15,7 +15,7 @@ export function Footer() {
               <span className="font-bold text-gray-900">IEUM</span>
             </div>
             <p className="text-sm text-gray-500 leading-relaxed">
-              경기과학고 IT 동아리 이음(IEUM)
+              경남과학고 IT 동아리 이음(IEUM)
               <br />
               연결하다, 잇다, 이음.
             </p>
@@ -85,7 +85,7 @@ export function Footer() {
           <p className="text-xs text-gray-400">
             © {new Date().getFullYear()} 이음(IEUM). All rights reserved.
           </p>
-          <p className="text-xs text-gray-400">경기과학고 IT 동아리</p>
+          <p className="text-xs text-gray-400">경남과학고 IT 동아리</p>
         </div>
       </div>
     </footer>
