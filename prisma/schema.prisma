@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      String   @default("member") // admin | member
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  posts Post[]
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  excerpt     String
+  content     String
+  category    String   @default("활동") // 활동 | 프로젝트 | 공지
+  coverImage  String?
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id])
+
+  tags PostTag[]
+}
+
+model Tag {
+  id    String    @id @default(cuid())
+  name  String    @unique
+  posts PostTag[]
+}
+
+model PostTag {
+  postId String
+  tagId  String
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+}
+
+model Member {
+  id        String   @id @default(cuid())
+  name      String
+  role      String   // 예: 회장, 부회장, 개발팀장, 디자인팀장, 부원
+  bio       String?
+  github    String?
+  email     String?
+  image     String?
+  year      Int      // 입부년도
+  order     Int      @default(0) // 표시 순서
+  active    Boolean  @default(true) // 현재 활동 멤버 여부
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
