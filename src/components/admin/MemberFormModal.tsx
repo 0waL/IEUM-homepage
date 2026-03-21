@@ -16,6 +16,9 @@ interface Member {
   active: boolean;
 }
 
+const inputClass =
+  "w-full px-3 py-2 bg-zinc-800 border border-zinc-700 text-zinc-100 placeholder-zinc-600 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent";
+
 export function MemberFormModal({ member }: { member?: Member }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -63,7 +66,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
         onClick={() => setOpen(true)}
         className={
           member
-            ? "p-1.5 text-gray-400 hover:text-primary-600 rounded-lg hover:bg-primary-50"
+            ? "p-1.5 text-zinc-600 hover:text-primary-400 rounded-lg hover:bg-zinc-800 transition-colors"
             : "btn-primary text-sm"
         }
       >
@@ -73,17 +76,17 @@ export function MemberFormModal({ member }: { member?: Member }) {
       {open && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
             onClick={() => setOpen(false)}
           />
-          <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
+          <div className="relative bg-zinc-900 border border-zinc-700 rounded-2xl shadow-2xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-extrabold text-gray-900">
+              <h2 className="text-lg font-extrabold text-white">
                 {member ? "멤버 수정" : "멤버 추가"}
               </h2>
               <button
                 onClick={() => setOpen(false)}
-                className="p-1.5 text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-100"
+                className="p-1.5 text-zinc-500 hover:text-zinc-200 rounded-lg hover:bg-zinc-800 transition-colors"
               >
                 <X size={18} />
               </button>
@@ -91,29 +94,29 @@ export function MemberFormModal({ member }: { member?: Member }) {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <div className="bg-red-50 text-red-700 px-4 py-3 rounded-lg text-sm border border-red-100">
+                <div className="bg-red-950/60 text-red-400 px-4 py-3 rounded-lg text-sm border border-red-800/50">
                   {error}
                 </div>
               )}
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1.5">이름 *</label>
+                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">이름 *</label>
                   <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
                     placeholder="홍길동"
-                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    className={inputClass}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1.5">역할 *</label>
+                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">역할 *</label>
                   <select
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    className={inputClass}
                   >
                     {["회장", "부회장", "개발팀장", "디자인팀장", "부원"].map((r) => (
                       <option key={r} value={r}>{r}</option>
@@ -123,42 +126,42 @@ export function MemberFormModal({ member }: { member?: Member }) {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1.5">자기소개</label>
+                <label className="block text-xs font-medium text-zinc-400 mb-1.5">자기소개</label>
                 <textarea
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
                   rows={2}
                   placeholder="간단한 소개를 입력하세요"
-                  className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 resize-none"
+                  className={`${inputClass} resize-none`}
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1.5">GitHub URL</label>
+                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">GitHub URL</label>
                   <input
                     type="url"
                     value={github}
                     onChange={(e) => setGithub(e.target.value)}
                     placeholder="https://github.com/..."
-                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    className={inputClass}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1.5">이메일</label>
+                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">이메일</label>
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="email@gshs.app"
-                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    className={inputClass}
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1.5">입부년도 *</label>
+                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">입부년도 *</label>
                   <input
                     type="number"
                     value={year}
@@ -166,17 +169,17 @@ export function MemberFormModal({ member }: { member?: Member }) {
                     required
                     min={2020}
                     max={2030}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    className={inputClass}
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1.5">표시 순서</label>
+                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">표시 순서</label>
                   <input
                     type="number"
                     value={order}
                     onChange={(e) => setOrder(Number(e.target.value))}
                     min={0}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
+                    className={inputClass}
                   />
                 </div>
               </div>
@@ -186,15 +189,15 @@ export function MemberFormModal({ member }: { member?: Member }) {
                   type="checkbox"
                   checked={active}
                   onChange={(e) => setActive(e.target.checked)}
-                  className="rounded text-primary-600"
+                  className="rounded accent-primary-600"
                 />
-                <span className="text-sm text-gray-700">현재 활동 멤버</span>
+                <span className="text-sm text-zinc-300">현재 활동 멤버</span>
               </label>
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex items-center justify-center gap-2 py-2.5 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors disabled:opacity-50 text-sm"
+                className="w-full flex items-center justify-center gap-2 py-2.5 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-500 transition-colors disabled:opacity-50 text-sm"
               >
                 {loading && <Loader2 size={14} className="animate-spin" />}
                 {member ? "수정하기" : "추가하기"}
