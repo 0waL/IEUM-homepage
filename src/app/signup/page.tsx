@@ -30,19 +30,24 @@ export default function SignupPage() {
 
     setLoading(true);
 
-    const res = await fetch("/api/auth/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: form.name, email: form.email, password: form.password, token: form.token }),
-    });
+    try {
+      const res = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: form.name, email: form.email, password: form.password, token: form.token }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) {
-      setError(data.error ?? "회원가입에 실패했습니다.");
+      if (!res.ok) {
+        setError(data.error ?? "회원가입에 실패했습니다.");
+      } else {
+        router.push("/login?registered=1");
+      }
+    } catch {
+      setError("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+    } finally {
       setLoading(false);
-    } else {
-      router.push("/login?registered=1");
     }
   };
 
