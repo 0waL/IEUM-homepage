@@ -28,7 +28,6 @@ export default function LoginPage() {
       setError("아이디 또는 비밀번호가 올바르지 않습니다.");
       setLoading(false);
     } else {
-      // 세션에서 role 확인 후 리다이렉트
       const res = await fetch("/api/auth/session");
       const session = await res.json();
       if (session?.user?.role === "admin") {
@@ -41,9 +40,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-zinc-950 flex flex-col">
       <div className="p-6">
-        <Link href="/" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900">
+        <Link href="/" className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-200 transition-colors">
           <ArrowLeft size={16} />
           홈으로
         </Link>
@@ -51,54 +50,54 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="w-full max-w-sm">
           <div className="text-center mb-8">
-            <div className="w-12 h-12 bg-primary-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary-900/40">
               <span className="text-white font-bold">이음</span>
             </div>
-            <h1 className="text-2xl font-extrabold text-gray-900">로그인</h1>
-            <p className="text-gray-500 text-sm mt-1">IEUM 계정으로 로그인하세요</p>
+            <h1 className="text-2xl font-extrabold text-white">로그인</h1>
+            <p className="text-zinc-500 text-sm mt-1">IEUM 계정으로 로그인하세요</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
+          <form onSubmit={handleSubmit} className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6 space-y-4">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+              <div className="bg-red-950/50 border border-red-800/50 text-red-400 px-4 py-3 rounded-xl text-sm">
                 {error}
               </div>
             )}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">아이디</label>
+              <label className="block text-sm font-medium text-zinc-300 mb-1.5">아이디</label>
               <input
                 type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="admin"
-                className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-3.5 py-2.5 bg-zinc-800 border border-zinc-700 text-zinc-100 placeholder-zinc-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">비밀번호</label>
+              <label className="block text-sm font-medium text-zinc-300 mb-1.5">비밀번호</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="••••••••"
-                className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-3.5 py-2.5 bg-zinc-800 border border-zinc-700 text-zinc-100 placeholder-zinc-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all"
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-2.5 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 py-2.5 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-500 transition-all duration-200 disabled:opacity-50"
             >
               {loading && <Loader2 size={16} className="animate-spin" />}
               로그인
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-500 mt-4">
+          <p className="text-center text-sm text-zinc-600 mt-4">
             초대 토큰이 있으신가요?{" "}
-            <Link href="/signup" className="text-primary-600 font-medium hover:underline">
+            <Link href="/signup" className="text-primary-400 font-medium hover:text-primary-300 transition-colors">
               회원가입
             </Link>
           </p>

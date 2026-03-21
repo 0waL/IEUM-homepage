@@ -51,32 +51,34 @@ export default function SignupPage() {
     }
   };
 
+  const inputClass = "w-full px-3.5 py-2.5 bg-zinc-800 border border-zinc-700 text-zinc-100 placeholder-zinc-600 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent transition-all";
+
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-zinc-950 flex flex-col">
       <div className="p-6">
-        <Link href="/login" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900">
+        <Link href="/login" className="inline-flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-200 transition-colors">
           <ArrowLeft size={16} />
           로그인으로
         </Link>
       </div>
-      <div className="flex-1 flex items-center justify-center px-4">
+      <div className="flex-1 flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-sm">
           <div className="text-center mb-8">
-            <div className="w-12 h-12 bg-primary-600 rounded-xl flex items-center justify-center mx-auto mb-4">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary-900/40">
               <span className="text-white font-bold">이음</span>
             </div>
-            <h1 className="text-2xl font-extrabold text-gray-900">회원가입</h1>
-            <p className="text-gray-500 text-sm mt-1">관리자에게 받은 초대 토큰이 필요합니다</p>
+            <h1 className="text-2xl font-extrabold text-white">회원가입</h1>
+            <p className="text-zinc-500 text-sm mt-1">관리자에게 받은 초대 토큰이 필요합니다</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4">
+          <form onSubmit={handleSubmit} className="bg-zinc-900 rounded-2xl border border-zinc-800 p-6 space-y-4">
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+              <div className="bg-red-950/50 border border-red-800/50 text-red-400 px-4 py-3 rounded-xl text-sm">
                 {error}
               </div>
             )}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">초대 토큰</label>
+              <label className="block text-sm font-medium text-zinc-300 mb-1.5">초대 토큰</label>
               <input
                 type="text"
                 name="token"
@@ -84,70 +86,38 @@ export default function SignupPage() {
                 onChange={handleChange}
                 required
                 placeholder="관리자에게 받은 토큰 입력"
-                className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent font-mono"
+                className={`${inputClass} font-mono`}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">이름</label>
-              <input
-                type="text"
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                required
-                placeholder="홍길동"
-                className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              />
+              <label className="block text-sm font-medium text-zinc-300 mb-1.5">이름</label>
+              <input type="text" name="name" value={form.name} onChange={handleChange} required placeholder="홍길동" className={inputClass} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">아이디</label>
-              <input
-                type="text"
-                name="email"
-                value={form.email}
-                onChange={handleChange}
-                required
-                placeholder="hong123"
-                className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              />
+              <label className="block text-sm font-medium text-zinc-300 mb-1.5">아이디</label>
+              <input type="text" name="email" value={form.email} onChange={handleChange} required placeholder="hong123" className={inputClass} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">비밀번호</label>
-              <input
-                type="password"
-                name="password"
-                value={form.password}
-                onChange={handleChange}
-                required
-                placeholder="8자 이상"
-                className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              />
+              <label className="block text-sm font-medium text-zinc-300 mb-1.5">비밀번호</label>
+              <input type="password" name="password" value={form.password} onChange={handleChange} required placeholder="8자 이상" className={inputClass} />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">비밀번호 확인</label>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={form.confirmPassword}
-                onChange={handleChange}
-                required
-                placeholder="••••••••"
-                className="w-full px-3.5 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              />
+              <label className="block text-sm font-medium text-zinc-300 mb-1.5">비밀번호 확인</label>
+              <input type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange} required placeholder="••••••••" className={inputClass} />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 py-2.5 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 py-2.5 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-500 transition-all duration-200 disabled:opacity-50"
             >
               {loading && <Loader2 size={16} className="animate-spin" />}
               회원가입
             </button>
           </form>
 
-          <p className="text-center text-sm text-gray-500 mt-4">
+          <p className="text-center text-sm text-zinc-600 mt-4">
             이미 계정이 있으신가요?{" "}
-            <Link href="/login" className="text-primary-600 font-medium hover:underline">
+            <Link href="/login" className="text-primary-400 font-medium hover:text-primary-300 transition-colors">
               로그인
             </Link>
           </p>

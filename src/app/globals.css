@@ -12,29 +12,29 @@
   }
 
   body {
-    @apply bg-gray-50 text-gray-900 antialiased;
+    @apply bg-zinc-950 text-zinc-100 antialiased;
     font-family: var(--font-pretendard);
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-5 py-2.5 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors;
+    @apply inline-flex items-center gap-2 px-5 py-2.5 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-500 transition-all duration-200;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors;
+    @apply inline-flex items-center gap-2 px-5 py-2.5 border border-zinc-700 text-zinc-300 rounded-xl font-semibold hover:bg-zinc-800 transition-all duration-200;
   }
 
   .card {
-    @apply bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden;
+    @apply bg-zinc-900 rounded-2xl border border-zinc-800 overflow-hidden;
   }
 
   .section-title {
-    @apply text-3xl font-bold text-gray-900 mb-2;
+    @apply text-3xl font-bold text-white mb-2;
   }
 
   .section-subtitle {
-    @apply text-gray-500 text-lg;
+    @apply text-zinc-400 text-lg;
   }
 }
