@@ -22,6 +22,12 @@ const config: Config = {
           900: "#4c1d95",
           950: "#2e1065",
         },
+        navy: {
+          950: "#0d0d1f",
+          900: "#111128",
+          800: "#1a1a2e",
+          700: "#222240",
+        },
       },
       fontFamily: {
         sans: ["var(--font-pretendard)", "Pretendard", "system-ui", "sans-serif"],

@@ -11,6 +11,7 @@ interface Member {
   bio: string | null;
   github: string | null;
   email: string | null;
+  image: string | null;
   year: number;
   order: number;
   active: boolean;
@@ -30,6 +31,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
   const [bio, setBio] = useState(member?.bio ?? "");
   const [github, setGithub] = useState(member?.github ?? "");
   const [email, setEmail] = useState(member?.email ?? "");
+  const [image, setImage] = useState(member?.image ?? "");
   const [year, setYear] = useState(member?.year ?? new Date().getFullYear());
   const [order, setOrder] = useState(member?.order ?? 99);
   const [active, setActive] = useState(member?.active ?? true);
@@ -39,7 +41,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
     setLoading(true);
     setError("");
 
-    const body = { name, role, bio, github, email, year, order, active };
+    const body = { name, role, bio, github, email, image, year, order, active };
     const url = member ? `/api/admin/members/${member.id}` : "/api/admin/members";
     const method = member ? "PUT" : "POST";
 
@@ -133,6 +135,17 @@ export function MemberFormModal({ member }: { member?: Member }) {
                   rows={2}
                   placeholder="간단한 소개를 입력하세요"
                   className={`${inputClass} resize-none`}
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-zinc-400 mb-1.5">프로필 사진 URL</label>
+                <input
+                  type="url"
+                  value={image}
+                  onChange={(e) => setImage(e.target.value)}
+                  placeholder="https://example.com/photo.jpg"
+                  className={inputClass}
                 />
               </div>
 

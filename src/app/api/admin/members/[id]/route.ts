@@ -11,11 +11,11 @@ export async function PUT(req: NextRequest, { params }: Params) {
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { name, role, bio, github, email, year, order, active } = await req.json();
+  const { name, role, bio, github, email, image, year, order, active } = await req.json();
 
   const member = await prisma.member.update({
     where: { id: params.id },
-    data: { name, role, bio, github, email, year, order, active },
+    data: { name, role, bio, github, email, image, year, order, active },
   });
 
   return NextResponse.json(member);

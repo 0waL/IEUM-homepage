@@ -8,8 +8,7 @@ import { Menu, X, ExternalLink } from "lucide-react";
 import { LogoutButton } from "./LogoutButton";
 
 const navLinks = [
-  { href: "/", label: "홈" },
-  { href: "/about", label: "소개" },
+  { href: "/about", label: "동아리 소개" },
   { href: "/activities", label: "활동" },
   { href: "/members", label: "멤버" },
 ];
@@ -19,127 +18,121 @@ export function Navbar() {
   const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
+
   return (
-    <header className="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-800/60">
-      <nav className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center shadow-lg shadow-primary-900/40">
-              <span className="text-white font-bold text-xs">이음</span>
-            </div>
-            <span className="font-bold text-white text-lg tracking-tight">IEUM</span>
-          </Link>
+    <header className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center pt-4 px-4 pointer-events-none">
+      {/* Pill */}
+      <nav className="pointer-events-auto flex items-center gap-1 bg-navy-900/90 backdrop-blur-xl border border-white/10 rounded-full px-3 py-2 shadow-2xl shadow-black/40">
+        {/* Logo */}
+        <Link href="/" className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-full mr-1 flex-shrink-0">
+          <span className="text-white font-black text-xs">이음</span>
+        </Link>
 
-          {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  pathname === link.href
-                    ? "bg-zinc-800 text-white"
-                    : "text-zinc-400 hover:text-white hover:bg-zinc-800/60"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <a
-              href="https://gshs.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-zinc-400 hover:text-white hover:bg-zinc-800/60 transition-colors"
+        {/* Desktop links */}
+        <div className="hidden md:flex items-center gap-0.5">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                isActive(link.href)
+                  ? "bg-white/10 text-white"
+                  : "text-zinc-400 hover:text-white hover:bg-white/5"
+              }`}
             >
-              gshs.app
-              <ExternalLink size={12} />
-            </a>
-          </div>
-
-          {/* Right side */}
-          <div className="hidden md:flex items-center gap-2">
-            {session ? (
-              <>
-                <Link
-                  href="/admin"
-                  className="px-4 py-2 bg-primary-600 text-white rounded-lg text-sm font-semibold hover:bg-primary-500 transition-colors"
-                >
-                  관리자
-                </Link>
-                <LogoutButton />
-              </>
-            ) : (
-              <Link
-                href="/login"
-                className="px-4 py-2 border border-zinc-700 text-zinc-300 rounded-lg text-sm font-medium hover:bg-zinc-800 hover:text-white transition-colors"
-              >
-                로그인
-              </Link>
-            )}
-          </div>
-
-          {/* Mobile menu button */}
-          <button
-            className="md:hidden p-2 rounded-lg text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors"
-            onClick={() => setMobileOpen(!mobileOpen)}
+              {link.label}
+            </Link>
+          ))}
+          <a
+            href="https://gshs.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 px-4 py-1.5 rounded-full text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
           >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+            gshs.app
+            <ExternalLink size={11} />
+          </a>
         </div>
 
-        {/* Mobile menu */}
-        {mobileOpen && (
-          <div className="md:hidden py-3 border-t border-zinc-800 space-y-1">
-            {navLinks.map((link) => (
+        {/* Divider */}
+        <div className="hidden md:block w-px h-5 bg-white/10 mx-1" />
+
+        {/* Auth (desktop) */}
+        <div className="hidden md:flex items-center gap-1">
+          {session ? (
+            <>
               <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMobileOpen(false)}
-                className={`block px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                  pathname === link.href
-                    ? "bg-zinc-800 text-white"
-                    : "text-zinc-400 hover:text-white hover:bg-zinc-800/60"
-                }`}
+                href="/admin"
+                className="px-4 py-1.5 rounded-full text-sm font-medium text-primary-400 hover:text-primary-300 hover:bg-white/5 transition-colors"
               >
-                {link.label}
+                관리자
               </Link>
-            ))}
-            <a
-              href="https://gshs.app"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1 px-4 py-2.5 rounded-lg text-sm font-medium text-zinc-400"
+              <LogoutButton className="flex items-center gap-1 px-3 py-1.5 rounded-full text-sm text-zinc-500 hover:text-red-400 hover:bg-white/5 transition-colors" />
+            </>
+          ) : (
+            <Link
+              href="/login"
+              className="px-4 py-1.5 bg-primary-600 text-white rounded-full text-sm font-semibold hover:bg-primary-500 transition-colors"
             >
-              gshs.app <ExternalLink size={12} />
-            </a>
-            <div className="pt-2 border-t border-zinc-800">
-              {session ? (
-                <>
-                  <Link
-                    href="/admin"
-                    onClick={() => setMobileOpen(false)}
-                    className="block px-4 py-2.5 text-sm font-semibold text-primary-400"
-                  >
-                    관리자 대시보드
-                  </Link>
-                  <div className="px-4 py-2.5">
-                    <LogoutButton />
-                  </div>
-                </>
-              ) : (
-                <Link
-                  href="/login"
-                  onClick={() => setMobileOpen(false)}
-                  className="block px-4 py-2.5 text-sm font-medium text-zinc-400"
-                >
-                  로그인
-                </Link>
-              )}
-            </div>
-          </div>
-        )}
+              로그인
+            </Link>
+          )}
+        </div>
+
+        {/* Mobile: auth shortcut + hamburger */}
+        <div className="flex md:hidden items-center gap-1 ml-1">
+          {session ? (
+            <Link href="/admin" className="px-3 py-1.5 text-xs font-semibold text-primary-400 rounded-full hover:bg-white/5 transition-colors">
+              관리자
+            </Link>
+          ) : (
+            <Link href="/login" className="px-3 py-1.5 bg-primary-600 text-white rounded-full text-xs font-semibold hover:bg-primary-500 transition-colors">
+              로그인
+            </Link>
+          )}
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="p-1.5 rounded-full text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
+          >
+            {mobileOpen ? <X size={18} /> : <Menu size={18} />}
+          </button>
+        </div>
       </nav>
+
+      {/* Mobile dropdown */}
+      {mobileOpen && (
+        <div className="pointer-events-auto mt-2 w-full max-w-xs bg-navy-900/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl shadow-black/40 p-2">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => setMobileOpen(false)}
+              className={`block px-4 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                isActive(link.href)
+                  ? "bg-white/10 text-white"
+                  : "text-zinc-400 hover:text-white hover:bg-white/5"
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <a
+            href="https://gshs.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
+          >
+            gshs.app <ExternalLink size={12} />
+          </a>
+          {session && (
+            <div className="mt-1 pt-1 border-t border-white/10 px-2">
+              <LogoutButton className="flex items-center gap-1.5 w-full px-3 py-2 text-sm text-zinc-500 hover:text-red-400 transition-colors" />
+            </div>
+          )}
+        </div>
+      )}
     </header>
   );
 }
