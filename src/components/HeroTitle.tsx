@@ -19,7 +19,7 @@ export function HeroTitle() {
       {/* 이음 */}
       <span
         className="block text-white overflow-hidden"
-        style={{ fontSize: "clamp(5rem, 18vw, 22rem)" }}
+        style={{ fontSize: "clamp(3.5rem, 11vw, 13rem)" }}
       >
         {CHARS_KO.map((char, i) => (
           <span
@@ -39,7 +39,7 @@ export function HeroTitle() {
       {/* IEUM */}
       <span
         className="block text-primary-400 overflow-hidden"
-        style={{ fontSize: "clamp(3.5rem, 13vw, 16rem)" }}
+        style={{ fontSize: "clamp(2.5rem, 8vw, 9rem)" }}
       >
         {CHARS_EN.map((char, i) => (
           <span
