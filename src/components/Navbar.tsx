@@ -10,6 +10,7 @@ import { LogoutButton } from "./LogoutButton";
 const navLinks = [
   { href: "/activities", label: "활동" },
   { href: "/members", label: "멤버" },
+  { href: "/inquiries", label: "문의" },
 ];
 
 export function Navbar() {

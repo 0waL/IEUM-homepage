@@ -16,8 +16,10 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  posts Post[]
+  posts            Post[]
+  inquiryComments  InquiryComment[]
 }
+
 
 model Post {
   id          String   @id @default(cuid())
@@ -80,6 +82,29 @@ model SiteContent {
   key       String   @id
   value     String
   updatedAt DateTime @updatedAt
+}
+
+model Inquiry {
+  id        String   @id @default(cuid())
+  title     String
+  content   String
+  author    String   // 작성자 이름
+  email     String?  // 연락용 이메일 (선택)
+  status    String   @default("pending") // pending | answered
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  comments  InquiryComment[]
+}
+
+model InquiryComment {
+  id        String   @id @default(cuid())
+  content   String
+  inquiryId String
+  inquiry   Inquiry  @relation(fields: [inquiryId], references: [id], onDelete: Cascade)
+  authorId  String
+  user      User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
 }
 
 model InviteToken {
