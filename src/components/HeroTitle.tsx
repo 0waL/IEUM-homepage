@@ -18,7 +18,7 @@ export function HeroTitle() {
     <h1 className="font-black leading-[0.88] tracking-tighter mb-8">
       {/* 이음 */}
       <span
-        className="block text-white overflow-hidden"
+        className="hero-ko block text-white overflow-hidden"
         style={{ fontSize: "clamp(3.5rem, 11vw, 13rem)" }}
       >
         {CHARS_KO.map((char, i) => (

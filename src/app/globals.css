@@ -103,6 +103,11 @@ html[data-theme="light"] .bg-white\/5  { background-color: rgba(0,0,0,0.04); }
 html[data-theme="light"] .bg-white\/8  { background-color: rgba(0,0,0,0.06); }
 html[data-theme="light"] .bg-white\/10 { background-color: rgba(0,0,0,0.07); }
 
+/* ── Hero "이음" title ── */
+html[data-theme="light"] .hero-ko {
+  color: #111827;
+}
+
 /* ── Navbar pill ── */
 html[data-theme="light"] .navbar-pill {
   background-color: rgba(255,255,255,0.92);
