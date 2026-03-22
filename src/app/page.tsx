@@ -10,8 +10,6 @@ import {
   Trophy,
   BookOpen,
 } from "lucide-react";
-import { format } from "date-fns";
-import { ko } from "date-fns/locale";
 import { FadeIn } from "@/components/FadeIn";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { HeroTitle } from "@/components/HeroTitle";
@@ -21,6 +19,12 @@ export const revalidate = 30;
 const DEFAULT_MISSION =
   "이음은 경남과학고 학생들이 직접 기획하고 개발한 서비스를 운영하는 IT 동아리입니다. 실제로 사용되는 제품을 만들며 실전 경험을 쌓고, 서로의 성장을 돕습니다.\n\n대표 프로젝트인 gshs.app은 경남과학고 학생들이 급식, 시간표, 공지사항 등 학교 정보를 한 곳에서 확인할 수 있는 플랫폼으로, 현재도 많은 학생들이 매일 사용하고 있습니다.";
 
+const DEFAULT_HISTORY = [
+  { year: "2025", events: ["이음 동아리 공식 홈페이지 오픈", "gshs.app v2.0 출시"] },
+  { year: "2024", events: ["gshs.app 리뉴얼 작업 시작", "교내 해커톤 참가", "신입부원 모집"] },
+  { year: "2023", events: ["이음(IEUM) 동아리 창설", "gshs.app v1.0 개발 및 출시"] },
+];
+
 async function getSiteData() {
   const [contentItems, faqItems] = await Promise.all([
     prisma.siteContent.findMany(),
@@ -28,31 +32,16 @@ async function getSiteData() {
   ]);
   const contentMap: Record<string, string> = {};
   contentItems.forEach((c) => { contentMap[c.key] = c.value; });
+  let history: { year: string; events: string[] }[] = DEFAULT_HISTORY;
+  try { if (contentMap["about_history"]) history = JSON.parse(contentMap["about_history"]); } catch { /* fallback */ }
+
   return {
     missionText: contentMap["mission_text"] ?? DEFAULT_MISSION,
     faqs: faqItems,
+    history,
   };
 }
 
-async function getPostsByYear() {
-  const posts = await prisma.post.findMany({
-    where: { published: true },
-    orderBy: { createdAt: "desc" },
-    include: {
-      author: { select: { name: true } },
-      tags: { include: { tag: true } },
-    },
-  });
-
-  const grouped: Record<string, typeof posts> = {};
-  for (const post of posts) {
-    const year = new Date(post.createdAt).getFullYear().toString();
-    if (!grouped[year]) grouped[year] = [];
-    grouped[year].push(post);
-  }
-  // 최신 연도순 정렬
-  return Object.entries(grouped).sort(([a], [b]) => Number(b) - Number(a));
-}
 
 async function getStats() {
   const [memberCount, postCount] = await Promise.all([
@@ -63,8 +52,8 @@ async function getStats() {
 }
 
 export default async function HomePage() {
-  const [postsByYear, stats, siteData] = await Promise.all([getPostsByYear(), getStats(), getSiteData()]);
-  const { missionText, faqs } = siteData;
+  const [stats, siteData] = await Promise.all([getStats(), getSiteData()]);
+  const { missionText, faqs, history } = siteData;
   const missionParagraphs = missionText.split(/\n\n+/).filter(Boolean);
 
   return (
@@ -384,59 +373,29 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── Posts by Year ─── */}
-      {postsByYear.length > 0 && (
+      {/* ─── History ─── */}
+      {history.length > 0 && (
         <section className="py-24 bg-navy-900">
           <div className="max-w-4xl mx-auto px-6 sm:px-10 lg:px-16">
-            <FadeIn className="flex items-end justify-between mb-12">
-              <div>
-                <h2 className="text-4xl font-extrabold text-white mb-2">연도별 활동</h2>
-                <p className="text-zinc-400 text-lg">이음의 발자취</p>
-              </div>
-              <Link
-                href="/activities"
-                className="flex items-center gap-1.5 text-sm font-medium text-primary-400 hover:text-primary-300 transition-colors"
-              >
-                전체 보기
-                <ArrowRight size={16} />
-              </Link>
+            <FadeIn className="mb-12">
+              <h2 className="text-4xl font-extrabold text-white mb-2">연혁</h2>
+              <p className="text-zinc-400 text-lg">이음의 발자취</p>
             </FadeIn>
 
-            <div className="space-y-10">
-              {postsByYear.map(([year, posts]) => (
-                <FadeIn key={year}>
+            <div className="space-y-8">
+              {history.map((item) => (
+                <FadeIn key={item.year}>
                   <div className="flex gap-6 sm:gap-10">
-                    {/* 연도 */}
                     <div className="flex-shrink-0 w-14 sm:w-20">
-                      <span className="text-2xl font-black text-primary-400">{year}</span>
+                      <span className="text-2xl font-black text-primary-400">{item.year}</span>
                     </div>
-
-                    {/* 타임라인 선 */}
                     <div className="flex-shrink-0 flex flex-col items-center">
                       <div className="w-2.5 h-2.5 bg-primary-500 rounded-full mt-2 ring-2 ring-primary-900 ring-offset-2 ring-offset-navy-900" />
                       <div className="w-px bg-white/10 flex-1 mt-1" />
                     </div>
-
-                    {/* 게시글 목록 */}
                     <div className="flex-1 pb-4 space-y-2">
-                      {posts.map((post) => (
-                        <Link
-                          key={post.id}
-                          href={`/activities/${post.slug}`}
-                          className="group flex items-start sm:items-center justify-between gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors"
-                        >
-                          <div className="flex items-start sm:items-center gap-3 min-w-0">
-                            <span className="flex-shrink-0 text-xs px-2 py-0.5 bg-primary-900/50 border border-primary-800/40 text-primary-400 rounded-full">
-                              {post.category}
-                            </span>
-                            <span className="font-medium text-zinc-300 group-hover:text-white transition-colors text-sm leading-snug line-clamp-1">
-                              {post.title}
-                            </span>
-                          </div>
-                          <span className="flex-shrink-0 text-xs text-zinc-600 hidden sm:block">
-                            {format(new Date(post.createdAt), "M.d", { locale: ko })}
-                          </span>
-                        </Link>
+                      {item.events.map((event) => (
+                        <p key={event} className="text-zinc-400 text-sm leading-relaxed">{event}</p>
                       ))}
                     </div>
                   </div>
