@@ -8,7 +8,6 @@ import { Menu, X, ExternalLink } from "lucide-react";
 import { LogoutButton } from "./LogoutButton";
 
 const navLinks = [
-  { href: "/about", label: "동아리 소개" },
   { href: "/activities", label: "활동" },
   { href: "/members", label: "멤버" },
 ];

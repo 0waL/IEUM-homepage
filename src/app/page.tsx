@@ -33,13 +33,10 @@ export default async function HomePage() {
     <>
       {/* Hero */}
       <section className="relative min-h-screen flex items-center bg-navy-950 overflow-hidden">
-        {/* Cosmic glows */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-1/4 -left-32 w-[600px] h-[600px] bg-primary-700/20 rounded-full blur-[140px]" />
           <div className="absolute bottom-1/4 -right-32 w-[500px] h-[500px] bg-primary-900/20 rounded-full blur-[140px]" />
         </div>
-
-        {/* Dot grid */}
         <div
           className="absolute inset-0 opacity-[0.04]"
           style={{
@@ -54,8 +51,10 @@ export default async function HomePage() {
             경남과학고 IT 동아리
           </div>
 
-          <h1 className="font-black leading-none tracking-tighter text-white mb-6"
-            style={{ fontSize: "clamp(5rem, 16vw, 16rem)" }}>
+          <h1
+            className="font-black leading-none tracking-tighter text-white mb-6"
+            style={{ fontSize: "clamp(5rem, 16vw, 16rem)" }}
+          >
             IEUM
           </h1>
 
@@ -71,13 +70,13 @@ export default async function HomePage() {
               </p>
             </div>
             <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
-              <Link
-                href="/about"
+              <a
+                href="#about"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-full font-semibold hover:bg-primary-500 transition-all duration-200 shadow-lg shadow-primary-900/40"
               >
-                동아리 소개
+                소개 보기
                 <ArrowRight size={16} />
-              </Link>
+              </a>
               <a
                 href="https://gshs.app"
                 target="_blank"
@@ -112,10 +111,38 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* What we do */}
-      <section className="py-32 bg-navy-950">
+      {/* About / Mission */}
+      <section id="about" className="py-32 bg-navy-950">
         <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16">
-          <FadeIn className="mb-16">
+          <FadeIn className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+            <div>
+              <h2 className="text-4xl font-extrabold text-white mb-6 tracking-tight">이음(IEUM)이란?</h2>
+              <p className="text-zinc-400 leading-relaxed mb-4">
+                이음은 경남과학고 학생들이 직접 기획하고 개발한 서비스를 운영하는 IT 동아리입니다.
+                우리는 실제로 사용되는 제품을 만들며 실전 경험을 쌓고, 서로의 성장을 돕습니다.
+              </p>
+              <p className="text-zinc-400 leading-relaxed">
+                대표 프로젝트인{" "}
+                <strong className="text-primary-400 font-semibold">gshs.app</strong>은 경남과학고
+                학생들이 급식, 시간표, 공지사항 등 학교 정보를 한 곳에서 확인할 수 있는 플랫폼으로,
+                현재도 많은 학생들이 매일 사용하고 있습니다.
+              </p>
+            </div>
+            <div className="bg-gradient-to-br from-primary-950 to-navy-800 rounded-2xl border border-primary-900/40 p-10 text-center">
+              <div className="text-6xl mb-5">🔗</div>
+              <blockquote className="text-primary-300 font-semibold text-lg italic">
+                &ldquo;연결하다, 잇다, 이음&rdquo;
+              </blockquote>
+              <p className="text-zinc-500 text-sm mt-3">기술로 사람과 사람을, 학교와 학생을 연결합니다</p>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
+      {/* What we do */}
+      <section className="py-24 bg-navy-900">
+        <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16">
+          <FadeIn className="mb-12">
             <h2 className="text-4xl font-extrabold text-white mb-3">우리가 하는 일</h2>
             <p className="text-zinc-400 text-lg">기술로 학교를 더 편리하게</p>
           </FadeIn>
@@ -144,7 +171,7 @@ export default async function HomePage() {
               },
             ].map((item) => (
               <FadeIn key={item.title} delay={item.delay}>
-                <div className="bg-navy-900 border border-white/8 rounded-2xl p-7 hover:border-primary-600/30 transition-all duration-300 hover:-translate-y-1 h-full">
+                <div className="bg-navy-800 border border-white/8 rounded-2xl p-7 hover:border-primary-600/30 transition-all duration-300 hover:-translate-y-1 h-full">
                   <div className={`w-12 h-12 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center mb-5 shadow-lg`}>
                     <item.icon size={22} className="text-white" />
                   </div>
@@ -157,8 +184,37 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Tech stack */}
+      <section className="py-24 bg-navy-950">
+        <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16">
+          <FadeIn className="mb-10">
+            <h2 className="text-3xl font-extrabold text-white mb-2">기술 스택</h2>
+            <p className="text-zinc-400">이음이 사용하는 기술들</p>
+          </FadeIn>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {[
+              { name: "React", category: "Frontend" },
+              { name: "Next.js", category: "Frontend" },
+              { name: "TypeScript", category: "Language" },
+              { name: "Tailwind CSS", category: "Styling" },
+              { name: "Node.js", category: "Backend" },
+              { name: "Prisma", category: "ORM" },
+              { name: "PostgreSQL", category: "Database" },
+              { name: "Figma", category: "Design" },
+            ].map((tech, i) => (
+              <FadeIn key={tech.name} delay={(i % 4) * 60}>
+                <div className="bg-navy-900 border border-white/8 rounded-xl p-4 text-center hover:border-primary-600/30 transition-all duration-200">
+                  <p className="font-semibold text-white">{tech.name}</p>
+                  <p className="text-xs text-zinc-500 mt-1">{tech.category}</p>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Featured project */}
-      <section className="py-32 bg-navy-900">
+      <section className="py-24 bg-navy-900">
         <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16">
           <FadeIn>
             <div className="relative overflow-hidden rounded-2xl border border-primary-800/40 bg-gradient-to-br from-primary-950/80 via-navy-800 to-navy-800">
@@ -195,7 +251,7 @@ export default async function HomePage() {
 
       {/* Recent posts */}
       {posts.length > 0 && (
-        <section className="py-32 bg-navy-950">
+        <section className="py-24 bg-navy-950">
           <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16">
             <FadeIn className="flex items-end justify-between mb-12">
               <div>
