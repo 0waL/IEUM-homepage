@@ -96,7 +96,7 @@ export default async function HomePage() {
 
         {/* Main content */}
         <div className="relative max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pt-28 pb-24 w-full">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-950/60 border border-primary-800/50 rounded-full text-sm text-primary-300 mb-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-950/60 border border-primary-800/50 rounded-full text-sm text-primary-300 mb-10 hero-badge">
             <span className="w-1.5 h-1.5 bg-primary-400 rounded-full animate-pulse" />
             경남과학고 IT 동아리
           </div>
@@ -166,7 +166,7 @@ export default async function HomePage() {
                 </p>
               ))}
             </div>
-            <div className="bg-gradient-to-br from-primary-950 to-navy-800 rounded-2xl border border-primary-900/40 p-10 text-center">
+            <div className="mission-card bg-gradient-to-br from-primary-950 to-navy-800 rounded-2xl border border-primary-900/40 p-10 text-center">
               <div className="text-6xl mb-5">🔗</div>
               <blockquote className="text-primary-300 font-semibold text-xl italic">
                 &ldquo;연결하다, 잇다, 이음&rdquo;
@@ -316,7 +316,7 @@ export default async function HomePage() {
                 <div
                   className={`bg-gradient-to-br ${tech.color} border ${tech.border} rounded-xl p-5 text-center hover:scale-105 transition-all duration-200`}
                 >
-                  <p className="font-semibold text-white">{tech.name}</p>
+                  <p className="tech-name font-semibold text-white">{tech.name}</p>
                   <p className="text-xs text-zinc-500 mt-1">{tech.category}</p>
                 </div>
               </FadeIn>
@@ -329,7 +329,7 @@ export default async function HomePage() {
       <section className="py-24 bg-navy-950">
         <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16">
           <FadeIn>
-            <div className="relative overflow-hidden rounded-2xl border border-primary-800/40 bg-gradient-to-br from-primary-950/80 via-navy-800 to-navy-800">
+            <div className="featured-card relative overflow-hidden rounded-2xl border border-primary-800/40 bg-gradient-to-br from-primary-950/80 via-navy-800 to-navy-800">
               <div className="absolute top-0 left-0 w-72 h-72 bg-primary-700/20 rounded-full blur-[80px] pointer-events-none" />
               <div className="relative p-10 md:p-16 flex flex-col md:flex-row items-center gap-12">
                 <div className="flex-1">
@@ -353,7 +353,7 @@ export default async function HomePage() {
                     <ExternalLink size={15} />
                   </a>
                 </div>
-                <div className="flex-shrink-0 w-36 h-36 bg-navy-950/60 rounded-2xl border border-white/10 flex items-center justify-center">
+                <div className="logo-box flex-shrink-0 w-36 h-36 bg-navy-950/60 rounded-2xl border border-white/10 flex items-center justify-center">
                   <div className="text-center">
                     <div className="text-4xl font-black text-white tracking-tighter">gshs</div>
                     <div className="text-primary-400 text-sm mt-1 font-medium">.app</div>
