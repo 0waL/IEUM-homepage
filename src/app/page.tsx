@@ -18,6 +18,11 @@ export const revalidate = 0;
 
 const DEFAULT_MISSION =
   "이음은 경남과학고 학생들이 직접 기획하고 개발한 서비스를 운영하는 IT 동아리입니다. 실제로 사용되는 제품을 만들며 실전 경험을 쌓고, 서로의 성장을 돕습니다.\n\n대표 프로젝트인 gshs.app은 경남과학고 학생들이 급식, 시간표, 공지사항 등 학교 정보를 한 곳에서 확인할 수 있는 플랫폼으로, 현재도 많은 학생들이 매일 사용하고 있습니다.";
+const DEFAULT_ACTIVITIES = [
+  { title: "서비스 개발", desc: "gshs.app을 포함한 학교 학생들을 위한 웹 서비스를 직접 기획하고 개발합니다." },
+  { title: "스터디 & 세미나", desc: "서로의 지식을 나누는 스터디와 세미나를 정기적으로 진행합니다." },
+  { title: "해커톤 & 공모전", desc: "다양한 해커톤과 공모전에 참여해 실력을 키우고 팀워크를 다집니다." },
+];
 
 const DEFAULT_HISTORY = [
   { year: "2025", events: ["이음 동아리 공식 홈페이지 오픈", "gshs.app v2.0 출시"] },
@@ -42,10 +47,16 @@ async function getSiteData() {
     .map(([year, events]) => ({ year, events }))
     .sort((a, b) => Number(b.year) - Number(a.year));
 
+  const activities: { title: string; desc: string }[] = (() => {
+    try { return contentMap["home_activities"] ? JSON.parse(contentMap["home_activities"]) : DEFAULT_ACTIVITIES; }
+    catch { return DEFAULT_ACTIVITIES; }
+  })();
+
   return {
     missionText: contentMap["mission_text"] ?? DEFAULT_MISSION,
     faqs: faqItems,
     history,
+    activities,
   };
 }
 
@@ -60,7 +71,7 @@ async function getStats() {
 
 export default async function HomePage() {
   const [stats, siteData] = await Promise.all([getStats(), getSiteData()]);
-  const { missionText, faqs, history } = siteData;
+  const { missionText, faqs, history, activities } = siteData;
   const missionParagraphs = missionText.split(/\n\n+/).filter(Boolean);
 
   return (
@@ -203,29 +214,13 @@ export default async function HomePage() {
           </FadeIn>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
-              {
-                icon: Code2,
-                title: "서비스 개발",
-                desc: "gshs.app을 포함한 학교 학생들을 위한 웹 서비스를 직접 기획하고 개발합니다.",
-                gradient: "from-blue-500 to-cyan-500",
-                delay: 0,
-              },
-              {
-                icon: Users,
-                title: "스터디 & 세미나",
-                desc: "서로의 지식을 나누는 스터디와 세미나를 정기적으로 진행합니다.",
-                gradient: "from-primary-500 to-violet-500",
-                delay: 100,
-              },
-              {
-                icon: Lightbulb,
-                title: "해커톤 & 공모전",
-                desc: "다양한 해커톤과 공모전에 참여해 실력을 키우고 팀워크를 다집니다.",
-                gradient: "from-amber-500 to-orange-500",
-                delay: 200,
-              },
-            ].map((item) => (
-              <FadeIn key={item.title} delay={item.delay}>
+              { icon: Code2, gradient: "from-blue-500 to-cyan-500", delay: 0 },
+              { icon: Users, gradient: "from-primary-500 to-violet-500", delay: 100 },
+              { icon: Lightbulb, gradient: "from-amber-500 to-orange-500", delay: 200 },
+            ].map((meta, i) => {
+              const item = { ...meta, ...(activities[i] ?? DEFAULT_ACTIVITIES[i]) };
+              return (
+              <FadeIn key={i} delay={item.delay}>
                 <div className="bg-navy-800 border border-white/8 rounded-2xl p-7 hover:border-primary-600/30 transition-all duration-300 hover:-translate-y-1 h-full">
                   <div
                     className={`w-12 h-12 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center mb-5 shadow-lg`}
@@ -236,7 +231,8 @@ export default async function HomePage() {
                   <p className="text-zinc-400 text-sm leading-relaxed">{item.desc}</p>
                 </div>
               </FadeIn>
-            ))}
+            );})}
+
           </div>
         </div>
       </section>

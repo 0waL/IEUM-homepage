@@ -37,12 +37,18 @@ const DEFAULT_HISTORY = [
   { year: "2024", events: ["gshs.app 리뉴얼 작업 시작", "교내 해커톤 참가", "신입부원 모집"] },
   { year: "2023", events: ["이음(IEUM) 동아리 창설", "gshs.app v1.0 개발 및 출시"] },
 ];
+const DEFAULT_ACTIVITIES = [
+  { title: "서비스 개발", desc: "gshs.app을 포함한 학교 학생들을 위한 웹 서비스를 직접 기획하고 개발합니다." },
+  { title: "스터디 & 세미나", desc: "서로의 지식을 나누는 스터디와 세미나를 정기적으로 진행합니다." },
+  { title: "해커톤 & 공모전", desc: "다양한 해커톤과 공모전에 참여해 실력을 키우고 팀워크를 다집니다." },
+];
 
 /* ─── types ─── */
 interface FAQItem { id: string; question: string; answer: string; order: number; }
 interface ValueItem { title: string; desc: string; }
 interface TechItem { name: string; category: string; }
 interface HistoryItem { year: string; events: string[]; }
+interface ActivityItem { title: string; desc: string; }
 
 /* ─── helpers ─── */
 function parseJson<T>(val: string | undefined, fallback: T): T {
@@ -142,6 +148,12 @@ export default function SitePage() {
   const [savingTech, setSavingTech] = useState(false);
   const [savedTech, setSavedTech] = useState(false);
 
+  /* ── 우리가 하는 일 ── */
+  const [activities, setActivities] = useState<ActivityItem[]>(DEFAULT_ACTIVITIES);
+  const [editingActivity, setEditingActivity] = useState<{ idx: number; item: ActivityItem } | null>(null);
+  const [savingActivities, setSavingActivities] = useState(false);
+  const [savedActivities, setSavedActivities] = useState(false);
+
   /* ── 연혁 ── */
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [editingHistory, setEditingHistory] = useState<{ idx: number; item: HistoryItem } | null>(null);
@@ -162,6 +174,7 @@ export default function SitePage() {
     setValues(parseJson(content["about_values"], DEFAULT_VALUES));
     setTechstack(parseJson(content["about_techstack"], DEFAULT_TECHSTACK));
     setHistory(parseJson(content["about_history"], DEFAULT_HISTORY));
+    setActivities(parseJson(content["home_activities"], DEFAULT_ACTIVITIES));
   }, [loading, content]);
 
   /* ─── 저장 헬퍼 ─── */
@@ -263,6 +276,72 @@ export default function SitePage() {
           className={`${inputClass} resize-y`}
         />
         <SaveButton onClick={saveMission} saving={savingMission} saved={missionSaved} />
+      </div>
+
+      {/* ── 우리가 하는 일 ── */}
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+        <div className="mb-4">
+          <h2 className="font-semibold text-zinc-200 mb-0.5">홈페이지 — 우리가 하는 일</h2>
+          <p className="text-xs text-zinc-500">3개 활동 카드의 제목과 설명을 수정합니다.</p>
+        </div>
+        <div className="space-y-3">
+          {activities.map((item, idx) => (
+            <div key={idx} className="bg-zinc-800 border border-zinc-700 rounded-xl p-4">
+              {editingActivity?.idx === idx ? (
+                <div className="space-y-3">
+                  <input
+                    value={editingActivity.item.title}
+                    onChange={(e) => setEditingActivity({ idx, item: { ...editingActivity.item, title: e.target.value } })}
+                    className={inputClass}
+                    placeholder="제목"
+                  />
+                  <textarea
+                    value={editingActivity.item.desc}
+                    onChange={(e) => setEditingActivity({ idx, item: { ...editingActivity.item, desc: e.target.value } })}
+                    rows={2}
+                    className={`${inputClass} resize-none`}
+                    placeholder="설명"
+                  />
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => {
+                        const v = activities.map((x, i) => i === idx ? editingActivity.item : x);
+                        setActivities(v);
+                        saveJsonKey("home_activities", v, setSavingActivities, setSavedActivities);
+                        setEditingActivity(null);
+                      }}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-primary-600 text-white rounded-lg text-sm hover:bg-primary-500 transition-colors"
+                    >
+                      <Check size={14} /> 저장
+                    </button>
+                    <button
+                      onClick={() => setEditingActivity(null)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-700 text-zinc-300 rounded-lg text-sm hover:bg-zinc-600 transition-colors"
+                    >
+                      <X size={14} /> 취소
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-start gap-3">
+                  <span className="flex-shrink-0 text-xs text-zinc-500 font-mono mt-1">{String(idx + 1).padStart(2, "0")}</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-zinc-200 font-medium text-sm">{item.title}</p>
+                    <p className="text-zinc-400 text-xs mt-1">{item.desc}</p>
+                  </div>
+                  <button
+                    onClick={() => setEditingActivity({ idx, item: { ...item } })}
+                    className="p-1.5 text-zinc-500 hover:text-zinc-200 hover:bg-zinc-700 rounded-lg transition-colors flex-shrink-0"
+                  >
+                    <Edit2 size={14} />
+                  </button>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        {savingActivities && <p className="text-xs text-zinc-400 mt-2">저장 중...</p>}
+        {savedActivities && <p className="text-xs text-green-400 mt-2">저장됨 ✓</p>}
       </div>
 
       {/* ════════════════════════════════════════════
