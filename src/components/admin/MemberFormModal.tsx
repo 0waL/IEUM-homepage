@@ -33,7 +33,6 @@ export function MemberFormModal({ member }: { member?: Member }) {
   const [role, setRole] = useState(member?.role ?? "부원");  // 대빵 | 부대빵 | 부원
   const [bio, setBio] = useState(member?.bio ?? "");
   const [github, setGithub] = useState(member?.github ?? "");
-  const [instagram, setInstagram] = useState(member?.instagram ?? "");
   const [email, setEmail] = useState(member?.email ?? "");
   const [image, setImage] = useState(member?.image ?? "");
   const [generation, setGeneration] = useState(member?.generation ?? 0);
@@ -64,7 +63,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
     setLoading(true);
     setError("");
 
-    const body = { name, role, bio, github, instagram, email, image, generation, order, active };
+    const body = { name, role, bio, github, email, image, generation, order, active };
     const url = member ? `/api/admin/members/${member.id}` : "/api/admin/members";
     const method = member ? "PUT" : "POST";
 
@@ -213,27 +212,15 @@ export function MemberFormModal({ member }: { member?: Member }) {
                 )}
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">GitHub URL</label>
-                  <input
-                    type="url"
-                    value={github}
-                    onChange={(e) => setGithub(e.target.value)}
-                    placeholder="https://github.com/..."
-                    className={inputClass}
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">Instagram URL</label>
-                  <input
-                    type="url"
-                    value={instagram}
-                    onChange={(e) => setInstagram(e.target.value)}
-                    placeholder="https://instagram.com/..."
-                    className={inputClass}
-                  />
-                </div>
+              <div>
+                <label className="block text-xs font-medium text-zinc-400 mb-1.5">GitHub URL</label>
+                <input
+                  type="url"
+                  value={github}
+                  onChange={(e) => setGithub(e.target.value)}
+                  placeholder="https://github.com/..."
+                  className={inputClass}
+                />
               </div>
 
               <div>
