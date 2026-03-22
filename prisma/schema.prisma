@@ -62,7 +62,7 @@ model Member {
   github    String?
   email     String?
   image     String?
-  year      Int      // 입부년도
+  generation Int     // 기수 (0=창립, 1기, 2기...)
   order     Int      @default(0) // 표시 순서
   active    Boolean  @default(true) // 현재 활동 멤버 여부
   createdAt DateTime @default(now())

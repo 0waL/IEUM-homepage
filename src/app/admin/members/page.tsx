@@ -34,7 +34,7 @@ export default async function AdminMembersPage() {
               <tr className="border-b border-zinc-800 bg-zinc-800/50">
                 <th className="text-left text-xs font-medium text-zinc-500 px-5 py-3">이름</th>
                 <th className="text-left text-xs font-medium text-zinc-500 px-5 py-3">역할</th>
-                <th className="text-left text-xs font-medium text-zinc-500 px-5 py-3 hidden md:table-cell">입부년도</th>
+                <th className="text-left text-xs font-medium text-zinc-500 px-5 py-3 hidden md:table-cell">기수</th>
                 <th className="text-left text-xs font-medium text-zinc-500 px-5 py-3">상태</th>
                 <th className="text-right text-xs font-medium text-zinc-500 px-5 py-3">작업</th>
               </tr>
@@ -59,7 +59,7 @@ export default async function AdminMembersPage() {
                     <span className="text-sm text-zinc-400">{member.role}</span>
                   </td>
                   <td className="px-5 py-3.5 hidden md:table-cell">
-                    <span className="text-sm text-zinc-500">{member.year}년</span>
+                    <span className="text-sm text-zinc-500">{member.generation === 0 ? "0기 (창립)" : `${member.generation}기`}</span>
                   </td>
                   <td className="px-5 py-3.5">
                     <span

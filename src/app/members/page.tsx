@@ -21,25 +21,28 @@ const gradients = [
 
 async function getAllMembers() {
   return await prisma.member.findMany({
-    orderBy: [{ active: "desc" }, { year: "desc" }, { order: "asc" }],
+    orderBy: [{ generation: "asc" }, { order: "asc" }],
   });
+}
+
+function generationLabel(gen: number) {
+  if (gen === 0) return "창립 멤버 (0기)";
+  return `${gen}기`;
 }
 
 export default async function MembersPage() {
   const members = await getAllMembers();
 
-  // Group by year descending
-  const byYear = members.reduce<Record<number, typeof members>>((acc, m) => {
-    if (!acc[m.year]) acc[m.year] = [];
-    acc[m.year].push(m);
+  // Group by generation
+  const byGen = members.reduce<Record<number, typeof members>>((acc, m) => {
+    if (!acc[m.generation]) acc[m.generation] = [];
+    acc[m.generation].push(m);
     return acc;
   }, {});
-  const years = Object.keys(byYear)
-    .map(Number)
-    .sort((a, b) => b - a);
+  const generations = Object.keys(byGen).map(Number).sort((a, b) => a - b);
 
-  const activeYears = years.filter((y) => byYear[y].some((m) => m.active));
-  const alumniYears = years.filter((y) => byYear[y].every((m) => !m.active));
+  const activeGens = generations.filter((g) => byGen[g].some((m) => m.active));
+  const alumniGens = generations.filter((g) => byGen[g].every((m) => !m.active));
 
   return (
     <div className="bg-navy-950 min-h-screen">
@@ -58,17 +61,20 @@ export default async function MembersPage() {
         </div>
       </section>
 
-      {/* Active members by year */}
-      {activeYears.map((year) => (
-        <section key={year} className="py-12 border-t border-white/5">
+      {/* Active members by generation */}
+      {activeGens.map((gen) => (
+        <section key={gen} className="py-12 border-t border-white/5">
           <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16">
             <FadeIn>
-              <h2 className="text-2xl font-bold text-white mb-8">
-                {year}년도 부원
+              <h2 className="text-2xl font-bold text-white mb-1">
+                {generationLabel(gen)}
               </h2>
+              {gen === 0 && (
+                <p className="text-zinc-500 text-sm mb-6">이음을 처음 만든 멤버들</p>
+              )}
             </FadeIn>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-              {byYear[year].map((member, i) => (
+            <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 ${gen === 0 ? "" : "mt-6"}`}>
+              {byGen[gen].map((member, i) => (
                 <FadeIn key={member.id} delay={(i % 3) * 80}>
                   <MemberCard member={member} gradientIndex={i} />
                 </FadeIn>
@@ -79,18 +85,18 @@ export default async function MembersPage() {
       ))}
 
       {/* Alumni */}
-      {alumniYears.length > 0 && (
+      {alumniGens.length > 0 && (
         <section className="py-16 border-t border-white/5">
           <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16">
             <FadeIn>
               <h2 className="text-2xl font-bold text-white mb-2">졸업 멤버</h2>
               <p className="text-zinc-500 mb-8">이음을 함께 이끌었던 선배들</p>
             </FadeIn>
-            {alumniYears.map((year) => (
-              <div key={year} className="mb-8">
-                <p className="text-sm text-zinc-600 font-semibold mb-3">{year}년도</p>
+            {alumniGens.map((gen) => (
+              <div key={gen} className="mb-8">
+                <p className="text-sm text-zinc-600 font-semibold mb-3">{generationLabel(gen)}</p>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-                  {byYear[year].map((member, i) => (
+                  {byGen[gen].map((member, i) => (
                     <FadeIn key={member.id} delay={(i % 4) * 60}>
                       <div className="bg-navy-900 border border-white/8 rounded-xl p-4 text-center hover:border-white/15 transition-colors">
                         <div
@@ -137,7 +143,7 @@ function MemberCard({
     github: string | null;
     email: string | null;
     image: string | null;
-    year: number;
+    generation: number;
     active: boolean;
   };
   gradientIndex: number;

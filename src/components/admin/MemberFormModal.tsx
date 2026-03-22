@@ -12,7 +12,7 @@ interface Member {
   github: string | null;
   email: string | null;
   image: string | null;
-  year: number;
+  generation: number;
   order: number;
   active: boolean;
 }
@@ -32,7 +32,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
   const [github, setGithub] = useState(member?.github ?? "");
   const [email, setEmail] = useState(member?.email ?? "");
   const [image, setImage] = useState(member?.image ?? "");
-  const [year, setYear] = useState(member?.year ?? new Date().getFullYear());
+  const [generation, setGeneration] = useState(member?.generation ?? 0);
   const [order, setOrder] = useState(member?.order ?? 99);
   const [active, setActive] = useState(member?.active ?? true);
 
@@ -41,7 +41,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
     setLoading(true);
     setError("");
 
-    const body = { name, role, bio, github, email, image, year, order, active };
+    const body = { name, role, bio, github, email, image, generation, order, active };
     const url = member ? `/api/admin/members/${member.id}` : "/api/admin/members";
     const method = member ? "PUT" : "POST";
 
@@ -174,14 +174,14 @@ export function MemberFormModal({ member }: { member?: Member }) {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">입부년도 *</label>
+                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">기수 *</label>
                   <input
                     type="number"
-                    value={year}
-                    onChange={(e) => setYear(Number(e.target.value))}
+                    value={generation}
+                    onChange={(e) => setGeneration(Number(e.target.value))}
                     required
-                    min={2020}
-                    max={2030}
+                    min={0}
+                    placeholder="0 = 창립멤버"
                     className={inputClass}
                   />
                 </div>
