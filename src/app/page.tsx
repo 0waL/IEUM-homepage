@@ -393,7 +393,7 @@ export default async function HomePage() {
                       <span className="text-2xl font-black text-primary-400">{item.year}</span>
                     </div>
                     <div className="flex-shrink-0 flex flex-col items-center">
-                      <div className="w-2.5 h-2.5 bg-primary-500 rounded-full mt-2 ring-2 ring-primary-900 ring-offset-2 ring-offset-navy-900" />
+                      <div className="w-2.5 h-2.5 bg-primary-500 rounded-full mt-2 shadow-[0_0_0_3px_theme(colors.primary.500/0.25)]" />
                       <div className="w-px bg-white/10 flex-1 mt-1" />
                     </div>
                     <div className="flex-1 pb-4 space-y-2">
