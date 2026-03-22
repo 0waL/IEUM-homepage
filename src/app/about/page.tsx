@@ -56,6 +56,16 @@ function parseJson<T>(val: string | undefined, fallback: T): T {
   try { return JSON.parse(val) as T; } catch { return fallback; }
 }
 
+function mergeHistory(raw: { year: string; events: string[] }[]) {
+  const map = new Map<string, string[]>();
+  for (const item of raw) {
+    map.set(item.year, [...(map.get(item.year) ?? []), ...item.events]);
+  }
+  return Array.from(map.entries())
+    .map(([year, events]) => ({ year, events }))
+    .sort((a, b) => Number(b.year) - Number(a.year));
+}
+
 export default async function AboutPage() {
   const items = await prisma.siteContent.findMany();
   const c: Record<string, string> = {};
@@ -68,7 +78,7 @@ export default async function AboutPage() {
   const quoteSub = c["about_quote_sub"] ?? DEFAULT_QUOTE_SUB;
   const values = parseJson<{ title: string; desc: string }[]>(c["about_values"], DEFAULT_VALUES);
   const techstack = parseJson<{ name: string; category: string }[]>(c["about_techstack"], DEFAULT_TECHSTACK);
-  const history = parseJson<{ year: string; events: string[] }[]>(c["about_history"], DEFAULT_HISTORY);
+  const history = mergeHistory(parseJson<{ year: string; events: string[] }[]>(c["about_history"], DEFAULT_HISTORY));
 
   const missionParagraphs = missionBody.split(/\n\n+/).filter(Boolean);
 

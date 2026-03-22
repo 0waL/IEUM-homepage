@@ -32,8 +32,15 @@ async function getSiteData() {
   ]);
   const contentMap: Record<string, string> = {};
   contentItems.forEach((c) => { contentMap[c.key] = c.value; });
-  let history: { year: string; events: string[] }[] = DEFAULT_HISTORY;
-  try { if (contentMap["about_history"]) history = JSON.parse(contentMap["about_history"]); } catch { /* fallback */ }
+  const rawHistory: { year: string; events: string[] }[] = (() => {
+    try { return contentMap["about_history"] ? JSON.parse(contentMap["about_history"]) : DEFAULT_HISTORY; }
+    catch { return DEFAULT_HISTORY; }
+  })();
+  const map = new Map<string, string[]>();
+  for (const item of rawHistory) map.set(item.year, [...(map.get(item.year) ?? []), ...item.events]);
+  const history = Array.from(map.entries())
+    .map(([year, events]) => ({ year, events }))
+    .sort((a, b) => Number(b.year) - Number(a.year));
 
   return {
     missionText: contentMap["mission_text"] ?? DEFAULT_MISSION,
