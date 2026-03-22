@@ -26,7 +26,7 @@ function slugify(text: string) {
 }
 
 const inputClass =
-  "w-full px-3.5 py-2.5 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent";
+  "w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent";
 
 export function PostForm({ initialData }: PostFormProps) {
   const router = useRouter();
@@ -86,7 +86,7 @@ export function PostForm({ initialData }: PostFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {error && (
-        <div className="bg-red-950/60 border border-red-800 text-red-400 px-4 py-3 rounded-lg text-sm">
+        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm">
           {error}
         </div>
       )}
@@ -95,7 +95,7 @@ export function PostForm({ initialData }: PostFormProps) {
         {/* Main content */}
         <div className="lg:col-span-2 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">제목 *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">제목 *</label>
             <input
               type="text"
               value={title}
@@ -107,7 +107,7 @@ export function PostForm({ initialData }: PostFormProps) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">슬러그 (URL) *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">슬러그 (URL) *</label>
             <input
               type="text"
               value={slug}
@@ -119,7 +119,7 @@ export function PostForm({ initialData }: PostFormProps) {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-1.5">요약 *</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1.5">요약 *</label>
             <textarea
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
@@ -132,19 +132,19 @@ export function PostForm({ initialData }: PostFormProps) {
 
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="text-sm font-medium text-zinc-300">내용 * (마크다운 지원)</label>
+              <label className="text-sm font-medium text-gray-700">내용 * (마크다운 지원)</label>
               <button
                 type="button"
                 onClick={() => setPreview(!preview)}
-                className="flex items-center gap-1.5 text-xs text-zinc-500 hover:text-zinc-200 transition-colors"
+                className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-700 transition-colors"
               >
                 {preview ? <EyeOff size={13} /> : <Eye size={13} />}
                 {preview ? "편집" : "미리보기"}
               </button>
             </div>
             {preview ? (
-              <div className="w-full min-h-[400px] p-4 bg-zinc-800 border border-zinc-700 rounded-lg">
-                <pre className="whitespace-pre-wrap font-sans text-sm text-zinc-300">{content}</pre>
+              <div className="w-full min-h-[400px] p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                <pre className="whitespace-pre-wrap font-sans text-sm text-gray-700">{content}</pre>
               </div>
             ) : (
               <textarea
@@ -162,14 +162,14 @@ export function PostForm({ initialData }: PostFormProps) {
         {/* Sidebar */}
         <div className="space-y-4">
           {/* Publish */}
-          <div className="bg-zinc-800/60 rounded-xl border border-zinc-700 p-4">
-            <h3 className="font-semibold text-zinc-200 mb-3">발행 설정</h3>
+          <div className="bg-gray-50 rounded-xl border border-gray-200 p-4">
+            <h3 className="font-semibold text-gray-800 mb-3">발행 설정</h3>
             <div className="flex items-center justify-between mb-4">
-              <label className="text-sm text-zinc-400">공개 여부</label>
+              <label className="text-sm text-gray-600">공개 여부</label>
               <button
                 type="button"
                 onClick={() => setPublished(!published)}
-                className={`relative w-10 rounded-full transition-colors h-6 ${published ? "bg-primary-600" : "bg-zinc-600"}`}
+                className={`relative w-10 rounded-full transition-colors h-6 ${published ? "bg-primary-600" : "bg-gray-300"}`}
               >
                 <span
                   className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${published ? "translate-x-4" : ""}`}
@@ -188,8 +188,8 @@ export function PostForm({ initialData }: PostFormProps) {
           </div>
 
           {/* Category */}
-          <div className="bg-zinc-800/60 rounded-xl border border-zinc-700 p-4">
-            <h3 className="font-semibold text-zinc-200 mb-3">카테고리</h3>
+          <div className="bg-gray-50 rounded-xl border border-gray-200 p-4">
+            <h3 className="font-semibold text-gray-800 mb-3">카테고리</h3>
             <div className="space-y-2">
               {["활동", "프로젝트", "공지"].map((cat) => (
                 <label key={cat} className="flex items-center gap-2.5 cursor-pointer">
@@ -201,15 +201,15 @@ export function PostForm({ initialData }: PostFormProps) {
                     onChange={() => setCategory(cat)}
                     className="text-primary-600 accent-primary-600"
                   />
-                  <span className="text-sm text-zinc-300">{cat}</span>
+                  <span className="text-sm text-gray-700">{cat}</span>
                 </label>
               ))}
             </div>
           </div>
 
           {/* Tags */}
-          <div className="bg-zinc-800/60 rounded-xl border border-zinc-700 p-4">
-            <h3 className="font-semibold text-zinc-200 mb-3">태그</h3>
+          <div className="bg-gray-50 rounded-xl border border-gray-200 p-4">
+            <h3 className="font-semibold text-gray-800 mb-3">태그</h3>
             <input
               type="text"
               value={tags}
@@ -217,7 +217,7 @@ export function PostForm({ initialData }: PostFormProps) {
               placeholder="Next.js, gshs.app, 개발"
               className={inputClass}
             />
-            <p className="text-xs text-zinc-500 mt-1">쉼표로 구분하세요</p>
+            <p className="text-xs text-gray-400 mt-1">쉼표로 구분하세요</p>
           </div>
         </div>
       </div>

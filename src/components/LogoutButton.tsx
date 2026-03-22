@@ -12,7 +12,7 @@ export function LogoutButton({ className, iconOnly }: LogoutButtonProps) {
   return (
     <button
       onClick={() => signOut({ callbackUrl: "/login" })}
-      className={className ?? "flex items-center gap-1.5 text-sm text-zinc-500 hover:text-red-400 transition-colors"}
+      className={className ?? "flex items-center gap-1.5 text-sm text-gray-500 hover:text-red-500 transition-colors"}
     >
       <LogOut size={14} />
       {!iconOnly && "로그아웃"}

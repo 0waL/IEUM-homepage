@@ -14,7 +14,7 @@ interface FAQItem {
 }
 
 const inputClass =
-  "w-full px-3.5 py-2.5 bg-zinc-800 border border-zinc-700 rounded-lg text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent";
+  "w-full px-3.5 py-2.5 bg-white border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent";
 
 export default function SitePage() {
   const [missionText, setMissionText] = useState("");
@@ -84,18 +84,18 @@ export default function SitePage() {
   if (loading)
     return (
       <div className="flex items-center justify-center py-20">
-        <Loader2 className="animate-spin text-zinc-500" size={24} />
+        <Loader2 className="animate-spin text-gray-400" size={24} />
       </div>
     );
 
   return (
     <div className="max-w-3xl space-y-8">
-      <h1 className="text-2xl font-extrabold text-white">사이트 설정</h1>
+      <h1 className="text-2xl font-extrabold text-gray-900">사이트 설정</h1>
 
       {/* Mission text */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-        <h2 className="font-semibold text-zinc-200 mb-1">동아리 소개 텍스트</h2>
-        <p className="text-xs text-zinc-500 mb-4">
+      <div className="bg-white border border-gray-200 rounded-xl p-6">
+        <h2 className="font-semibold text-gray-800 mb-1">동아리 소개 텍스트</h2>
+        <p className="text-xs text-gray-400 mb-4">
           홈페이지 '이음이란?' 섹션에 표시됩니다. 줄바꿈(엔터)으로 문단을 나눌 수 있습니다.
         </p>
         <textarea
@@ -115,15 +115,15 @@ export default function SitePage() {
       </div>
 
       {/* FAQ */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+      <div className="bg-white border border-gray-200 rounded-xl p-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h2 className="font-semibold text-zinc-200 mb-0.5">자주 묻는 질문 (FAQ)</h2>
-            <p className="text-xs text-zinc-500">홈페이지 FAQ 섹션에 표시됩니다.</p>
+            <h2 className="font-semibold text-gray-800 mb-0.5">자주 묻는 질문 (FAQ)</h2>
+            <p className="text-xs text-gray-400">홈페이지 FAQ 섹션에 표시됩니다.</p>
           </div>
           <button
             onClick={() => { setShowAdd(true); setEditingFaq(null); }}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-700 text-zinc-200 rounded-lg text-sm hover:bg-zinc-600 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
           >
             <Plus size={14} />
             추가
@@ -132,7 +132,7 @@ export default function SitePage() {
 
         {/* Add form */}
         {showAdd && (
-          <div className="bg-zinc-800/60 border border-zinc-700 rounded-xl p-4 mb-4 space-y-3">
+          <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 mb-4 space-y-3">
             <input
               value={newQuestion}
               onChange={(e) => setNewQuestion(e.target.value)}
@@ -155,7 +155,7 @@ export default function SitePage() {
               </button>
               <button
                 onClick={() => setShowAdd(false)}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-700 text-zinc-300 rounded-lg text-sm hover:bg-zinc-600 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
               >
                 <X size={14} /> 취소
               </button>
@@ -166,12 +166,12 @@ export default function SitePage() {
         {/* FAQ list */}
         <div className="space-y-2">
           {faqs.length === 0 && (
-            <p className="text-zinc-600 text-sm text-center py-8">
+            <p className="text-gray-400 text-sm text-center py-8">
               FAQ가 없습니다. '추가' 버튼으로 첫 항목을 만들어보세요.
             </p>
           )}
           {faqs.map((faq, idx) => (
-            <div key={faq.id} className="bg-zinc-800/40 border border-zinc-700/50 rounded-xl p-4">
+            <div key={faq.id} className="bg-gray-50 border border-gray-200 rounded-xl p-4">
               {editingFaq?.id === faq.id ? (
                 <div className="space-y-3">
                   <input
@@ -194,7 +194,7 @@ export default function SitePage() {
                     </button>
                     <button
                       onClick={() => setEditingFaq(null)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 bg-zinc-700 text-zinc-300 rounded-lg text-sm hover:bg-zinc-600 transition-colors"
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
                     >
                       <X size={14} /> 취소
                     </button>
@@ -202,23 +202,23 @@ export default function SitePage() {
                 </div>
               ) : (
                 <div className="flex items-start gap-3">
-                  <span className="flex-shrink-0 text-xs text-zinc-600 font-mono mt-1">
+                  <span className="flex-shrink-0 text-xs text-gray-400 font-mono mt-1">
                     {String(idx + 1).padStart(2, "0")}
                   </span>
                   <div className="flex-1 min-w-0">
-                    <p className="text-zinc-200 font-medium text-sm">{faq.question}</p>
-                    <p className="text-zinc-500 text-xs mt-1 line-clamp-2">{faq.answer}</p>
+                    <p className="text-gray-800 font-medium text-sm">{faq.question}</p>
+                    <p className="text-gray-500 text-xs mt-1 line-clamp-2">{faq.answer}</p>
                   </div>
                   <div className="flex gap-1 flex-shrink-0">
                     <button
                       onClick={() => { setEditingFaq(faq); setShowAdd(false); }}
-                      className="p-1.5 text-zinc-500 hover:text-zinc-200 hover:bg-zinc-700 rounded-lg transition-colors"
+                      className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-200 rounded-lg transition-colors"
                     >
                       <Edit2 size={14} />
                     </button>
                     <button
                       onClick={() => deleteFaq(faq.id)}
-                      className="p-1.5 text-zinc-500 hover:text-red-400 hover:bg-zinc-700 rounded-lg transition-colors"
+                      className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                     >
                       <Trash2 size={14} />
                     </button>

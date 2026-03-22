@@ -25,8 +25,8 @@ export default async function AdminPostsPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-extrabold text-white">게시글 관리</h1>
-          <p className="text-zinc-500 text-sm mt-1">총 {posts.length}개</p>
+          <h1 className="text-2xl font-extrabold text-gray-900">게시글 관리</h1>
+          <p className="text-gray-500 text-sm mt-1">총 {posts.length}개</p>
         </div>
         <Link href="/admin/posts/new" className="btn-primary">
           <Plus size={16} />
@@ -34,45 +34,45 @@ export default async function AdminPostsPage() {
         </Link>
       </div>
 
-      <div className="bg-zinc-900 rounded-xl border border-zinc-800 overflow-hidden">
+      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
         {posts.length === 0 ? (
-          <div className="py-16 text-center text-zinc-500">
+          <div className="py-16 text-center text-gray-400">
             <p>게시글이 없습니다.</p>
-            <Link href="/admin/posts/new" className="text-primary-400 text-sm hover:underline mt-2 inline-block">
+            <Link href="/admin/posts/new" className="text-primary-600 text-sm hover:underline mt-2 inline-block">
               첫 게시글 작성하기
             </Link>
           </div>
         ) : (
           <table className="w-full">
             <thead>
-              <tr className="border-b border-zinc-800 bg-zinc-800/50">
-                <th className="text-left text-xs font-medium text-zinc-500 px-5 py-3">제목</th>
-                <th className="text-left text-xs font-medium text-zinc-500 px-5 py-3 hidden md:table-cell">카테고리</th>
-                <th className="text-left text-xs font-medium text-zinc-500 px-5 py-3 hidden md:table-cell">작성자</th>
-                <th className="text-left text-xs font-medium text-zinc-500 px-5 py-3 hidden md:table-cell">작성일</th>
-                <th className="text-left text-xs font-medium text-zinc-500 px-5 py-3">상태</th>
-                <th className="text-right text-xs font-medium text-zinc-500 px-5 py-3">작업</th>
+              <tr className="border-b border-gray-200 bg-gray-50">
+                <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">제목</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-5 py-3 hidden md:table-cell">카테고리</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-5 py-3 hidden md:table-cell">작성자</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-5 py-3 hidden md:table-cell">작성일</th>
+                <th className="text-left text-xs font-medium text-gray-500 px-5 py-3">상태</th>
+                <th className="text-right text-xs font-medium text-gray-500 px-5 py-3">작업</th>
               </tr>
             </thead>
             <tbody>
               {posts.map((post) => (
-                <tr key={post.id} className="border-b border-zinc-800/50 hover:bg-zinc-800/30 transition-colors">
+                <tr key={post.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
                   <td className="px-5 py-3.5">
                     <div>
-                      <p className="font-medium text-zinc-200 text-sm">{post.title}</p>
-                      <p className="text-xs text-zinc-600 truncate max-w-xs">{post.excerpt}</p>
+                      <p className="font-medium text-gray-800 text-sm">{post.title}</p>
+                      <p className="text-xs text-gray-400 truncate max-w-xs">{post.excerpt}</p>
                     </div>
                   </td>
                   <td className="px-5 py-3.5 hidden md:table-cell">
-                    <span className="text-xs px-2 py-0.5 bg-zinc-800 text-zinc-400 rounded-full">
+                    <span className="text-xs px-2 py-0.5 bg-gray-100 text-gray-500 rounded-full">
                       {post.category}
                     </span>
                   </td>
                   <td className="px-5 py-3.5 hidden md:table-cell">
-                    <span className="text-sm text-zinc-500">{post.author.name}</span>
+                    <span className="text-sm text-gray-500">{post.author.name}</span>
                   </td>
                   <td className="px-5 py-3.5 hidden md:table-cell">
-                    <span className="text-xs text-zinc-600">
+                    <span className="text-xs text-gray-400">
                       {format(new Date(post.createdAt), "yy.M.d", { locale: ko })}
                     </span>
                   </td>
@@ -88,14 +88,14 @@ export default async function AdminPostsPage() {
                         <Link
                           href={`/activities/${post.slug}`}
                           target="_blank"
-                          className="p-1.5 text-zinc-600 hover:text-zinc-200 rounded-lg hover:bg-zinc-800 transition-colors"
+                          className="p-1.5 text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
                         >
                           <Eye size={14} />
                         </Link>
                       )}
                       <Link
                         href={`/admin/posts/${post.id}/edit`}
-                        className="p-1.5 text-zinc-600 hover:text-primary-400 rounded-lg hover:bg-zinc-800 transition-colors"
+                        className="p-1.5 text-gray-400 hover:text-primary-600 rounded-lg hover:bg-gray-100 transition-colors"
                       >
                         <Edit size={14} />
                       </Link>

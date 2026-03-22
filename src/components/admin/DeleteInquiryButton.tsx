@@ -26,7 +26,7 @@ export function DeleteInquiryButton({ id }: { id: string }) {
     <button
       onClick={handleDelete}
       disabled={loading}
-      className="p-1.5 text-zinc-600 hover:text-red-400 transition-colors disabled:opacity-50"
+      className="p-1.5 text-gray-400 hover:text-red-500 transition-colors disabled:opacity-50"
       title="삭제"
     >
       <Trash2 size={15} />

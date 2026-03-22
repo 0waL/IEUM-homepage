@@ -9,7 +9,7 @@ export default async function NewPostPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-extrabold text-white mb-6">새 게시글 작성</h1>
+      <h1 className="text-2xl font-extrabold text-gray-900 mb-6">새 게시글 작성</h1>
       <PostForm />
     </div>
   );
