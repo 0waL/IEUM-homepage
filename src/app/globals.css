@@ -27,7 +27,7 @@
     --modal-bg: #ffffff;
     --modal-section-1: #eff0ff;
     --modal-section-2: #f5f5ff;
-    --hero-grid-color: rgba(0,0,0,0.08);
+    --hero-grid-color: rgba(0,0,0,0.55);
     --hero-fade-stop: #f0f2f8;
   }
 }
