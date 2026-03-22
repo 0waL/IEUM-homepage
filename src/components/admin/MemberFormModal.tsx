@@ -27,7 +27,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
   const [error, setError] = useState("");
 
   const [name, setName] = useState(member?.name ?? "");
-  const [role, setRole] = useState(member?.role ?? "부원");
+  const [role, setRole] = useState(member?.role ?? "부원");  // 대빵 | 부대빵 | 부원
   const [bio, setBio] = useState(member?.bio ?? "");
   const [github, setGithub] = useState(member?.github ?? "");
   const [email, setEmail] = useState(member?.email ?? "");
@@ -120,7 +120,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
                     onChange={(e) => setRole(e.target.value)}
                     className={inputClass}
                   >
-                    {["회장", "부회장", "개발팀장", "디자인팀장", "부원"].map((r) => (
+                    {["대빵", "부대빵", "부원"].map((r) => (
                       <option key={r} value={r}>{r}</option>
                     ))}
                   </select>
