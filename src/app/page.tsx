@@ -14,7 +14,23 @@ import { PostCard } from "@/components/PostCard";
 import { FadeIn } from "@/components/FadeIn";
 import { FAQAccordion } from "@/components/FAQAccordion";
 
-export const revalidate = 60;
+export const revalidate = 30;
+
+const DEFAULT_MISSION =
+  "이음은 경남과학고 학생들이 직접 기획하고 개발한 서비스를 운영하는 IT 동아리입니다. 실제로 사용되는 제품을 만들며 실전 경험을 쌓고, 서로의 성장을 돕습니다.\n\n대표 프로젝트인 gshs.app은 경남과학고 학생들이 급식, 시간표, 공지사항 등 학교 정보를 한 곳에서 확인할 수 있는 플랫폼으로, 현재도 많은 학생들이 매일 사용하고 있습니다.";
+
+async function getSiteData() {
+  const [contentItems, faqItems] = await Promise.all([
+    prisma.siteContent.findMany(),
+    prisma.fAQ.findMany({ orderBy: { order: "asc" } }),
+  ]);
+  const contentMap: Record<string, string> = {};
+  contentItems.forEach((c) => { contentMap[c.key] = c.value; });
+  return {
+    missionText: contentMap["mission_text"] ?? DEFAULT_MISSION,
+    faqs: faqItems,
+  };
+}
 
 async function getRecentPosts() {
   return await prisma.post.findMany({
@@ -37,7 +53,9 @@ async function getStats() {
 }
 
 export default async function HomePage() {
-  const [posts, stats] = await Promise.all([getRecentPosts(), getStats()]);
+  const [posts, stats, siteData] = await Promise.all([getRecentPosts(), getStats(), getSiteData()]);
+  const { missionText, faqs } = siteData;
+  const missionParagraphs = missionText.split(/\n\n+/).filter(Boolean);
 
   return (
     <>
@@ -154,16 +172,11 @@ export default async function HomePage() {
               <h2 className="text-4xl font-extrabold text-white mb-6 tracking-tight">
                 이음(IEUM)이란?
               </h2>
-              <p className="text-zinc-400 leading-relaxed mb-4">
-                이음은 경남과학고 학생들이 직접 기획하고 개발한 서비스를 운영하는 IT 동아리입니다.
-                실제로 사용되는 제품을 만들며 실전 경험을 쌓고, 서로의 성장을 돕습니다.
-              </p>
-              <p className="text-zinc-400 leading-relaxed">
-                대표 프로젝트인{" "}
-                <strong className="text-primary-400 font-semibold">gshs.app</strong>은 경남과학고
-                학생들이 급식, 시간표, 공지사항 등 학교 정보를 한 곳에서 확인할 수 있는 플랫폼으로,
-                현재도 많은 학생들이 매일 사용하고 있습니다.
-              </p>
+              {missionParagraphs.map((para, i) => (
+                <p key={i} className="text-zinc-400 leading-relaxed mb-4 last:mb-0">
+                  {para}
+                </p>
+              ))}
             </div>
             <div className="bg-gradient-to-br from-primary-950 to-navy-800 rounded-2xl border border-primary-900/40 p-10 text-center">
               <div className="text-6xl mb-5">🔗</div>
@@ -405,7 +418,7 @@ export default async function HomePage() {
             <p className="text-zinc-400">학생들이 자주 묻는 질문들을 모아봤어요</p>
           </FadeIn>
           <FadeIn delay={100}>
-            <FAQAccordion />
+            <FAQAccordion items={faqs} />
           </FadeIn>
         </div>
       </section>
