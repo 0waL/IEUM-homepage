@@ -9,6 +9,9 @@
     --modal-bg: #1e1b3a;
     --modal-section-1: #2a2550;
     --modal-section-2: #252240;
+    /* Hero decoration */
+    --hero-grid-color: rgba(255,255,255,0.6);
+    --hero-fade-stop: #0d0d1f;
   }
 
   html {
@@ -24,6 +27,8 @@
     --modal-bg: #ffffff;
     --modal-section-1: #eff0ff;
     --modal-section-2: #f5f5ff;
+    --hero-grid-color: rgba(0,0,0,0.08);
+    --hero-fade-stop: #f0f2f8;
   }
 }
 
@@ -154,3 +159,36 @@ html[data-theme="light"] .hero-badge {
 html[data-theme="light"] .placeholder-zinc-600::placeholder {
   color: #9ca3af;
 }
+
+/* ─────────────────────────────────────────────
+   Hero background decorations
+   ───────────────────────────────────────────── */
+
+/* Glow orbs — dark default */
+.hero-orb-1 { background-color: rgba(124,58,237,0.30); }
+.hero-orb-2 { background-color: rgba(79,70,229,0.20); }
+.hero-orb-3 { background-color: rgba(139,92,246,0.15); }
+.hero-orb-4 { background-color: rgba(167,139,250,0.10); }
+
+/* Glow orbs — light mode */
+html[data-theme="light"] .hero-orb-1 { background-color: rgba(124,58,237,0.14); }
+html[data-theme="light"] .hero-orb-2 { background-color: rgba(79,70,229,0.10); }
+html[data-theme="light"] .hero-orb-3 { background-color: rgba(139,92,246,0.10); }
+html[data-theme="light"] .hero-orb-4 { background-color: rgba(167,139,250,0.12); }
+
+/* Ghost background text */
+html[data-theme="light"] .hero-ghost-ko { color: rgba(0,0,0,0.06); }
+html[data-theme="light"] .hero-ghost-en { color: rgba(0,0,0,0.04); }
+
+/* ─────────────────────────────────────────────
+   Admin — hover states for zinc classes in light mode
+   ───────────────────────────────────────────── */
+html[data-theme="light"] .hover\:bg-zinc-800:hover { background-color: #f3f4f6; }
+html[data-theme="light"] .hover\:bg-zinc-900:hover { background-color: #f9fafb; }
+html[data-theme="light"] .hover\:text-zinc-200:hover { color: #111827; }
+html[data-theme="light"] .hover\:text-zinc-100:hover { color: #111827; }
+
+/* Admin active nav item */
+html[data-theme="light"] .bg-primary-500\/15 { background-color: #ede9fe; }
+html[data-theme="light"] .text-primary-400 { color: #7c3aed; }
+html[data-theme="light"] .border-zinc-800 { border-color: rgba(0,0,0,0.09); }

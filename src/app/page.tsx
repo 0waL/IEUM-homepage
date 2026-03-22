@@ -64,14 +64,10 @@ export default async function HomePage() {
       <section className="relative min-h-screen flex flex-col justify-center bg-navy-950 overflow-hidden">
         {/* Glow orbs */}
         <div className="absolute inset-0 pointer-events-none">
-          {/* 좌상단 - 보라 */}
-          <div className="absolute -top-20 -left-40 w-[700px] h-[700px] bg-primary-600/30 rounded-full blur-[130px]" />
-          {/* 우하단 - 인디고 */}
-          <div className="absolute bottom-0 -right-40 w-[650px] h-[650px] bg-indigo-600/20 rounded-full blur-[130px]" />
-          {/* 중앙 우측 - 바이올렛 */}
-          <div className="absolute top-1/2 right-1/4 w-[400px] h-[400px] bg-violet-500/15 rounded-full blur-[100px]" />
-          {/* 좌하단 - 추가 포인트 */}
-          <div className="absolute bottom-1/3 left-1/4 w-[300px] h-[300px] bg-primary-400/10 rounded-full blur-[90px]" />
+          <div className="absolute -top-20 -left-40 w-[700px] h-[700px] hero-orb-1 rounded-full blur-[130px]" />
+          <div className="absolute bottom-0 -right-40 w-[650px] h-[650px] hero-orb-2 rounded-full blur-[130px]" />
+          <div className="absolute top-1/2 right-1/4 w-[400px] h-[400px] hero-orb-3 rounded-full blur-[100px]" />
+          <div className="absolute bottom-1/3 left-1/4 w-[300px] h-[300px] hero-orb-4 rounded-full blur-[90px]" />
         </div>
 
         {/* Grid lines */}
@@ -79,7 +75,7 @@ export default async function HomePage() {
           className="absolute inset-0 opacity-[0.07]"
           style={{
             backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
+              "linear-gradient(var(--hero-grid-color) 1px, transparent 1px), linear-gradient(90deg, var(--hero-grid-color) 1px, transparent 1px)",
             backgroundSize: "80px 80px",
           }}
         />
@@ -88,20 +84,20 @@ export default async function HomePage() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 40%, #0a0a1a 100%)",
+              "radial-gradient(ellipse 80% 70% at 50% 50%, transparent 40%, var(--hero-fade-stop) 100%)",
           }}
         />
 
         {/* Ghost background text */}
         <div className="absolute inset-0 flex flex-col justify-center overflow-hidden select-none pointer-events-none px-4 sm:px-8">
           <span
-            className="font-black leading-none tracking-tighter text-white/[0.04]"
+            className="hero-ghost-ko font-black leading-none tracking-tighter text-white/[0.04]"
             style={{ fontSize: "clamp(6rem, 28vw, 36rem)" }}
           >
             이음
           </span>
           <span
-            className="font-black leading-none tracking-tighter text-white/[0.03]"
+            className="hero-ghost-en font-black leading-none tracking-tighter text-white/[0.03]"
             style={{ fontSize: "clamp(4rem, 20vw, 26rem)" }}
           >
             IEUM
