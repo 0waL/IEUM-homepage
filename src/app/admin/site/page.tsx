@@ -247,7 +247,7 @@ export default function SitePage() {
 
   /* ════════════════════════════════════════════ */
   return (
-    <div className="max-w-4xl space-y-8">
+    <div className="space-y-8">
       <h1 className="text-2xl font-extrabold text-zinc-100">사이트 설정</h1>
 
       {/* ── 홈 미션 텍스트 ── */}
