@@ -38,47 +38,33 @@ function Avatar({
 }) {
   const grad = gradients[gradientIndex % gradients.length];
   if (member.image) {
-    return (
-      <img
-        src={member.image}
-        alt={member.name}
-        className={`${className} object-cover`}
-      />
-    );
+    return <img src={member.image} alt={member.name} className={`${className} object-cover`} />;
   }
   return (
-    <div
-      className={`${className} bg-gradient-to-br ${grad} flex items-center justify-center text-white font-black ${textSize}`}
-    >
+    <div className={`${className} bg-gradient-to-br ${grad} flex items-center justify-center text-white font-black ${textSize}`}>
       {member.name[0]}
     </div>
   );
 }
 
-export function MemberCard({
-  member,
-  gradientIndex,
-}: {
-  member: MemberData;
-  gradientIndex: number;
-}) {
+function genLabel(gen: number) {
+  return gen === 0 ? "창립 멤버" : `${gen}기`;
+}
+
+export function MemberCard({ member, gradientIndex }: { member: MemberData; gradientIndex: number }) {
   const [open, setOpen] = useState(false);
+  const hasLinks = !!(member.github || member.instagram || member.email);
 
   return (
     <>
-      {/* Card */}
+      {/* ── 카드 ── */}
       <div className="bg-navy-900 border border-white/8 rounded-xl overflow-hidden hover:border-primary-600/40 transition-all duration-200 hover:-translate-y-0.5 flex">
-        {/* Photo */}
-        <div className="w-24 flex-shrink-0 bg-navy-800 overflow-hidden min-h-[80px]">
+        <div className="w-24 flex-shrink-0 bg-navy-800 overflow-hidden min-h-[88px]">
           <Avatar member={member} gradientIndex={gradientIndex} />
         </div>
-
-        {/* Info */}
         <div className="flex-1 px-4 py-3 flex flex-col justify-center min-w-0 gap-0.5">
           <h3 className="font-bold text-white text-base truncate">{member.name}</h3>
-          <p className="text-zinc-500 text-sm">
-            {member.generation === 0 ? "창립 멤버" : `${member.generation}기`}
-          </p>
+          <p className="text-zinc-500 text-sm">{genLabel(member.generation)}</p>
           <button
             onClick={() => setOpen(true)}
             className="mt-1.5 self-start flex items-center gap-0.5 text-primary-400 hover:text-primary-300 text-xs font-medium transition-colors"
@@ -89,89 +75,104 @@ export function MemberCard({
         </div>
       </div>
 
-      {/* Modal */}
+      {/* ── 모달 ── */}
       {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={() => setOpen(false)}>
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          onClick={() => setOpen(false)}
+        >
+          {/* 반투명 배경 – 뒤 카드가 보이게 */}
+          <div className="absolute inset-0 bg-black/50" />
+
           <div
-            className="relative bg-navy-900 border border-white/10 rounded-2xl shadow-2xl w-full max-w-sm overflow-hidden"
+            className="relative w-full max-w-[520px] rounded-2xl overflow-hidden shadow-2xl"
+            style={{ background: "#1e1b3a" }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Close */}
+            {/* 닫기 */}
             <button
               onClick={() => setOpen(false)}
-              className="absolute top-3 right-3 z-10 p-1.5 text-zinc-500 hover:text-zinc-200 rounded-lg hover:bg-white/10 transition-colors"
+              className="absolute top-4 right-4 z-10 p-1.5 text-zinc-500 hover:text-white rounded-lg hover:bg-white/10 transition-colors"
             >
               <X size={16} />
             </button>
 
-            {/* Profile header */}
-            <div className="flex items-center gap-4 p-6 pb-4">
-              <div className="w-16 h-16 rounded-xl overflow-hidden flex-shrink-0">
-                <Avatar member={member} gradientIndex={gradientIndex} textSize="text-2xl" />
+            {/* ① 헤더: 사진 + 이름/기수/역할 */}
+            <div className="flex gap-0">
+              {/* 사진 */}
+              <div className="w-[140px] h-[140px] flex-shrink-0">
+                <Avatar member={member} gradientIndex={gradientIndex} textSize="text-5xl" />
               </div>
-              <div>
-                <h2 className="text-xl font-black text-white">{member.name}</h2>
-                <p className="text-zinc-400 text-sm mt-0.5">
-                  {member.generation === 0 ? "창립 멤버" : `${member.generation}기`}
-                  {member.role && <span className="ml-2 text-zinc-500">· {member.role}</span>}
-                </p>
+
+              {/* 텍스트 */}
+              <div className="flex-1 px-6 py-5 flex flex-col justify-center">
+                <p className="text-xs text-primary-400 font-semibold mb-1 tracking-wide">{genLabel(member.generation)}</p>
+                <h2 className="text-2xl font-black text-white leading-none mb-1.5">{member.name}</h2>
+                <p className="text-zinc-400 text-sm">{member.role}</p>
               </div>
             </div>
 
-            {/* Divider */}
-            <div className="mx-6 border-t border-white/8" />
+            <div className="px-5 pb-5 flex flex-col gap-3 mt-1">
+              {/* ② 소갯말 */}
+              {member.bio && (
+                <div className="rounded-xl p-4" style={{ background: "#2a2550" }}>
+                  <p className="text-xs font-bold text-zinc-400 mb-2">소갯말</p>
+                  <p className="text-zinc-200 text-sm leading-relaxed">{member.bio}</p>
+                </div>
+              )}
 
-            {/* Bio */}
-            {member.bio && (
-              <div className="px-6 py-4">
-                <p className="text-zinc-300 text-sm leading-relaxed">{member.bio}</p>
-              </div>
-            )}
+              {/* ③ ETC (링크) */}
+              {hasLinks && (
+                <div className="rounded-xl p-4" style={{ background: "#252240" }}>
+                  <p className="text-xs font-bold text-zinc-400 mb-3">ETC</p>
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-2.5">
+                    {member.github && (
+                      <a
+                        href={member.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm text-zinc-300 hover:text-white transition-colors"
+                      >
+                        <span className="text-xs text-zinc-500 w-16 flex-shrink-0">Github</span>
+                        <Github size={14} className="flex-shrink-0 text-zinc-400" />
+                        <span className="truncate text-primary-300 hover:underline text-xs">
+                          {member.github.replace(/^https?:\/\/(www\.)?github\.com\//, "")}
+                        </span>
+                      </a>
+                    )}
+                    {member.instagram && (
+                      <a
+                        href={member.instagram}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 text-sm text-zinc-300 hover:text-white transition-colors"
+                      >
+                        <span className="text-xs text-zinc-500 w-16 flex-shrink-0">Instagram</span>
+                        <Instagram size={14} className="flex-shrink-0 text-zinc-400" />
+                        <span className="truncate text-primary-300 hover:underline text-xs">
+                          {member.instagram.replace(/^https?:\/\/(www\.)?instagram\.com\//, "").replace(/\/$/, "")}
+                        </span>
+                      </a>
+                    )}
+                    {member.email && (
+                      <a
+                        href={`mailto:${member.email}`}
+                        className="flex items-center gap-2 text-sm text-zinc-300 hover:text-white transition-colors"
+                      >
+                        <span className="text-xs text-zinc-500 w-16 flex-shrink-0">Email</span>
+                        <Mail size={14} className="flex-shrink-0 text-zinc-400" />
+                        <span className="truncate text-primary-300 hover:underline text-xs">{member.email}</span>
+                      </a>
+                    )}
+                  </div>
+                </div>
+              )}
 
-            {/* Links */}
-            {(member.github || member.instagram || member.email) && (
-              <div className="px-6 pb-6 flex flex-wrap gap-2">
-                {member.github && (
-                  <a
-                    href={member.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white rounded-lg text-xs font-medium transition-colors"
-                  >
-                    <Github size={13} />
-                    GitHub
-                  </a>
-                )}
-                {member.instagram && (
-                  <a
-                    href={member.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white rounded-lg text-xs font-medium transition-colors"
-                  >
-                    <Instagram size={13} />
-                    Instagram
-                  </a>
-                )}
-                {member.email && (
-                  <a
-                    href={`mailto:${member.email}`}
-                    className="flex items-center gap-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white rounded-lg text-xs font-medium transition-colors"
-                  >
-                    <Mail size={13} />
-                    이메일
-                  </a>
-                )}
-              </div>
-            )}
-
-            {/* No bio & no links */}
-            {!member.bio && !member.github && !member.instagram && !member.email && (
-              <div className="px-6 pb-6">
-                <p className="text-zinc-600 text-sm">소개 정보가 없습니다.</p>
-              </div>
-            )}
+              {/* 소개도 링크도 없을 때 */}
+              {!member.bio && !hasLinks && (
+                <p className="text-zinc-600 text-sm px-1">소개 정보가 없습니다.</p>
+              )}
+            </div>
           </div>
         </div>
       )}
