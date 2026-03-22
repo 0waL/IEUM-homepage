@@ -78,11 +78,11 @@ export function MemberCard({ member, gradientIndex }: { member: MemberData; grad
       {/* ── 모달 ── */}
       {open && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4"
           onClick={() => setOpen(false)}
         >
-          {/* 반투명 배경 – 뒤 카드가 보이게 */}
-          <div className="absolute inset-0 bg-black/50" />
+          {/* 반투명 배경 */}
+          <div className="absolute inset-0 bg-black/60" />
 
           <div
             className="relative w-full max-w-[640px] rounded-2xl overflow-hidden shadow-2xl"
@@ -98,19 +98,21 @@ export function MemberCard({ member, gradientIndex }: { member: MemberData; grad
             </button>
 
             {/* ① 헤더: 사진 + 이름/기수/역할 */}
-            <div className="flex gap-0">
-              {/* 사진 – 네모 박스 */}
-              <div className="w-[180px] h-[180px] flex-shrink-0 bg-navy-800 overflow-hidden">
-                <Avatar member={member} gradientIndex={gradientIndex} textSize="text-6xl" />
+            <div className="flex items-center gap-5 p-6 pb-4">
+              {/* 사진 – 둥근 네모 박스 + 테두리 */}
+              <div className="w-[120px] h-[120px] flex-shrink-0 rounded-2xl overflow-hidden border-2 border-white/20 bg-zinc-800 shadow-lg">
+                <Avatar member={member} gradientIndex={gradientIndex} textSize="text-5xl" />
               </div>
 
               {/* 텍스트 */}
-              <div className="flex-1 px-7 py-6 flex flex-col justify-center">
-                <p className="text-xs text-primary-400 font-semibold mb-2 tracking-widest uppercase">{genLabel(member.generation)}</p>
-                <h2 className="text-3xl font-black text-white leading-none mb-2">{member.name}</h2>
-                <p className="text-zinc-400 text-base">{member.role}</p>
+              <div className="flex flex-col justify-center">
+                <p className="text-xs text-primary-400 font-semibold mb-1.5 tracking-widest uppercase">{genLabel(member.generation)}</p>
+                <h2 className="text-3xl font-black text-white leading-tight mb-1">{member.name}</h2>
+                <p className="text-zinc-400 text-sm">{member.role}</p>
               </div>
             </div>
+
+            <div className="mx-6 border-t border-white/8 mb-1" />
 
             <div className="px-6 pb-6 flex flex-col gap-3 mt-2">
               {/* ② 소갯말 */}
