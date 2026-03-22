@@ -10,7 +10,8 @@ import {
   Trophy,
   BookOpen,
 } from "lucide-react";
-import { PostCard } from "@/components/PostCard";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
 import { FadeIn } from "@/components/FadeIn";
 import { FAQAccordion } from "@/components/FAQAccordion";
 import { HeroTitle } from "@/components/HeroTitle";
@@ -33,16 +34,24 @@ async function getSiteData() {
   };
 }
 
-async function getRecentPosts() {
-  return await prisma.post.findMany({
+async function getPostsByYear() {
+  const posts = await prisma.post.findMany({
     where: { published: true },
     orderBy: { createdAt: "desc" },
-    take: 3,
     include: {
       author: { select: { name: true } },
       tags: { include: { tag: true } },
     },
   });
+
+  const grouped: Record<string, typeof posts> = {};
+  for (const post of posts) {
+    const year = new Date(post.createdAt).getFullYear().toString();
+    if (!grouped[year]) grouped[year] = [];
+    grouped[year].push(post);
+  }
+  // 최신 연도순 정렬
+  return Object.entries(grouped).sort(([a], [b]) => Number(b) - Number(a));
 }
 
 async function getStats() {
@@ -54,7 +63,7 @@ async function getStats() {
 }
 
 export default async function HomePage() {
-  const [posts, stats, siteData] = await Promise.all([getRecentPosts(), getStats(), getSiteData()]);
+  const [postsByYear, stats, siteData] = await Promise.all([getPostsByYear(), getStats(), getSiteData()]);
   const { missionText, faqs } = siteData;
   const missionParagraphs = missionText.split(/\n\n+/).filter(Boolean);
 
@@ -375,14 +384,14 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ─── Recent Posts ─── */}
-      {posts.length > 0 && (
+      {/* ─── Posts by Year ─── */}
+      {postsByYear.length > 0 && (
         <section className="py-24 bg-navy-900">
-          <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16">
+          <div className="max-w-4xl mx-auto px-6 sm:px-10 lg:px-16">
             <FadeIn className="flex items-end justify-between mb-12">
               <div>
-                <h2 className="text-4xl font-extrabold text-white mb-2">최근 활동</h2>
-                <p className="text-zinc-400 text-lg">이음의 최신 소식</p>
+                <h2 className="text-4xl font-extrabold text-white mb-2">연도별 활동</h2>
+                <p className="text-zinc-400 text-lg">이음의 발자취</p>
               </div>
               <Link
                 href="/activities"
@@ -392,10 +401,45 @@ export default async function HomePage() {
                 <ArrowRight size={16} />
               </Link>
             </FadeIn>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {posts.map((post, i) => (
-                <FadeIn key={post.id} delay={i * 100}>
-                  <PostCard post={post} />
+
+            <div className="space-y-10">
+              {postsByYear.map(([year, posts]) => (
+                <FadeIn key={year}>
+                  <div className="flex gap-6 sm:gap-10">
+                    {/* 연도 */}
+                    <div className="flex-shrink-0 w-14 sm:w-20">
+                      <span className="text-2xl font-black text-primary-400">{year}</span>
+                    </div>
+
+                    {/* 타임라인 선 */}
+                    <div className="flex-shrink-0 flex flex-col items-center">
+                      <div className="w-2.5 h-2.5 bg-primary-500 rounded-full mt-2 ring-2 ring-primary-900 ring-offset-2 ring-offset-navy-900" />
+                      <div className="w-px bg-white/10 flex-1 mt-1" />
+                    </div>
+
+                    {/* 게시글 목록 */}
+                    <div className="flex-1 pb-4 space-y-2">
+                      {posts.map((post) => (
+                        <Link
+                          key={post.id}
+                          href={`/activities/${post.slug}`}
+                          className="group flex items-start sm:items-center justify-between gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors"
+                        >
+                          <div className="flex items-start sm:items-center gap-3 min-w-0">
+                            <span className="flex-shrink-0 text-xs px-2 py-0.5 bg-primary-900/50 border border-primary-800/40 text-primary-400 rounded-full">
+                              {post.category}
+                            </span>
+                            <span className="font-medium text-zinc-300 group-hover:text-white transition-colors text-sm leading-snug line-clamp-1">
+                              {post.title}
+                            </span>
+                          </div>
+                          <span className="flex-shrink-0 text-xs text-zinc-600 hidden sm:block">
+                            {format(new Date(post.createdAt), "M.d", { locale: ko })}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                 </FadeIn>
               ))}
             </div>
