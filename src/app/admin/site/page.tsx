@@ -192,6 +192,17 @@ export default function SitePage() {
     setTimeout(() => setSaved(false), 2000);
   };
 
+  /** 연혁 저장: 같은 연도 항목을 병합한 뒤 저장 */
+  const saveHistory = async (raw: HistoryItem[]) => {
+    const map = new Map<string, string[]>();
+    for (const item of raw) map.set(item.year, [...(map.get(item.year) ?? []), ...item.events]);
+    const merged = Array.from(map.entries())
+      .map(([year, events]) => ({ year, events }))
+      .sort((a, b) => Number(b.year) - Number(a.year));
+    setHistory(merged);
+    await saveJsonKey("about_history", merged, setSavingHistory, setSavedHistory);
+  };
+
   /* ─── 홈 미션 저장 ─── */
   const saveMission = async () => {
     setSavingMission(true);
@@ -463,9 +474,7 @@ export default function SitePage() {
             onChange={setNewHistory}
             inputClass={inputClass}
             onSave={() => {
-              const v = [newHistory, ...history];
-              setHistory(v);
-              saveJsonKey("about_history", v, setSavingHistory, setSavedHistory);
+              saveHistory([newHistory, ...history]);
               setNewHistory({ year: "", events: [""] });
               setShowAddHistory(false);
             }}
@@ -482,9 +491,7 @@ export default function SitePage() {
                   onChange={(updated) => setEditingHistory({ idx, item: updated })}
                   inputClass={inputClass}
                   onSave={() => {
-                    const v = history.map((x, i) => i === idx ? editingHistory.item : x);
-                    setHistory(v);
-                    saveJsonKey("about_history", v, setSavingHistory, setSavedHistory);
+                    saveHistory(history.map((x, i) => i === idx ? editingHistory.item : x));
                     setEditingHistory(null);
                   }}
                   onCancel={() => setEditingHistory(null)}
@@ -499,7 +506,7 @@ export default function SitePage() {
                   </div>
                   <div className="flex gap-1 flex-shrink-0">
                     <button onClick={() => { setEditingHistory({ idx, item: { ...item, events: [...item.events] } }); setShowAddHistory(false); }} className="p-1.5 text-zinc-500 hover:text-zinc-200 hover:bg-zinc-700 rounded-lg transition-colors"><Edit2 size={13} /></button>
-                    <button onClick={() => { const v = history.filter((_, i) => i !== idx); setHistory(v); saveJsonKey("about_history", v, setSavingHistory, setSavedHistory); }} className="p-1.5 text-zinc-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"><Trash2 size={13} /></button>
+                    <button onClick={() => { saveHistory(history.filter((_, i) => i !== idx)); }} className="p-1.5 text-zinc-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"><Trash2 size={13} /></button>
                   </div>
                 </div>
               )}
