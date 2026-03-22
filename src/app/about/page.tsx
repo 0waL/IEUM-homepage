@@ -137,7 +137,7 @@ export default async function AboutPage() {
               const gradient = VALUE_GRADIENTS[idx % VALUE_GRADIENTS.length];
               return (
                 <FadeIn key={idx} delay={(idx % 3) * 80}>
-                  <div className="bg-navy-900 border border-white/8 rounded-2xl p-7 hover:border-primary-600/30 transition-all duration-300 hover:-translate-y-0.5 h-full">
+                  <div className="bg-navy-900 rounded-2xl p-7 hover:border hover:border-primary-600/30 transition-all duration-300 hover:-translate-y-0.5 h-full">
                     <div className={`w-11 h-11 bg-gradient-to-br ${gradient} rounded-xl flex items-center justify-center mb-4 shadow-lg`}>
                       <Icon size={20} className="text-white" />
                     </div>
@@ -162,7 +162,7 @@ export default async function AboutPage() {
             {techstack.map((tech) => (
               <div
                 key={tech.name}
-                className="bg-navy-800 border border-white/8 rounded-xl p-4 text-center hover:border-primary-600/30 transition-all duration-200"
+                className="bg-navy-800 rounded-xl p-4 text-center hover:border hover:border-primary-600/30 transition-all duration-200"
               >
                 <p className="font-semibold text-white">{tech.name}</p>
                 <p className="text-xs text-zinc-500 mt-1">{tech.category}</p>
