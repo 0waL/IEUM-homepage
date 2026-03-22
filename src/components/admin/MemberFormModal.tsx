@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Edit, X, Loader2 } from "lucide-react";
+import { Plus, Edit, X, Loader2, Upload, Trash2 } from "lucide-react";
 
 interface Member {
   id: string;
@@ -24,7 +24,9 @@ export function MemberFormModal({ member }: { member?: Member }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [name, setName] = useState(member?.name ?? "");
   const [role, setRole] = useState(member?.role ?? "부원");  // 대빵 | 부대빵 | 부원
@@ -35,6 +37,25 @@ export function MemberFormModal({ member }: { member?: Member }) {
   const [generation, setGeneration] = useState(member?.generation ?? 0);
   const [order, setOrder] = useState(member?.order ?? 99);
   const [active, setActive] = useState(member?.active ?? true);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    setError("");
+    try {
+      const fd = new FormData();
+      fd.append("file", file);
+      const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "업로드 실패");
+      setImage(data.url);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "업로드 실패");
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -139,14 +160,54 @@ export function MemberFormModal({ member }: { member?: Member }) {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-zinc-400 mb-1.5">프로필 사진 URL</label>
+                <label className="block text-xs font-medium text-zinc-400 mb-1.5">
+                  프로필 사진 <span className="text-zinc-600">(선택)</span>
+                </label>
                 <input
-                  type="url"
-                  value={image}
-                  onChange={(e) => setImage(e.target.value)}
-                  placeholder="https://example.com/photo.jpg"
-                  className={inputClass}
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
                 />
+                {image ? (
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={image}
+                      alt="미리보기"
+                      className="w-14 h-14 rounded-lg object-cover border border-zinc-700"
+                    />
+                    <div className="flex flex-col gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploading}
+                        className="flex items-center gap-1.5 text-xs px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition-colors"
+                      >
+                        <Upload size={12} />
+                        {uploading ? "업로드 중..." : "변경"}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => { setImage(""); if (fileInputRef.current) fileInputRef.current.value = ""; }}
+                        className="flex items-center gap-1.5 text-xs px-3 py-1.5 bg-zinc-800 hover:bg-red-950/50 text-zinc-500 hover:text-red-400 rounded-lg transition-colors"
+                      >
+                        <Trash2 size={12} />
+                        삭제
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
+                    className="w-full flex items-center justify-center gap-2 h-20 border-2 border-dashed border-zinc-700 hover:border-zinc-500 rounded-xl text-zinc-500 hover:text-zinc-300 transition-colors text-sm"
+                  >
+                    <Upload size={16} />
+                    {uploading ? "업로드 중..." : "클릭하여 이미지 업로드"}
+                  </button>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-3">
