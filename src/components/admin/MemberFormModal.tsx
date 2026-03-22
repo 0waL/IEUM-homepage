@@ -81,6 +81,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
       return;
     }
 
+    setLoading(false);
     setOpen(false);
     router.refresh();
   };
