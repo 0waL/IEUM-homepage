@@ -13,6 +13,7 @@ import {
 import { PostCard } from "@/components/PostCard";
 import { FadeIn } from "@/components/FadeIn";
 import { FAQAccordion } from "@/components/FAQAccordion";
+import { HeroTitle } from "@/components/HeroTitle";
 
 export const revalidate = 30;
 
@@ -101,20 +102,7 @@ export default async function HomePage() {
           </div>
 
           {/* Giant title */}
-          <h1 className="font-black leading-[0.88] tracking-tighter mb-8">
-            <span
-              className="block text-white"
-              style={{ fontSize: "clamp(5rem, 18vw, 22rem)" }}
-            >
-              이음
-            </span>
-            <span
-              className="block text-primary-400"
-              style={{ fontSize: "clamp(3.5rem, 13vw, 16rem)" }}
-            >
-              IEUM
-            </span>
-          </h1>
+          <HeroTitle />
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
             <p className="text-zinc-400 text-xl leading-relaxed max-w-lg">
