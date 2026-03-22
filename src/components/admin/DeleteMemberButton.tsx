@@ -20,7 +20,7 @@ export function DeleteMemberButton({ memberId }: { memberId: string }) {
   return (
     <button
       onClick={handleDelete}
-      className="p-1.5 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50"
+      className="p-1.5 text-zinc-500 hover:text-red-400 rounded-lg hover:bg-red-500/10"
     >
       <Trash2 size={14} />
     </button>

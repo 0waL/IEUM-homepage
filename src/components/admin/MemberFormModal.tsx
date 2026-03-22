@@ -19,7 +19,7 @@ interface Member {
 }
 
 const inputClass =
-  "w-full px-3 py-2 bg-white border border-gray-300 text-gray-900 placeholder-gray-400 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent";
+  "w-full px-3 py-2 bg-zinc-800 border border-zinc-700 text-zinc-100 placeholder-zinc-500 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary-600 focus:border-transparent";
 
 export function MemberFormModal({ member }: { member?: Member }) {
   const router = useRouter();
@@ -92,7 +92,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
         onClick={() => setOpen(true)}
         className={
           member
-            ? "p-1.5 text-gray-400 hover:text-primary-600 rounded-lg hover:bg-gray-100 transition-colors"
+            ? "p-1.5 text-zinc-500 hover:text-primary-400 rounded-lg hover:bg-zinc-800 transition-colors"
             : "btn-primary text-sm"
         }
       >
@@ -105,14 +105,14 @@ export function MemberFormModal({ member }: { member?: Member }) {
             className="absolute inset-0 bg-black/40 backdrop-blur-sm"
             onClick={() => setOpen(false)}
           />
-          <div className="relative bg-white border border-gray-200 rounded-2xl shadow-2xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
+          <div className="relative bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl w-full max-w-md p-6 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-5">
-              <h2 className="text-lg font-extrabold text-gray-900">
+              <h2 className="text-lg font-extrabold text-zinc-100">
                 {member ? "멤버 수정" : "멤버 추가"}
               </h2>
               <button
                 onClick={() => setOpen(false)}
-                className="p-1.5 text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+                className="p-1.5 text-zinc-500 hover:text-zinc-200 rounded-lg hover:bg-zinc-800 transition-colors"
               >
                 <X size={18} />
               </button>
@@ -120,14 +120,14 @@ export function MemberFormModal({ member }: { member?: Member }) {
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg text-sm border border-red-200">
+                <div className="bg-red-500/10 text-red-400 px-4 py-3 rounded-lg text-sm border border-red-500/20">
                   {error}
                 </div>
               )}
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 mb-1.5">이름 *</label>
+                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">이름 *</label>
                   <input
                     type="text"
                     value={name}
@@ -138,7 +138,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 mb-1.5">역할 *</label>
+                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">역할 *</label>
                   <select
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
@@ -178,14 +178,14 @@ export function MemberFormModal({ member }: { member?: Member }) {
                     <img
                       src={image}
                       alt="미리보기"
-                      className="w-14 h-14 rounded-lg object-cover border border-gray-200"
+                      className="w-14 h-14 rounded-lg object-cover border border-zinc-700"
                     />
                     <div className="flex flex-col gap-1.5">
                       <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
                         disabled={uploading}
-                        className="flex items-center gap-1.5 text-xs px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors"
+                        className="flex items-center gap-1.5 text-xs px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg transition-colors"
                       >
                         <Upload size={12} />
                         {uploading ? "업로드 중..." : "변경"}
@@ -193,7 +193,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
                       <button
                         type="button"
                         onClick={() => { setImage(""); if (fileInputRef.current) fileInputRef.current.value = ""; }}
-                        className="flex items-center gap-1.5 text-xs px-3 py-1.5 bg-gray-100 hover:bg-red-50 text-gray-500 hover:text-red-500 rounded-lg transition-colors"
+                        className="flex items-center gap-1.5 text-xs px-3 py-1.5 bg-zinc-800 hover:bg-red-500/10 text-zinc-400 hover:text-red-400 rounded-lg transition-colors"
                       >
                         <Trash2 size={12} />
                         삭제
@@ -205,7 +205,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
                     disabled={uploading}
-                    className="w-full flex items-center justify-center gap-2 h-20 border-2 border-dashed border-gray-300 hover:border-gray-400 rounded-xl text-gray-400 hover:text-gray-600 transition-colors text-sm"
+                    className="w-full flex items-center justify-center gap-2 h-20 border-2 border-dashed border-zinc-700 hover:border-zinc-500 rounded-xl text-zinc-500 hover:text-zinc-300 transition-colors text-sm"
                   >
                     <Upload size={16} />
                     {uploading ? "업로드 중..." : "클릭하여 이미지 업로드"}
@@ -215,7 +215,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 mb-1.5">GitHub URL</label>
+                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">GitHub URL</label>
                   <input
                     type="url"
                     value={github}
@@ -225,7 +225,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 mb-1.5">Instagram URL</label>
+                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">Instagram URL</label>
                   <input
                     type="url"
                     value={instagram}
@@ -249,7 +249,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 mb-1.5">기수 *</label>
+                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">기수 *</label>
                   <input
                     type="number"
                     value={generation}
@@ -261,7 +261,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-600 mb-1.5">표시 순서</label>
+                  <label className="block text-xs font-medium text-zinc-400 mb-1.5">표시 순서</label>
                   <input
                     type="number"
                     value={order}
@@ -279,7 +279,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
                   onChange={(e) => setActive(e.target.checked)}
                   className="rounded accent-primary-600"
                 />
-                <span className="text-sm text-gray-700">현재 활동 멤버</span>
+                <span className="text-sm text-zinc-300">현재 활동 멤버</span>
               </label>
 
               <button

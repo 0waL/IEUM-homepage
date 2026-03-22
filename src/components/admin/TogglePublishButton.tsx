@@ -26,8 +26,8 @@ export function TogglePublishButton({
       onClick={toggle}
       className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium transition-colors ${
         published
-          ? "bg-green-50 text-green-700 hover:bg-green-100"
-          : "bg-gray-50 text-gray-600 hover:bg-gray-100"
+          ? "bg-green-500/15 text-green-400 hover:bg-green-500/25"
+          : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
       }`}
     >
       {published ? <Eye size={11} /> : <EyeOff size={11} />}

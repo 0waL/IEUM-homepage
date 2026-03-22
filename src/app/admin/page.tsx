@@ -24,42 +24,42 @@ export default async function AdminDashboard() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-extrabold text-gray-900">대시보드</h1>
-        <p className="text-gray-500 mt-1">안녕하세요, {session.user.name}님!</p>
+        <h1 className="text-2xl font-extrabold text-zinc-100">대시보드</h1>
+        <p className="text-zinc-400 mt-1">안녕하세요, {session.user.name}님!</p>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-        <div className="bg-white rounded-xl p-5 border border-gray-200">
+        <div className="bg-zinc-900 rounded-xl p-5 border border-zinc-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">전체 게시글</p>
-              <p className="text-3xl font-extrabold text-gray-900 mt-1">{totalPosts}</p>
+              <p className="text-sm text-zinc-400">전체 게시글</p>
+              <p className="text-3xl font-extrabold text-zinc-100 mt-1">{totalPosts}</p>
             </div>
-            <div className="w-11 h-11 bg-blue-50 rounded-xl flex items-center justify-center">
-              <FileText size={20} className="text-blue-600" />
+            <div className="w-11 h-11 bg-blue-500/10 rounded-xl flex items-center justify-center">
+              <FileText size={20} className="text-blue-400" />
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-5 border border-gray-200">
+        <div className="bg-zinc-900 rounded-xl p-5 border border-zinc-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">공개 게시글</p>
-              <p className="text-3xl font-extrabold text-gray-900 mt-1">{publishedPosts}</p>
+              <p className="text-sm text-zinc-400">공개 게시글</p>
+              <p className="text-3xl font-extrabold text-zinc-100 mt-1">{publishedPosts}</p>
             </div>
-            <div className="w-11 h-11 bg-green-50 rounded-xl flex items-center justify-center">
-              <Eye size={20} className="text-green-600" />
+            <div className="w-11 h-11 bg-green-500/10 rounded-xl flex items-center justify-center">
+              <Eye size={20} className="text-green-400" />
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-xl p-5 border border-gray-200">
+        <div className="bg-zinc-900 rounded-xl p-5 border border-zinc-800">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">활동 멤버</p>
-              <p className="text-3xl font-extrabold text-gray-900 mt-1">{memberCount}</p>
+              <p className="text-sm text-zinc-400">활동 멤버</p>
+              <p className="text-3xl font-extrabold text-zinc-100 mt-1">{memberCount}</p>
             </div>
-            <div className="w-11 h-11 bg-primary-50 rounded-xl flex items-center justify-center">
-              <Users size={20} className="text-primary-600" />
+            <div className="w-11 h-11 bg-primary-500/10 rounded-xl flex items-center justify-center">
+              <Users size={20} className="text-primary-400" />
             </div>
           </div>
         </div>
@@ -67,35 +67,35 @@ export default async function AdminDashboard() {
 
       {/* Quick actions */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div className="bg-white rounded-xl p-5 border border-gray-200">
-          <h2 className="font-bold text-gray-900 mb-4">빠른 작업</h2>
+        <div className="bg-zinc-900 rounded-xl p-5 border border-zinc-800">
+          <h2 className="font-bold text-zinc-100 mb-4">빠른 작업</h2>
           <div className="space-y-2">
             <Link
               href="/admin/posts/new"
-              className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+              className="flex items-center gap-3 p-3 rounded-lg hover:bg-zinc-800 transition-colors"
             >
-              <div className="w-8 h-8 bg-primary-50 rounded-lg flex items-center justify-center">
-                <Plus size={16} className="text-primary-600" />
+              <div className="w-8 h-8 bg-primary-500/10 rounded-lg flex items-center justify-center">
+                <Plus size={16} className="text-primary-400" />
               </div>
-              <span className="text-sm font-medium text-gray-700">새 게시글 작성</span>
+              <span className="text-sm font-medium text-zinc-300">새 게시글 작성</span>
             </Link>
             <Link
               href="/admin/members"
-              className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+              className="flex items-center gap-3 p-3 rounded-lg hover:bg-zinc-800 transition-colors"
             >
-              <div className="w-8 h-8 bg-primary-50 rounded-lg flex items-center justify-center">
-                <Users size={16} className="text-primary-600" />
+              <div className="w-8 h-8 bg-primary-500/10 rounded-lg flex items-center justify-center">
+                <Users size={16} className="text-primary-400" />
               </div>
-              <span className="text-sm font-medium text-gray-700">멤버 관리</span>
+              <span className="text-sm font-medium text-zinc-300">멤버 관리</span>
             </Link>
           </div>
         </div>
 
         {/* Recent posts */}
-        <div className="bg-white rounded-xl p-5 border border-gray-200">
+        <div className="bg-zinc-900 rounded-xl p-5 border border-zinc-800">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="font-bold text-gray-900">최근 게시글</h2>
-            <Link href="/admin/posts" className="text-xs text-primary-600 hover:underline">
+            <h2 className="font-bold text-zinc-100">최근 게시글</h2>
+            <Link href="/admin/posts" className="text-xs text-primary-400 hover:underline">
               전체 보기
             </Link>
           </div>
@@ -104,17 +104,17 @@ export default async function AdminDashboard() {
               <Link
                 key={post.id}
                 href={`/admin/posts/${post.id}/edit`}
-                className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                className="flex items-center justify-between p-2 rounded-lg hover:bg-zinc-800 transition-colors"
               >
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-800 truncate">{post.title}</p>
-                  <p className="text-xs text-gray-400">{post.author.name}</p>
+                  <p className="text-sm font-medium text-zinc-200 truncate">{post.title}</p>
+                  <p className="text-xs text-zinc-500">{post.author.name}</p>
                 </div>
                 <span
                   className={`flex-shrink-0 ml-2 text-xs px-2 py-0.5 rounded-full ${
                     post.published
-                      ? "bg-green-50 text-green-600"
-                      : "bg-gray-100 text-gray-500"
+                      ? "bg-green-500/15 text-green-400"
+                      : "bg-zinc-800 text-zinc-400"
                   }`}
                 >
                   {post.published ? "공개" : "임시저장"}

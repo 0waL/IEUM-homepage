@@ -192,3 +192,16 @@ html[data-theme="light"] .hover\:text-zinc-100:hover { color: #111827; }
 html[data-theme="light"] .bg-primary-500\/15 { background-color: #ede9fe; }
 html[data-theme="light"] .text-primary-400 { color: #7c3aed; }
 html[data-theme="light"] .border-zinc-800 { border-color: rgba(0,0,0,0.09); }
+
+/* Admin — extra zinc utility overrides for light mode */
+html[data-theme="light"] .hover\:bg-zinc-700:hover { background-color: #e5e7eb; }
+html[data-theme="light"] .bg-zinc-700 { background-color: #e5e7eb; }
+html[data-theme="light"] .border-zinc-700 { border-color: rgba(0,0,0,0.12); }
+html[data-theme="light"] .text-zinc-300 { color: #374151; }
+html[data-theme="light"] .divide-zinc-800 > * + * { border-color: rgba(0,0,0,0.07); }
+
+/* Green / blue / colored badge light mode */
+html[data-theme="light"] .bg-green-500\/15 { background-color: #dcfce7; }
+html[data-theme="light"] .text-green-400 { color: #16a34a; }
+html[data-theme="light"] .bg-blue-500\/10 { background-color: #dbeafe; }
+html[data-theme="light"] .text-blue-400 { color: #2563eb; }
