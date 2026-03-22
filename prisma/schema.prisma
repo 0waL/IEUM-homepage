@@ -60,6 +60,7 @@ model Member {
   role      String   // 예: 회장, 부회장, 개발팀장, 디자인팀장, 부원
   bio       String?
   github    String?
+  instagram String?
   email     String?
   image     String?
   generation Int     @default(0) // 기수 (0=창립, 1기, 2기...)

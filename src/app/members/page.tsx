@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
-import { Github, Mail } from "lucide-react";
 import { FadeIn } from "@/components/FadeIn";
+import { MemberCard } from "@/components/MemberCard";
 
 export const metadata: Metadata = {
   title: "멤버",
@@ -33,7 +33,6 @@ function generationLabel(gen: number) {
 export default async function MembersPage() {
   const members = await getAllMembers();
 
-  // Group by generation
   const byGen = members.reduce<Record<number, typeof members>>((acc, m) => {
     if (!acc[m.generation]) acc[m.generation] = [];
     acc[m.generation].push(m);
@@ -127,71 +126,6 @@ export default async function MembersPage() {
           </p>
         </FadeIn>
       </section>
-    </div>
-  );
-}
-
-function MemberCard({
-  member,
-  gradientIndex,
-}: {
-  member: {
-    id: string;
-    name: string;
-    role: string;
-    bio: string | null;
-    github: string | null;
-    email: string | null;
-    image: string | null;
-    generation: number;
-    active: boolean;
-  };
-  gradientIndex: number;
-}) {
-  const grad = gradients[gradientIndex % gradients.length];
-  const link = member.github || (member.email ? `mailto:${member.email}` : null);
-
-  return (
-    <div className="bg-navy-900 border border-white/8 rounded-xl overflow-hidden hover:border-primary-600/40 transition-all duration-200 hover:-translate-y-0.5 flex">
-      {/* Photo */}
-      <div className="w-28 flex-shrink-0 bg-navy-800 overflow-hidden">
-        {member.image ? (
-          <img
-            src={member.image}
-            alt={member.name}
-            className="w-full h-full object-cover"
-          />
-        ) : (
-          <div
-            className={`w-full h-full bg-gradient-to-br ${grad} flex items-center justify-center text-white font-black text-3xl min-h-[100px]`}
-          >
-            {member.name[0]}
-          </div>
-        )}
-      </div>
-
-      {/* Info */}
-      <div className="flex-1 p-4 flex flex-col justify-between min-w-0">
-        <div>
-          <h3 className="font-bold text-white text-base truncate">{member.name}</h3>
-          {member.bio ? (
-            <p className="text-zinc-400 text-sm mt-0.5 line-clamp-2 leading-snug">{member.bio}</p>
-          ) : (
-            <p className="text-zinc-500 text-sm mt-0.5">{member.role}</p>
-          )}
-        </div>
-        {link && (
-          <a
-            href={link}
-            target={member.github ? "_blank" : undefined}
-            rel={member.github ? "noopener noreferrer" : undefined}
-            className="text-primary-400 text-sm hover:text-primary-300 transition-colors mt-2 inline-flex items-center gap-1"
-          >
-            {member.github ? <Github size={13} /> : <Mail size={13} />}
-            자세히 보기
-          </a>
-        )}
-      </div>
     </div>
   );
 }
