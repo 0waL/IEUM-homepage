@@ -26,8 +26,8 @@ export function Navbar() {
       {/* Pill */}
       <nav className="pointer-events-auto flex items-center gap-1 bg-navy-900/90 backdrop-blur-xl border border-white/10 rounded-full px-3 py-2 shadow-2xl shadow-black/40">
         {/* Logo */}
-        <Link href="/" className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-700 rounded-full mr-1 flex-shrink-0">
-          <span className="text-white font-black text-xs">이음</span>
+        <Link href="/" className="flex items-center justify-center px-4 py-1.5 rounded-full font-bold text-sm text-white hover:bg-white/10 transition-colors mr-1 flex-shrink-0">
+          홈
         </Link>
 
         {/* Desktop links */}

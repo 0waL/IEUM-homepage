@@ -21,7 +21,7 @@ export default async function EditPostPage({ params }: Props) {
 
   return (
     <div>
-      <h1 className="text-2xl font-extrabold text-gray-900 mb-6">게시글 수정</h1>
+      <h1 className="text-2xl font-extrabold text-white mb-6">게시글 수정</h1>
       <PostForm
         initialData={{
           id: post.id,
