@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import { Github, Mail, Instagram, X, ChevronRight } from "lucide-react";
+import { Github, Mail, Instagram, X, ChevronRight, Check } from "lucide-react";
 
 export interface MemberData {
   id: string;
@@ -62,6 +62,14 @@ function MemberModal({
   onClose: () => void;
 }) {
   const hasLinks = !!(member.github || member.instagram || member.email);
+  const [copied, setCopied] = useState(false);
+
+  const copyEmail = async () => {
+    if (!member.email) return;
+    await navigator.clipboard.writeText(member.email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   // ESC 키로 닫기
   useEffect(() => {
@@ -88,7 +96,7 @@ function MemberModal({
       {/* 모달 본체 */}
       <div
         className="relative w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl"
-        style={{ background: "#1e1b3a" }}
+        style={{ background: "var(--modal-bg)" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* 닫기 */}
@@ -116,7 +124,7 @@ function MemberModal({
         <div className="px-7 pb-7 flex flex-col gap-4 mt-3">
           {/* ② 소갯말 */}
           {member.bio && (
-            <div className="rounded-xl p-5" style={{ background: "#2a2550" }}>
+            <div className="rounded-xl p-5" style={{ background: "var(--modal-section-1)" }}>
               <p className="text-xs font-bold text-zinc-400 mb-2.5 tracking-wide">소갯말</p>
               <p className="text-zinc-200 text-sm leading-relaxed">{member.bio}</p>
             </div>
@@ -124,7 +132,7 @@ function MemberModal({
 
           {/* ③ ETC */}
           {hasLinks && (
-            <div className="rounded-xl p-5" style={{ background: "#252240" }}>
+            <div className="rounded-xl p-5" style={{ background: "var(--modal-section-2)" }}>
               <p className="text-xs font-bold text-zinc-400 mb-4 tracking-wide">ETC</p>
               <div className="grid grid-cols-2 gap-x-10 gap-y-3.5">
                 {member.github && (
@@ -146,11 +154,16 @@ function MemberModal({
                   </a>
                 )}
                 {member.email && (
-                  <a href={`mailto:${member.email}`} className="flex items-center gap-2 group col-span-2">
+                  <button onClick={copyEmail} className="flex items-center gap-2 group col-span-2 text-left">
                     <span className="text-xs text-zinc-500 w-20 flex-shrink-0">Email</span>
-                    <Mail size={14} className="flex-shrink-0 text-zinc-400" />
-                    <span className="text-primary-300 group-hover:underline text-xs">{member.email}</span>
-                  </a>
+                    {copied
+                      ? <Check size={14} className="flex-shrink-0 text-green-400" />
+                      : <Mail size={14} className="flex-shrink-0 text-zinc-400" />
+                    }
+                    <span className={`text-xs ${copied ? "text-green-400" : "text-primary-300 group-hover:underline"}`}>
+                      {copied ? "복사됨!" : member.email}
+                    </span>
+                  </button>
                 )}
               </div>
             </div>

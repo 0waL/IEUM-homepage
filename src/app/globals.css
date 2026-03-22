@@ -5,6 +5,10 @@
 @layer base {
   :root {
     --font-pretendard: "Pretendard", system-ui, sans-serif;
+    /* Modal colors (dark default) */
+    --modal-bg: #1e1b3a;
+    --modal-section-1: #2a2550;
+    --modal-section-2: #252240;
   }
 
   html {
@@ -15,6 +19,52 @@
     @apply bg-navy-950 text-zinc-100 antialiased;
     font-family: var(--font-pretendard);
   }
+
+  /* ── Light mode ── */
+  html[data-theme="light"] {
+    --modal-bg: #ffffff;
+    --modal-section-1: #eff0ff;
+    --modal-section-2: #f5f5ff;
+  }
+
+  html[data-theme="light"] body {
+    background-color: #f0f2f8;
+    color: #111827;
+  }
+
+  /* Backgrounds */
+  html[data-theme="light"] .bg-navy-950 { background-color: #f0f2f8 !important; }
+  html[data-theme="light"] .bg-navy-900 { background-color: #ffffff !important; }
+  html[data-theme="light"] .bg-navy-800 { background-color: #eaedf8 !important; }
+  html[data-theme="light"] .bg-navy-700 { background-color: #dde2f2 !important; }
+
+  /* Headings */
+  html[data-theme="light"] h1,
+  html[data-theme="light"] h2,
+  html[data-theme="light"] h3,
+  html[data-theme="light"] h4 { color: #111827; }
+
+  /* Text: near-white → dark */
+  html[data-theme="light"] .text-zinc-100 { color: #111827 !important; }
+  html[data-theme="light"] .text-zinc-200 { color: #1f2937 !important; }
+  html[data-theme="light"] .text-zinc-300 { color: #374151 !important; }
+  html[data-theme="light"] .text-zinc-400 { color: #6b7280 !important; }
+  html[data-theme="light"] .text-zinc-500 { color: #9ca3af !important; }
+  html[data-theme="light"] .text-zinc-600 { color: #bec3d0 !important; }
+  html[data-theme="light"] .text-zinc-700 { color: #d1d5db !important; }
+
+  /* Borders */
+  html[data-theme="light"] .border-white\/5  { border-color: rgba(0,0,0,0.05) !important; }
+  html[data-theme="light"] .border-white\/8  { border-color: rgba(0,0,0,0.08) !important; }
+  html[data-theme="light"] .border-white\/10 { border-color: rgba(0,0,0,0.10) !important; }
+  html[data-theme="light"] .border-white\/15 { border-color: rgba(0,0,0,0.15) !important; }
+
+  /* Hover BG (white/N → black/N) */
+  html[data-theme="light"] .hover\:bg-white\/5:hover  { background-color: rgba(0,0,0,0.05) !important; }
+  html[data-theme="light"] .hover\:bg-white\/10:hover { background-color: rgba(0,0,0,0.08) !important; }
+  html[data-theme="light"] .bg-white\/5  { background-color: rgba(0,0,0,0.04) !important; }
+  html[data-theme="light"] .bg-white\/8  { background-color: rgba(0,0,0,0.06) !important; }
+  html[data-theme="light"] .bg-white\/10 { background-color: rgba(0,0,0,0.07) !important; }
 }
 
 @layer components {

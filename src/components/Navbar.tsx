@@ -4,8 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { Menu, X, ExternalLink } from "lucide-react";
+import { Menu, X, ExternalLink, Sun, Moon } from "lucide-react";
 import { LogoutButton } from "./LogoutButton";
+import { useTheme } from "./ThemeProvider";
 
 const navLinks = [
   { href: "/activities", label: "활동" },
@@ -17,6 +18,7 @@ export function Navbar() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { theme, toggle } = useTheme();
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -24,7 +26,7 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex flex-col items-center pt-4 px-4 pointer-events-none">
       {/* Pill */}
-      <nav className="pointer-events-auto flex items-center gap-1 bg-navy-900/90 backdrop-blur-xl border border-white/10 rounded-full px-3 py-2 shadow-2xl shadow-black/40">
+      <nav className="navbar-pill pointer-events-auto flex items-center gap-1 bg-navy-900/90 backdrop-blur-xl border border-white/10 rounded-full px-3 py-2 shadow-2xl shadow-black/40">
         {/* Logo */}
         <Link href="/" className="flex items-center justify-center px-4 py-1.5 rounded-full font-bold text-sm text-white hover:bg-white/10 transition-colors mr-1 flex-shrink-0">
           홈
@@ -58,6 +60,15 @@ export function Navbar() {
 
         {/* Divider */}
         <div className="hidden md:block w-px h-5 bg-white/10 mx-1" />
+
+        {/* Theme toggle */}
+        <button
+          onClick={toggle}
+          className="p-1.5 rounded-full text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
+          aria-label="테마 변경"
+        >
+          {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
+        </button>
 
         {/* Auth (desktop) */}
         <div className="hidden md:flex items-center gap-1">
