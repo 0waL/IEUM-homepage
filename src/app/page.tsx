@@ -221,7 +221,7 @@ export default async function HomePage() {
               const item = { ...meta, ...(activities[i] ?? DEFAULT_ACTIVITIES[i]) };
               return (
               <FadeIn key={i} delay={item.delay}>
-                <div className="bg-navy-800 rounded-2xl p-7 hover:border hover:border-primary-600/30 transition-all duration-300 hover:-translate-y-1 h-full">
+                <div className="bg-navy-800 rounded-2xl p-7 border border-transparent hover:border-primary-600/30 transition-all duration-300 hover:-translate-y-1 h-full">
                   <div
                     className={`w-12 h-12 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center mb-5 shadow-lg`}
                   >
@@ -290,7 +290,7 @@ export default async function HomePage() {
               },
             ].map((item) => (
               <FadeIn key={item.title} delay={item.delay}>
-                <div className="bg-navy-900 rounded-2xl p-6 hover:border hover:border-primary-600/30 transition-all duration-300 hover:-translate-y-0.5 h-full">
+                <div className="bg-navy-900 rounded-2xl p-6 border border-transparent hover:border-primary-600/30 transition-all duration-300 hover:-translate-y-0.5 h-full">
                   <div
                     className={`w-10 h-10 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center mb-4 shadow-lg`}
                   >
