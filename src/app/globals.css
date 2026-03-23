@@ -200,6 +200,11 @@ html[data-theme="light"] .border-zinc-700 { border-color: rgba(0,0,0,0.12); }
 html[data-theme="light"] .text-zinc-300 { color: #374151; }
 html[data-theme="light"] .divide-zinc-800 > * + * { border-color: rgba(0,0,0,0.07); }
 
+/* ── FAQ ── */
+html[data-theme="light"] .faq-question { color: #111827; }
+html[data-theme="light"] .faq-list > * + * { border-color: rgba(0,0,0,0.08); }
+html[data-theme="light"] .faq-list { border-color: rgba(0,0,0,0.08); }
+
 /* Green / blue / colored badge light mode */
 html[data-theme="light"] .bg-green-500\/15 { background-color: #dcfce7; }
 html[data-theme="light"] .text-green-400 { color: #16a34a; }
