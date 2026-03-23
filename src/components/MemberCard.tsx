@@ -49,7 +49,7 @@ function Avatar({
 }
 
 function genLabel(gen: number) {
-  return gen === 0 ? "창립 멤버" : `${gen}기`;
+  return gen === 1 ? "창립 멤버" : `${gen}기`;
 }
 
 function MemberModal({

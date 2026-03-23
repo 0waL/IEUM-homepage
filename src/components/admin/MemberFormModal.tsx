@@ -35,7 +35,7 @@ export function MemberFormModal({ member }: { member?: Member }) {
   const [github, setGithub] = useState(member?.github ?? "");
   const [email, setEmail] = useState(member?.email ?? "");
   const [image, setImage] = useState(member?.image ?? "");
-  const [generation, setGeneration] = useState(member?.generation ?? 0);
+  const [generation, setGeneration] = useState(member?.generation ?? 1);
   const [order, setOrder] = useState(member?.order ?? 99);
   const [active, setActive] = useState(member?.active ?? true);
 
@@ -242,8 +242,8 @@ export function MemberFormModal({ member }: { member?: Member }) {
                     value={generation}
                     onChange={(e) => setGeneration(Number(e.target.value))}
                     required
-                    min={0}
-                    placeholder="0 = 창립멤버"
+                    min={1}
+                    placeholder="1 = 창립멤버"
                     className={inputClass}
                   />
                 </div>

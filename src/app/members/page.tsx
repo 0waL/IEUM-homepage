@@ -26,7 +26,7 @@ async function getAllMembers() {
 }
 
 function generationLabel(gen: number) {
-  if (gen === 0) return "창립 멤버 (0기)";
+  if (gen === 1) return "창립 멤버 (1기)";
   return `${gen}기`;
 }
 
