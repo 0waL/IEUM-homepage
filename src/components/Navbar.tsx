@@ -72,11 +72,21 @@ export function Navbar() {
 
         {/* Auth (desktop) */}
         <div className="hidden md:flex items-center gap-1">
+          <Link
+            href="/apply"
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              isActive("/apply")
+                ? "bg-white/10 text-white"
+                : "text-primary-400 hover:text-primary-300 hover:bg-white/5"
+            }`}
+          >
+            지원하기
+          </Link>
           {session ? (
             <>
               <Link
                 href="/admin"
-                className="px-4 py-1.5 rounded-full text-sm font-medium text-primary-400 hover:text-primary-300 hover:bg-white/5 transition-colors"
+                className="px-4 py-1.5 rounded-full text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
               >
                 관리자
               </Link>
@@ -92,17 +102,11 @@ export function Navbar() {
           )}
         </div>
 
-        {/* Mobile: auth shortcut + hamburger */}
+        {/* Mobile: apply shortcut + hamburger */}
         <div className="flex md:hidden items-center gap-1 ml-1">
-          {session ? (
-            <Link href="/admin" className="px-3 py-1.5 text-xs font-semibold text-primary-400 rounded-full hover:bg-white/5 transition-colors">
-              관리자
-            </Link>
-          ) : (
-            <Link href="/login" className="px-3 py-1.5 bg-primary-600 text-white rounded-full text-xs font-semibold hover:bg-primary-500 transition-colors">
-              로그인
-            </Link>
-          )}
+          <Link href="/apply" className="px-3 py-1.5 text-xs font-semibold text-primary-400 rounded-full hover:bg-white/5 transition-colors">
+            지원하기
+          </Link>
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="p-1.5 rounded-full text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
@@ -137,11 +141,30 @@ export function Navbar() {
           >
             gshs.app <ExternalLink size={12} />
           </a>
-          {session && (
-            <div className="mt-1 pt-1 border-t border-white/10 px-2">
-              <LogoutButton className="flex items-center gap-1.5 w-full px-3 py-2 text-sm text-zinc-500 hover:text-red-400 transition-colors" />
-            </div>
-          )}
+          <div className="mt-1 pt-1 border-t border-white/10">
+            {session ? (
+              <>
+                <Link
+                  href="/admin"
+                  onClick={() => setMobileOpen(false)}
+                  className="block px-4 py-2.5 rounded-xl text-sm font-medium text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
+                >
+                  관리자
+                </Link>
+                <div className="px-2">
+                  <LogoutButton className="flex items-center gap-1.5 w-full px-3 py-2 text-sm text-zinc-500 hover:text-red-400 transition-colors" />
+                </div>
+              </>
+            ) : (
+              <Link
+                href="/login"
+                onClick={() => setMobileOpen(false)}
+                className="block px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-primary-600/20 hover:bg-primary-600/30 transition-colors text-center"
+              >
+                로그인
+              </Link>
+            )}
+          </div>
         </div>
       )}
     </header>
