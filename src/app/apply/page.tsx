@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { FadeIn } from "@/components/FadeIn";
-import { ClipboardList, Calendar, Users, ChevronRight } from "lucide-react";
+import { ClipboardList, Calendar, Users, ChevronRight, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
@@ -38,12 +38,25 @@ const QUALIFICATIONS = [
 
 export default async function ApplyPage() {
   const settings = await prisma.siteContent.findMany({
-    where: { key: { in: ["apply_deadline"] } },
+    where: { key: { in: ["apply_enabled", "apply_deadline"] } },
   });
-  const deadline = settings.find((s) => s.key === "apply_deadline")?.value ?? "";
+  const settingsMap: Record<string, string> = {};
+  settings.forEach((s) => { settingsMap[s.key] = s.value; });
+  const applyEnabled = settingsMap["apply_enabled"] !== "false";
+  const deadline = settingsMap["apply_deadline"] ?? "";
 
   return (
     <div>
+      {/* 신청 기간 아님 배너 */}
+      {!applyEnabled && (
+        <div className="fixed top-20 left-1/2 -translate-x-1/2 z-40 w-full max-w-lg px-4">
+          <div className="flex items-center gap-3 bg-zinc-900/95 backdrop-blur border border-zinc-700 rounded-2xl px-5 py-3.5 shadow-xl">
+            <AlertCircle size={18} className="text-amber-400 flex-shrink-0" />
+            <p className="text-sm text-zinc-300">지금은 신청 기간이 아닙니다.</p>
+          </div>
+        </div>
+      )}
+
       {/* Hero */}
       <section className="relative bg-navy-950 pt-40 pb-24 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
@@ -124,14 +137,20 @@ export default async function ApplyPage() {
                 궁금한 점은 문의 게시판을 통해 언제든지 질문해주세요.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <a
-                  href="https://forms.gle"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-primary-600 text-white rounded-full font-semibold hover:bg-primary-500 transition-colors"
-                >
-                  지원 폼 작성하기
-                </a>
+                {applyEnabled ? (
+                  <a
+                    href="https://forms.gle"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-primary-600 text-white rounded-full font-semibold hover:bg-primary-500 transition-colors"
+                  >
+                    지원 폼 작성하기
+                  </a>
+                ) : (
+                  <span className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-zinc-800 text-zinc-500 rounded-full font-semibold cursor-not-allowed">
+                    지금은 신청 기간이 아닙니다
+                  </span>
+                )}
                 <Link
                   href="/inquiries/new"
                   className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-white/5 text-zinc-300 rounded-full font-semibold hover:bg-white/10 transition-colors border border-white/10"
