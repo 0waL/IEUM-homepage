@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 import { FadeIn } from "@/components/FadeIn";
 import { ClipboardList, Calendar, Users, ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -41,10 +40,25 @@ export default async function ApplyPage() {
   const deadlineSetting = await prisma.siteContent.findUnique({ where: { key: "apply_deadline" } });
   const deadline = deadlineSetting?.value ?? "";
   const applyOpen = !deadline || new Date(deadline) > new Date();
-  if (!applyOpen) redirect("/");
   const deadlineLabel = deadline
     ? new Date(deadline).toLocaleString("ko-KR", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" })
     : "";
+
+  if (!applyOpen) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-navy-950 px-6">
+        <FadeIn className="text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-zinc-800 mb-6">
+            <Calendar size={28} className="text-zinc-400" />
+          </div>
+          <h1 className="text-3xl font-extrabold text-white mb-3">지금은 신청 기간이 아닙니다</h1>
+          <p className="text-zinc-400">
+            {deadlineLabel ? `모집 기한이 ${deadlineLabel}에 마감되었습니다.` : "현재 모집을 진행하고 있지 않습니다."}
+          </p>
+        </FadeIn>
+      </div>
+    );
+  }
 
   return (
     <div>
