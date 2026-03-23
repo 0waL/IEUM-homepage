@@ -14,12 +14,12 @@ export async function GET() {
 
 // POST /api/inquiries - 문의 작성 (누구나)
 export async function POST(req: Request) {
-  const { title, content, author, email } = await req.json();
-  if (!title || !content || !author) {
+  const { title, content } = await req.json();
+  if (!title || !content) {
     return NextResponse.json({ error: "필수 항목을 입력해 주세요." }, { status: 400 });
   }
   const inquiry = await prisma.inquiry.create({
-    data: { title, content, author, email: email || null },
+    data: { title, content, author: "익명" },
   });
   return NextResponse.json(inquiry, { status: 201 });
 }

@@ -185,7 +185,7 @@ export function MemberCard({ member, gradientIndex }: { member: MemberData; grad
   return (
     <>
       {/* ── 카드 ── */}
-      <div className="bg-navy-900 border border-white/8 rounded-xl overflow-hidden hover:border-primary-600/40 transition-all duration-200 hover:-translate-y-0.5 flex">
+      <div className="bg-navy-900 rounded-xl overflow-hidden transition-all duration-200 hover:-translate-y-0.5 flex">
         <div className="w-24 h-24 flex-shrink-0 bg-navy-800 overflow-hidden rounded-l-xl">
           <Avatar member={member} gradientIndex={gradientIndex} />
         </div>

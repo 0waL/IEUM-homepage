@@ -3,6 +3,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { FadeIn } from "@/components/FadeIn";
 import { MessageSquare, CheckCircle2, Clock, PenLine } from "lucide-react";
+import { InquiryDeleteButton } from "@/components/InquiryDeleteButton";
 
 export const metadata: Metadata = {
   title: "문의",
@@ -94,7 +95,7 @@ export default async function InquiriesPage() {
                         {inquiry.title}
                       </p>
                       <p className="text-zinc-500 text-sm mt-0.5">
-                        {inquiry.author} · {timeAgo(inquiry.createdAt)}
+                        익명 · {timeAgo(inquiry.createdAt)}
                       </p>
                     </div>
 
@@ -115,6 +116,7 @@ export default async function InquiriesPage() {
                           {inquiry.comments.length}
                         </span>
                       )}
+                      <InquiryDeleteButton inquiryId={inquiry.id} />
                     </div>
                   </Link>
                 </FadeIn>

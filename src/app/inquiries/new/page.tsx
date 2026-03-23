@@ -7,7 +7,7 @@ import { ArrowLeft, Send } from "lucide-react";
 
 export default function NewInquiryPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ title: "", content: "", author: "", email: "" });
+  const [form, setForm] = useState({ title: "", content: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -19,7 +19,7 @@ export default function NewInquiryPage() {
       const res = await fetch("/api/inquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, author: "익명" }),
       });
       if (!res.ok) {
         const data = await res.json();
@@ -46,37 +46,9 @@ export default function NewInquiryPage() {
         </Link>
 
         <h1 className="text-4xl font-black text-white mb-2 tracking-tighter">문의 작성</h1>
-        <p className="text-zinc-500 mb-8">궁금한 점을 남겨주시면 관리자가 답변해 드립니다.</p>
+        <p className="text-zinc-500 mb-8">궁금한 점을 남겨주시면 관리자가 답변해 드립니다. 익명으로 작성됩니다.</p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm text-zinc-400 mb-1.5 font-medium">
-                이름 <span className="text-primary-400">*</span>
-              </label>
-              <input
-                type="text"
-                value={form.author}
-                onChange={(e) => setForm({ ...form, author: e.target.value })}
-                placeholder="홍길동"
-                required
-                className="w-full bg-navy-900/80 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-zinc-600 focus:outline-none focus:border-primary-500 transition-colors"
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-zinc-400 mb-1.5 font-medium">
-                이메일 <span className="text-zinc-600 text-xs">(선택)</span>
-              </label>
-              <input
-                type="email"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                placeholder="example@gshs.hs.kr"
-                className="w-full bg-navy-900/80 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-zinc-600 focus:outline-none focus:border-primary-500 transition-colors"
-              />
-            </div>
-          </div>
-
           <div>
             <label className="block text-sm text-zinc-400 mb-1.5 font-medium">
               제목 <span className="text-primary-400">*</span>

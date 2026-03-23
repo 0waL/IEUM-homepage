@@ -124,7 +124,7 @@ export function InquiryCommentSection({ inquiryId, comments: initial }: Props) {
       )}
 
       {/* Reply form (admin only) */}
-      {session && (
+      {session?.user?.role === "admin" && (
         <form onSubmit={handleSubmit} className="mt-4">
           <textarea
             value={content}

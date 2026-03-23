@@ -65,13 +65,7 @@ export default async function InquiryDetailPage({ params }: { params: { id: stri
           <h1 className="text-2xl font-bold text-white mb-3">{inquiry.title}</h1>
 
           <div className="flex items-center gap-3 text-zinc-500 text-sm mb-6 pb-6 border-b border-white/5">
-            <span>{inquiry.author}</span>
-            {inquiry.email && (
-              <>
-                <span>·</span>
-                <span>{inquiry.email}</span>
-              </>
-            )}
+            <span>익명</span>
             <span>·</span>
             <span>{formatDate(inquiry.createdAt)}</span>
           </div>

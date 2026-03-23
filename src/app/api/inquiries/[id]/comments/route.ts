@@ -6,8 +6,8 @@ import { prisma } from "@/lib/prisma";
 // POST /api/inquiries/[id]/comments - 관리자 댓글 작성
 export async function POST(req: Request, { params }: { params: { id: string } }) {
   const session = await getServerSession(authOptions);
-  if (!session) {
-    return NextResponse.json({ error: "로그인이 필요합니다." }, { status: 401 });
+  if (!session || session.user.role !== "admin") {
+    return NextResponse.json({ error: "관리자만 답변할 수 있습니다." }, { status: 403 });
   }
 
   const { content } = await req.json();
