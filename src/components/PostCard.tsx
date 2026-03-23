@@ -18,7 +18,7 @@ export function PostCard({ post }: PostCardProps) {
   return (
     <Link
       href={`/activities/${post.slug}`}
-      className="group block bg-navy-900 border border-white/8 rounded-2xl overflow-hidden hover:border-primary-600/40 transition-all duration-300 hover:-translate-y-0.5 h-full flex flex-col"
+      className="group block bg-navy-900 rounded-2xl overflow-hidden hover:bg-navy-800/80 transition-all duration-300 hover:-translate-y-0.5 h-full flex flex-col"
     >
       {/* Thumbnail */}
       <div className="aspect-video overflow-hidden bg-navy-950 flex-shrink-0">
@@ -42,7 +42,7 @@ export function PostCard({ post }: PostCardProps) {
             {post.tags.slice(0, 4).map(({ tag }) => (
               <span
                 key={tag.name}
-                className="text-xs px-2.5 py-0.5 bg-white/5 border border-white/10 text-zinc-400 rounded-full"
+                className="text-xs px-2.5 py-0.5 bg-white/5 text-zinc-400 rounded-full"
               >
                 {tag.name}
               </span>

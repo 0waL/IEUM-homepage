@@ -25,11 +25,12 @@ export async function POST(req: NextRequest) {
 
   const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
   const filename = `${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`;
-  const uploadDir = path.join(process.cwd(), "public", "uploads", "members");
+  const folder = (req.nextUrl.searchParams.get("folder") ?? "members").replace(/[^a-z0-9-]/g, "");
+  const uploadDir = path.join(process.cwd(), "public", "uploads", folder);
 
   await mkdir(uploadDir, { recursive: true });
   const buffer = Buffer.from(await file.arrayBuffer());
   await writeFile(path.join(uploadDir, filename), buffer);
 
-  return NextResponse.json({ url: `/uploads/members/${filename}` });
+  return NextResponse.json({ url: `/uploads/${folder}/${filename}` });
 }

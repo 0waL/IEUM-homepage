@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { title, slug, excerpt, content, category, published, tags } = await req.json();
+  const { title, slug, excerpt, content, category, published, tags, coverImage } = await req.json();
 
   if (!title || !slug || !excerpt || !content) {
     return NextResponse.json({ error: "필수 항목을 모두 입력해주세요." }, { status: 400 });
@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
       content,
       category: category ?? "활동",
       published: published ?? false,
+      coverImage: coverImage ?? null,
       authorId: session.user.id,
       tags: {
         create: tagObjects.map((t) => ({ tagId: t.id })),

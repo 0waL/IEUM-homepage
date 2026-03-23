@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Save, Eye, EyeOff } from "lucide-react";
+import { Loader2, Save, Eye, EyeOff, Upload, X } from "lucide-react";
 
 interface PostFormProps {
   initialData?: {
@@ -14,6 +14,7 @@ interface PostFormProps {
     category: string;
     published: boolean;
     tags: string;
+    coverImage?: string | null;
   };
 }
 
@@ -41,12 +42,27 @@ export function PostForm({ initialData }: PostFormProps) {
   const [published, setPublished] = useState(initialData?.published ?? false);
   const [tags, setTags] = useState(initialData?.tags ?? "");
   const [preview, setPreview] = useState(false);
+  const [coverImage, setCoverImage] = useState<string | null>(initialData?.coverImage ?? null);
+  const [imageUploading, setImageUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleTitleChange = (value: string) => {
     setTitle(value);
     if (!initialData) {
       setSlug(slugify(value));
     }
+  };
+
+  const handleImageUpload = async (file: File) => {
+    setImageUploading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+    const res = await fetch("/api/admin/upload?folder=posts", { method: "POST", body: formData });
+    if (res.ok) {
+      const data = await res.json();
+      setCoverImage(data.url);
+    }
+    setImageUploading(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -59,7 +75,7 @@ export function PostForm({ initialData }: PostFormProps) {
       .map((t) => t.trim())
       .filter(Boolean);
 
-    const body = { title, slug, excerpt, content, category, published, tags: tagList };
+    const body = { title, slug, excerpt, content, category, published, tags: tagList, coverImage };
 
     const url = initialData
       ? `/api/admin/posts/${initialData.id}`
@@ -185,6 +201,64 @@ export function PostForm({ initialData }: PostFormProps) {
               <Save size={14} />
               {initialData ? "수정하기" : "저장하기"}
             </button>
+          </div>
+
+          {/* Cover Image */}
+          <div className="bg-zinc-800 rounded-xl border border-zinc-700 p-4">
+            <h3 className="font-semibold text-zinc-200 mb-3">커버 이미지</h3>
+            {coverImage ? (
+              <div className="relative">
+                <img
+                  src={coverImage}
+                  alt="커버 이미지"
+                  className="w-full aspect-video object-cover rounded-lg"
+                />
+                <button
+                  type="button"
+                  onClick={() => setCoverImage(null)}
+                  className="absolute top-2 right-2 p-1 bg-black/60 hover:bg-black/80 text-white rounded-full transition-colors"
+                >
+                  <X size={14} />
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={imageUploading}
+                className="w-full aspect-video flex flex-col items-center justify-center gap-2 bg-zinc-700/50 hover:bg-zinc-700 border-2 border-dashed border-zinc-600 rounded-lg transition-colors text-zinc-400 hover:text-zinc-200"
+              >
+                {imageUploading ? (
+                  <Loader2 size={20} className="animate-spin" />
+                ) : (
+                  <>
+                    <Upload size={20} />
+                    <span className="text-xs">클릭해서 이미지 업로드</span>
+                  </>
+                )}
+              </button>
+            )}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleImageUpload(file);
+                e.target.value = "";
+              }}
+            />
+            {coverImage && (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={imageUploading}
+                className="mt-2 w-full text-xs text-zinc-500 hover:text-zinc-300 transition-colors py-1"
+              >
+                이미지 교체
+              </button>
+            )}
           </div>
 
           {/* Category */}

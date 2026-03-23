@@ -11,7 +11,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
   const session = await getServerSession(authOptions);
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { title, slug, excerpt, content, category, published, tags } = await req.json();
+  const { title, slug, excerpt, content, category, published, tags, coverImage } = await req.json();
 
   // Check slug uniqueness (excluding self)
   const existing = await prisma.post.findFirst({
@@ -40,6 +40,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
       content,
       category: category ?? "활동",
       published: published ?? false,
+      coverImage: coverImage ?? null,
       tags: {
         create: tagObjects.map((t) => ({ tagId: t.id })),
       },

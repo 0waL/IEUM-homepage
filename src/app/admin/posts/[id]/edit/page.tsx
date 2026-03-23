@@ -32,6 +32,7 @@ export default async function EditPostPage({ params }: Props) {
           category: post.category,
           published: post.published,
           tags: post.tags.map((t) => t.tag.name).join(", "),
+          coverImage: post.coverImage,
         }}
       />
     </div>
