@@ -78,7 +78,7 @@ export default async function InquiriesPage() {
                 <FadeIn key={inquiry.id} delay={i * 40}>
                   <Link
                     href={`/inquiries/${inquiry.id}`}
-                    className="group flex items-center gap-4 bg-navy-900/60 hover:bg-navy-800/60 border border-white/5 hover:border-white/10 rounded-2xl px-5 py-4 transition-all"
+                    className="group flex items-center gap-4 bg-navy-900 hover:bg-navy-800 border border-zinc-800 hover:border-zinc-700 rounded-2xl px-5 py-4 transition-all"
                   >
                     {/* Status icon */}
                     <div className="flex-shrink-0">
@@ -91,7 +91,7 @@ export default async function InquiriesPage() {
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <p className="text-white font-medium truncate group-hover:text-primary-300 transition-colors">
+                      <p className="text-zinc-100 font-medium truncate group-hover:text-primary-300 transition-colors">
                         {inquiry.title}
                       </p>
                       <p className="text-zinc-500 text-sm mt-0.5">

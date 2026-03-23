@@ -97,7 +97,7 @@ export default async function MembersPage() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                   {byGen[gen].map((member, i) => (
                     <FadeIn key={member.id} delay={(i % 4) * 60}>
-                      <div className="bg-navy-900 border border-white/8 rounded-xl p-4 text-center hover:border-white/15 transition-colors">
+                      <div className="bg-navy-900 border border-zinc-800 rounded-xl p-4 text-center hover:border-zinc-700 transition-colors">
                         <div
                           className={`w-10 h-10 bg-gradient-to-br ${gradients[i % gradients.length]} rounded-lg flex items-center justify-center text-white font-bold mx-auto mb-2 text-sm`}
                         >

@@ -83,7 +83,7 @@ export function InquiryCommentSection({ inquiryId, comments: initial }: Props) {
       </h2>
 
       {comments.length === 0 && !session && (
-        <p className="text-zinc-600 text-sm py-8 text-center border border-white/5 rounded-2xl">
+        <p className="text-zinc-600 text-sm py-8 text-center border border-zinc-800 rounded-2xl">
           아직 답변이 없습니다.
         </p>
       )}
@@ -94,11 +94,11 @@ export function InquiryCommentSection({ inquiryId, comments: initial }: Props) {
           {comments.map((comment) => (
             <div
               key={comment.id}
-              className="bg-navy-900/40 border border-white/5 rounded-2xl p-4"
+              className="bg-navy-900 border border-zinc-800 rounded-2xl p-4"
             >
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold text-white">{comment.user.name}</span>
+                  <span className="text-sm font-semibold text-zinc-100">{comment.user.name}</span>
                   {comment.user.role === "admin" && (
                     <span className="text-xs px-2 py-0.5 bg-primary-900/60 text-primary-400 rounded-full">
                       관리자
@@ -132,7 +132,7 @@ export function InquiryCommentSection({ inquiryId, comments: initial }: Props) {
             placeholder="답변을 입력해 주세요..."
             rows={4}
             required
-            className="w-full bg-navy-900/80 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-zinc-600 focus:outline-none focus:border-primary-500 transition-colors resize-none mb-3"
+            className="w-full bg-navy-900 border border-zinc-800 rounded-xl px-4 py-3 text-zinc-100 text-sm placeholder-zinc-600 focus:outline-none focus:border-primary-500 transition-colors resize-none mb-3"
           />
           {error && (
             <p className="text-red-400 text-sm mb-3">{error}</p>

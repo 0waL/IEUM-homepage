@@ -59,7 +59,7 @@ export default function NewInquiryPage() {
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               placeholder="문의 제목을 입력해 주세요"
               required
-              className="w-full bg-navy-900/80 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-zinc-600 focus:outline-none focus:border-primary-500 transition-colors"
+              className="w-full bg-navy-900 border border-zinc-800 rounded-xl px-4 py-3 text-white text-sm placeholder-zinc-600 focus:outline-none focus:border-primary-500 transition-colors"
             />
           </div>
 
@@ -73,7 +73,7 @@ export default function NewInquiryPage() {
               placeholder="궁금한 점을 자유롭게 작성해 주세요."
               required
               rows={8}
-              className="w-full bg-navy-900/80 border border-white/10 rounded-xl px-4 py-3 text-white text-sm placeholder-zinc-600 focus:outline-none focus:border-primary-500 transition-colors resize-none"
+              className="w-full bg-navy-900 border border-zinc-800 rounded-xl px-4 py-3 text-white text-sm placeholder-zinc-600 focus:outline-none focus:border-primary-500 transition-colors resize-none"
             />
           </div>
 

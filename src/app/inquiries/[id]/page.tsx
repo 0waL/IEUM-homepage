@@ -44,7 +44,7 @@ export default async function InquiryDetailPage({ params }: { params: { id: stri
         </Link>
 
         {/* Inquiry */}
-        <div className="bg-navy-900/60 border border-white/8 rounded-2xl p-6 mb-6">
+        <div className="bg-navy-900 border border-zinc-800 rounded-2xl p-6 mb-6">
           <div className="flex items-start gap-3 mb-4">
             <span
               className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium flex-shrink-0 mt-0.5 ${
@@ -64,7 +64,7 @@ export default async function InquiryDetailPage({ params }: { params: { id: stri
 
           <h1 className="text-2xl font-bold text-white mb-3">{inquiry.title}</h1>
 
-          <div className="flex items-center gap-3 text-zinc-500 text-sm mb-6 pb-6 border-b border-white/5">
+          <div className="flex items-center gap-3 text-zinc-500 text-sm mb-6 pb-6 border-b border-zinc-800">
             <span>익명</span>
             <span>·</span>
             <span>{formatDate(inquiry.createdAt)}</span>
