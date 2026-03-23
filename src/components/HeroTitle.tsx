@@ -18,8 +18,8 @@ export function HeroTitle() {
     <h1 className="font-black leading-[0.88] tracking-tighter mb-8">
       {/* 이음 */}
       <span
-        className="hero-ko block text-white overflow-hidden"
-        style={{ fontSize: "clamp(3.5rem, 11vw, 13rem)" }}
+        className="hero-ko block text-white"
+        style={{ fontSize: "clamp(3.5rem, 11vw, 13rem)", paddingBottom: "0.08em" }}
       >
         {CHARS_KO.map((char, i) => (
           <span
@@ -38,8 +38,8 @@ export function HeroTitle() {
 
       {/* IEUM */}
       <span
-        className="block text-primary-400 overflow-hidden"
-        style={{ fontSize: "clamp(2.5rem, 8vw, 9rem)" }}
+        className="block text-primary-400"
+        style={{ fontSize: "clamp(2.5rem, 8vw, 9rem)", paddingBottom: "0.06em" }}
       >
         {CHARS_EN.map((char, i) => (
           <span
