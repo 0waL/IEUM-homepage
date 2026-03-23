@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { FadeIn } from "@/components/FadeIn";
 import { ClipboardList, Calendar, Users, ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -39,6 +40,11 @@ const QUALIFICATIONS = [
 export default async function ApplyPage() {
   const deadlineSetting = await prisma.siteContent.findUnique({ where: { key: "apply_deadline" } });
   const deadline = deadlineSetting?.value ?? "";
+  const applyOpen = !deadline || new Date(deadline) > new Date();
+  if (!applyOpen) redirect("/");
+  const deadlineLabel = deadline
+    ? new Date(deadline).toLocaleString("ko-KR", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" })
+    : "";
 
   return (
     <div>
@@ -51,7 +57,7 @@ export default async function ApplyPage() {
           <FadeIn>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-900/40 border border-primary-700/30 rounded-full text-primary-400 text-sm font-medium mb-6">
               <Calendar size={14} />
-              {deadline ? `모집 기한: ${deadline}` : "신입부원 모집 중"}
+              {deadlineLabel ? `모집 기한: ${deadlineLabel}` : "신입부원 모집 중"}
             </div>
             <h1 className="text-5xl md:text-7xl font-black text-white mb-4 tracking-tighter">
               이음에 합류하세요

@@ -7,10 +7,12 @@ import type { ReactNode } from "react";
 export function PublicLayout({
   children,
   footer,
+  applyOpen,
   applyDeadline,
 }: {
   children: ReactNode;
   footer: ReactNode;
+  applyOpen: boolean;
   applyDeadline: string;
 }) {
   const pathname = usePathname();
@@ -18,7 +20,7 @@ export function PublicLayout({
 
   return (
     <>
-      {!isAdmin && <Navbar applyDeadline={applyDeadline} />}
+      {!isAdmin && <Navbar applyOpen={applyOpen} applyDeadline={applyDeadline} />}
       <main className="flex-1">{children}</main>
       {!isAdmin && footer}
     </>

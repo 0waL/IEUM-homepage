@@ -14,7 +14,7 @@ const navLinks = [
   { href: "/inquiries", label: "문의" },
 ];
 
-export function Navbar({ applyDeadline }: { applyDeadline: string }) {
+export function Navbar({ applyOpen, applyDeadline }: { applyOpen: boolean; applyDeadline: string }) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -72,17 +72,26 @@ export function Navbar({ applyDeadline }: { applyDeadline: string }) {
 
         {/* Auth (desktop) */}
         <div className="hidden md:flex items-center gap-1">
-          <Link
-            href="/apply"
-            title={applyDeadline ? `마감: ${applyDeadline}` : undefined}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-              isActive("/apply")
-                ? "bg-white/10 text-white"
-                : "text-primary-400 hover:text-primary-300 hover:bg-white/5"
-            }`}
-          >
-            지원하기
-          </Link>
+          {applyOpen ? (
+            <Link
+              href="/apply"
+              title={applyDeadline ? `마감: ${new Date(applyDeadline).toLocaleString("ko-KR")}` : undefined}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                isActive("/apply")
+                  ? "bg-white/10 text-white"
+                  : "text-primary-400 hover:text-primary-300 hover:bg-white/5"
+              }`}
+            >
+              지원하기
+            </Link>
+          ) : (
+            <span
+              title="신청 기간이 아닙니다"
+              className="px-4 py-1.5 rounded-full text-sm font-medium text-zinc-600 cursor-not-allowed"
+            >
+              지원하기
+            </span>
+          )}
           {session ? (
             <>
               <Link
@@ -105,9 +114,15 @@ export function Navbar({ applyDeadline }: { applyDeadline: string }) {
 
         {/* Mobile: apply shortcut + hamburger */}
         <div className="flex md:hidden items-center gap-1 ml-1">
-          <Link href="/apply" className="px-3 py-1.5 text-xs font-semibold text-primary-400 rounded-full hover:bg-white/5 transition-colors">
-            지원하기
-          </Link>
+          {applyOpen ? (
+            <Link href="/apply" className="px-3 py-1.5 text-xs font-semibold text-primary-400 rounded-full hover:bg-white/5 transition-colors">
+              지원하기
+            </Link>
+          ) : (
+            <span className="px-3 py-1.5 text-xs font-semibold text-zinc-600 rounded-full cursor-not-allowed">
+              지원하기
+            </span>
+          )}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="p-1.5 rounded-full text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"

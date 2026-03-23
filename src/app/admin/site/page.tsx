@@ -304,16 +304,15 @@ export default function SitePage() {
       {/* ── 지원하기 설정 ── */}
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
         <h2 className="font-semibold text-zinc-200 mb-1">지원하기 설정</h2>
-        <p className="text-xs text-zinc-500 mb-4">모집 기한을 설정합니다.</p>
+        <p className="text-xs text-zinc-500 mb-4">모집 기한을 설정합니다. 기한이 지나면 지원하기 페이지 접근이 차단됩니다.</p>
         <label className="block text-sm font-medium text-zinc-400 mb-1.5">모집 기한</label>
         <input
-          type="text"
+          type="datetime-local"
           value={applyDeadline}
           onChange={(e) => setApplyDeadline(e.target.value)}
-          placeholder="예: 2025년 3월 31일 23:59"
           className={inputClass}
         />
-        <p className="text-xs text-zinc-600 mt-1.5">지원하기 페이지와 버튼 툴팁에 표시됩니다. 비워두면 표시하지 않습니다.</p>
+        <p className="text-xs text-zinc-600 mt-1.5">비워두면 기한 없이 항상 열려 있습니다.</p>
         <SaveButton onClick={saveApply} saving={savingApply} saved={savedApply} />
       </div>
 

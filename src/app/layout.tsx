@@ -29,6 +29,7 @@ export default async function RootLayout({
     where: { key: "apply_deadline" },
   });
   const applyDeadline = applyDeadlineSetting?.value ?? "";
+  const applyOpen = !applyDeadline || new Date(applyDeadline) > new Date();
 
   return (
     <html lang="ko" suppressHydrationWarning>
@@ -45,7 +46,7 @@ export default async function RootLayout({
       <body>
         <Providers>
           <div className="min-h-screen flex flex-col">
-            <PublicLayout applyDeadline={applyDeadline} footer={<Footer />}>
+            <PublicLayout applyOpen={applyOpen} applyDeadline={applyDeadline} footer={<Footer />}>
               {children}
             </PublicLayout>
           </div>
