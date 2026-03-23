@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { FadeIn } from "@/components/FadeIn";
 import { ClipboardList, Calendar, Users, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "지원하기",
@@ -33,7 +36,12 @@ const QUALIFICATIONS = [
   "웹·앱 개발, 디자인, 기획 등 다양한 분야를 모집합니다.",
 ];
 
-export default function ApplyPage() {
+export default async function ApplyPage() {
+  const settings = await prisma.siteContent.findMany({
+    where: { key: { in: ["apply_deadline"] } },
+  });
+  const deadline = settings.find((s) => s.key === "apply_deadline")?.value ?? "";
+
   return (
     <div>
       {/* Hero */}
@@ -45,7 +53,7 @@ export default function ApplyPage() {
           <FadeIn>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary-900/40 border border-primary-700/30 rounded-full text-primary-400 text-sm font-medium mb-6">
               <Calendar size={14} />
-              2025년 신입부원 모집 중
+              {deadline ? `모집 기한: ${deadline}` : "신입부원 모집 중"}
             </div>
             <h1 className="text-5xl md:text-7xl font-black text-white mb-4 tracking-tighter">
               이음에 합류하세요

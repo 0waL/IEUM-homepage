@@ -3,6 +3,7 @@ import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { PublicLayout } from "@/components/PublicLayout";
 import { Footer } from "@/components/Footer";
+import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title: {
@@ -19,11 +20,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const applySettings = await prisma.siteContent.findMany({
+    where: { key: { in: ["apply_enabled", "apply_deadline"] } },
+  });
+  const applyMap: Record<string, string> = {};
+  applySettings.forEach((i) => { applyMap[i.key] = i.value; });
+  const applyEnabled = applyMap["apply_enabled"] !== "false";
+  const applyDeadline = applyMap["apply_deadline"] ?? "";
+
   return (
     <html lang="ko" suppressHydrationWarning>
       <head>
@@ -39,7 +48,9 @@ export default function RootLayout({
       <body>
         <Providers>
           <div className="min-h-screen flex flex-col">
-            <PublicLayout footer={<Footer />}>{children}</PublicLayout>
+            <PublicLayout applyEnabled={applyEnabled} applyDeadline={applyDeadline} footer={<Footer />}>
+              {children}
+            </PublicLayout>
           </div>
         </Providers>
       </body>
