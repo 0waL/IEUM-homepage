@@ -25,13 +25,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const applySettings = await prisma.siteContent.findMany({
-    where: { key: { in: ["apply_enabled", "apply_deadline"] } },
+  const applyDeadlineSetting = await prisma.siteContent.findUnique({
+    where: { key: "apply_deadline" },
   });
-  const applyMap: Record<string, string> = {};
-  applySettings.forEach((i) => { applyMap[i.key] = i.value; });
-  const applyEnabled = applyMap["apply_enabled"] !== "false";
-  const applyDeadline = applyMap["apply_deadline"] ?? "";
+  const applyDeadline = applyDeadlineSetting?.value ?? "";
 
   return (
     <html lang="ko" suppressHydrationWarning>
@@ -48,7 +45,7 @@ export default async function RootLayout({
       <body>
         <Providers>
           <div className="min-h-screen flex flex-col">
-            <PublicLayout applyEnabled={applyEnabled} applyDeadline={applyDeadline} footer={<Footer />}>
+            <PublicLayout applyDeadline={applyDeadline} footer={<Footer />}>
               {children}
             </PublicLayout>
           </div>

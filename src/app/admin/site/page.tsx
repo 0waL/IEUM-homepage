@@ -162,7 +162,6 @@ export default function SitePage() {
   const [savedActivities, setSavedActivities] = useState(false);
 
   /* ── 지원하기 설정 ── */
-  const [applyEnabled, setApplyEnabled] = useState(true);
   const [applyDeadline, setApplyDeadline] = useState("");
   const [savingApply, setSavingApply] = useState(false);
   const [savedApply, setSavedApply] = useState(false);
@@ -191,7 +190,6 @@ export default function SitePage() {
     setFooterWebsite(content["footer_website"] ?? "https://gshs.app");
     setFooterGithub(content["footer_github"] ?? "https://github.com");
     setFooterEmail(content["footer_email"] ?? "contact@gshs.app");
-    setApplyEnabled(content["apply_enabled"] !== "false");
     setApplyDeadline(content["apply_deadline"] ?? "");
   }, [loading, content]);
 
@@ -250,10 +248,7 @@ export default function SitePage() {
   /* ─── 지원하기 설정 저장 ─── */
   const saveApply = async () => {
     setSavingApply(true);
-    await Promise.all([
-      saveKey("apply_enabled", String(applyEnabled)),
-      saveKey("apply_deadline", applyDeadline),
-    ]);
+    await saveKey("apply_deadline", applyDeadline);
     setSavingApply(false);
     setSavedApply(true);
     setTimeout(() => setSavedApply(false), 2000);
@@ -309,24 +304,7 @@ export default function SitePage() {
       {/* ── 지원하기 설정 ── */}
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
         <h2 className="font-semibold text-zinc-200 mb-1">지원하기 설정</h2>
-        <p className="text-xs text-zinc-500 mb-4">네비게이션의 &apos;지원하기&apos; 버튼 노출 여부와 모집 기한을 설정합니다.</p>
-        <div className="flex items-center gap-3 mb-4">
-          <button
-            onClick={() => setApplyEnabled(!applyEnabled)}
-            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-              applyEnabled ? "bg-primary-600" : "bg-zinc-700"
-            }`}
-          >
-            <span
-              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                applyEnabled ? "translate-x-6" : "translate-x-1"
-              }`}
-            />
-          </button>
-          <span className="text-sm text-zinc-300">
-            {applyEnabled ? "지원 버튼 표시 중" : "지원 버튼 숨김"}
-          </span>
-        </div>
+        <p className="text-xs text-zinc-500 mb-4">모집 기한을 설정합니다.</p>
         <label className="block text-sm font-medium text-zinc-400 mb-1.5">모집 기한</label>
         <input
           type="text"

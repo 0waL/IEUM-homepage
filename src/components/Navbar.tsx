@@ -14,7 +14,7 @@ const navLinks = [
   { href: "/inquiries", label: "문의" },
 ];
 
-export function Navbar({ applyEnabled, applyDeadline }: { applyEnabled: boolean; applyDeadline: string }) {
+export function Navbar({ applyDeadline }: { applyDeadline: string }) {
   const pathname = usePathname();
   const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -72,27 +72,17 @@ export function Navbar({ applyEnabled, applyDeadline }: { applyEnabled: boolean;
 
         {/* Auth (desktop) */}
         <div className="hidden md:flex items-center gap-1">
-          {applyEnabled ? (
-            <Link
-              href="/apply"
-              title={applyDeadline ? `마감: ${applyDeadline}` : undefined}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                isActive("/apply")
-                  ? "bg-white/10 text-white"
-                  : "text-primary-400 hover:text-primary-300 hover:bg-white/5"
-              }`}
-            >
-              지원하기
-            </Link>
-          ) : (
-            <Link
-              href="/apply"
-              title="지금은 신청 기간이 아닙니다"
-              className="px-4 py-1.5 rounded-full text-sm font-medium text-zinc-600 cursor-not-allowed pointer-events-none"
-            >
-              지원하기
-            </Link>
-          )}
+          <Link
+            href="/apply"
+            title={applyDeadline ? `마감: ${applyDeadline}` : undefined}
+            className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
+              isActive("/apply")
+                ? "bg-white/10 text-white"
+                : "text-primary-400 hover:text-primary-300 hover:bg-white/5"
+            }`}
+          >
+            지원하기
+          </Link>
           {session ? (
             <>
               <Link
@@ -115,15 +105,9 @@ export function Navbar({ applyEnabled, applyDeadline }: { applyEnabled: boolean;
 
         {/* Mobile: apply shortcut + hamburger */}
         <div className="flex md:hidden items-center gap-1 ml-1">
-          {applyEnabled ? (
-            <Link href="/apply" className="px-3 py-1.5 text-xs font-semibold text-primary-400 rounded-full hover:bg-white/5 transition-colors">
-              지원하기
-            </Link>
-          ) : (
-            <Link href="/apply" title="지금은 신청 기간이 아닙니다" className="px-3 py-1.5 text-xs font-semibold text-zinc-600 rounded-full pointer-events-none">
-              지원하기
-            </Link>
-          )}
+          <Link href="/apply" className="px-3 py-1.5 text-xs font-semibold text-primary-400 rounded-full hover:bg-white/5 transition-colors">
+            지원하기
+          </Link>
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
             className="p-1.5 rounded-full text-zinc-400 hover:text-white hover:bg-white/5 transition-colors"
