@@ -2,13 +2,14 @@ import { prisma } from "@/lib/prisma";
 
 async function getFooterInfo() {
   const items = await prisma.siteContent.findMany({
-    where: { key: { in: ["footer_developer", "footer_github"] } },
+    where: { key: { in: ["footer_developer", "footer_github", "footer_email"] } },
   });
   const map: Record<string, string> = {};
   items.forEach((i) => { map[i.key] = i.value; });
   return {
     developer: map["footer_developer"] ?? "이음 개발팀",
     github: map["footer_github"] ?? "",
+    email: map["footer_email"] ?? "contact@gshs.app",
   };
 }
 
@@ -29,9 +30,9 @@ export async function Footer() {
             </p>
           </div>
 
-          {/* Right: external links only */}
-          {info.github && (
-            <div className="flex items-center gap-4">
+          {/* Right: external links */}
+          <div className="flex items-center gap-4">
+            {info.github && (
               <a
                 href={info.github}
                 target="_blank"
@@ -40,8 +41,16 @@ export async function Footer() {
               >
                 GitHub
               </a>
-            </div>
-          )}
+            )}
+            {info.email && (
+              <a
+                href={`mailto:${info.email}`}
+                className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors"
+              >
+                {info.email}
+              </a>
+            )}
+          </div>
         </div>
       </div>
     </footer>
