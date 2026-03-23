@@ -1,7 +1,23 @@
 import Link from "next/link";
 import { ExternalLink, Github, Mail } from "lucide-react";
+import { prisma } from "@/lib/prisma";
 
-export function Footer() {
+async function getContactInfo() {
+  const items = await prisma.siteContent.findMany({
+    where: { key: { in: ["footer_website", "footer_github", "footer_email"] } },
+  });
+  const map: Record<string, string> = {};
+  items.forEach((i) => { map[i.key] = i.value; });
+  return {
+    website: map["footer_website"] ?? "https://gshs.app",
+    github: map["footer_github"] ?? "https://github.com",
+    email: map["footer_email"] ?? "contact@gshs.app",
+  };
+}
+
+export async function Footer() {
+  const contact = await getContactInfo();
+
   return (
     <footer className="bg-navy-900 border-t border-white/5 mt-auto">
       <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-16 py-10">
@@ -30,18 +46,18 @@ export function Footer() {
             <ul className="flex flex-wrap gap-x-6 gap-y-2">
               <li>
                 <a
-                  href="https://gshs.app"
+                  href={contact.website}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-200 transition-colors"
                 >
                   <ExternalLink size={13} />
-                  gshs.app
+                  {contact.website.replace(/^https?:\/\//, "")}
                 </a>
               </li>
               <li>
                 <a
-                  href="https://github.com"
+                  href={contact.github}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-200 transition-colors"
@@ -52,11 +68,11 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="mailto:contact@gshs.app"
+                  href={`mailto:${contact.email}`}
                   className="flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-200 transition-colors"
                 >
                   <Mail size={13} />
-                  contact@gshs.app
+                  {contact.email}
                 </a>
               </li>
             </ul>

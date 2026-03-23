@@ -123,6 +123,13 @@ export default function SitePage() {
   const [newFaqQ, setNewFaqQ] = useState("");
   const [newFaqA, setNewFaqA] = useState("");
 
+  /* ── 연락처 ── */
+  const [footerWebsite, setFooterWebsite] = useState("https://gshs.app");
+  const [footerGithub, setFooterGithub] = useState("https://github.com");
+  const [footerEmail, setFooterEmail] = useState("contact@gshs.app");
+  const [savingContact, setSavingContact] = useState<Record<string, boolean>>({});
+  const [savedContact, setSavedContact] = useState<Record<string, boolean>>({});
+
   /* ── 소개 페이지 단순 텍스트 ── */
   const [heroSubtitle, setHeroSubtitle] = useState("");
   const [missionTitle, setMissionTitle] = useState("");
@@ -175,7 +182,23 @@ export default function SitePage() {
     setTechstack(parseJson(content["about_techstack"], DEFAULT_TECHSTACK));
     setHistory(parseJson(content["about_history"], DEFAULT_HISTORY));
     setActivities(parseJson(content["home_activities"], DEFAULT_ACTIVITIES));
+    setFooterWebsite(content["footer_website"] ?? "https://gshs.app");
+    setFooterGithub(content["footer_github"] ?? "https://github.com");
+    setFooterEmail(content["footer_email"] ?? "contact@gshs.app");
   }, [loading, content]);
+
+  /* ─── 연락처 저장 ─── */
+  const saveContactField = async (key: string, value: string) => {
+    setSavingContact((p) => ({ ...p, [key]: true }));
+    await fetch("/api/admin/site-content", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ key, value }),
+    });
+    setSavingContact((p) => ({ ...p, [key]: false }));
+    setSavedContact((p) => ({ ...p, [key]: true }));
+    setTimeout(() => setSavedContact((p) => ({ ...p, [key]: false })), 2000);
+  };
 
   /* ─── 저장 헬퍼 ─── */
   const saveKey = async (key: string, value: string) => {
@@ -651,6 +674,62 @@ export default function SitePage() {
               )}
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* ── 연락처 ── */}
+      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-5">
+        <div>
+          <h2 className="font-semibold text-zinc-200 mb-0.5">푸터 — 연락처</h2>
+          <p className="text-xs text-zinc-500">하단 바로가기 영역에 표시되는 링크입니다.</p>
+        </div>
+
+        {/* 웹사이트 URL */}
+        <div>
+          <label className="block text-xs font-medium text-zinc-400 mb-1.5">웹사이트 URL</label>
+          <input
+            value={footerWebsite}
+            onChange={(e) => setFooterWebsite(e.target.value)}
+            placeholder="https://gshs.app"
+            className={inputClass}
+          />
+          <SaveButton
+            onClick={() => saveContactField("footer_website", footerWebsite)}
+            saving={!!savingContact["footer_website"]}
+            saved={!!savedContact["footer_website"]}
+          />
+        </div>
+
+        {/* GitHub URL */}
+        <div>
+          <label className="block text-xs font-medium text-zinc-400 mb-1.5">GitHub URL</label>
+          <input
+            value={footerGithub}
+            onChange={(e) => setFooterGithub(e.target.value)}
+            placeholder="https://github.com/..."
+            className={inputClass}
+          />
+          <SaveButton
+            onClick={() => saveContactField("footer_github", footerGithub)}
+            saving={!!savingContact["footer_github"]}
+            saved={!!savedContact["footer_github"]}
+          />
+        </div>
+
+        {/* 이메일 */}
+        <div>
+          <label className="block text-xs font-medium text-zinc-400 mb-1.5">이메일</label>
+          <input
+            value={footerEmail}
+            onChange={(e) => setFooterEmail(e.target.value)}
+            placeholder="contact@example.com"
+            className={inputClass}
+          />
+          <SaveButton
+            onClick={() => saveContactField("footer_email", footerEmail)}
+            saving={!!savingContact["footer_email"]}
+            saved={!!savedContact["footer_email"]}
+          />
         </div>
       </div>
     </div>
