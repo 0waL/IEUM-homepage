@@ -1,3 +1,4 @@
+import { Github, Mail } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
 async function getFooterInfo() {
@@ -31,22 +32,24 @@ export async function Footer() {
           </div>
 
           {/* Right: external links */}
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col gap-2">
             {info.github && (
               <a
                 href={info.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors"
+                className="flex items-center gap-1.5 text-xs text-zinc-600 hover:text-zinc-400 transition-colors"
               >
+                <Github size={12} />
                 GitHub
               </a>
             )}
             {info.email && (
               <a
                 href={`mailto:${info.email}`}
-                className="text-xs text-zinc-600 hover:text-zinc-400 transition-colors"
+                className="flex items-center gap-1.5 text-xs text-zinc-600 hover:text-zinc-400 transition-colors"
               >
+                <Mail size={12} />
                 {info.email}
               </a>
             )}
