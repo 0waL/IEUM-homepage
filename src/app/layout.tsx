@@ -5,6 +5,8 @@ import { PublicLayout } from "@/components/PublicLayout";
 import { Footer } from "@/components/Footer";
 import { prisma } from "@/lib/prisma";
 
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: {
     default: "이음(IEUM) - 경남과학고 IT 동아리",

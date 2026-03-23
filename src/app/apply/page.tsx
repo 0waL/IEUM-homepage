@@ -3,6 +3,7 @@ import { FadeIn } from "@/components/FadeIn";
 import { ClipboardList, Calendar, Users, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { ApplyDeadlineWatcher } from "@/components/ApplyDeadlineWatcher";
 
 export const revalidate = 0;
 
@@ -62,6 +63,7 @@ export default async function ApplyPage() {
 
   return (
     <div>
+      <ApplyDeadlineWatcher deadline={deadline} />
       {/* Hero */}
       <section className="relative bg-navy-950 pt-40 pb-24 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
