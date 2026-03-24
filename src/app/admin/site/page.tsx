@@ -161,11 +161,6 @@ export default function SitePage() {
   const [savingActivities, setSavingActivities] = useState(false);
   const [savedActivities, setSavedActivities] = useState(false);
 
-  /* ── 지원하기 설정 ── */
-  const [applyDeadline, setApplyDeadline] = useState("");
-  const [savingApply, setSavingApply] = useState(false);
-  const [savedApply, setSavedApply] = useState(false);
-
   /* ── 연혁 ── */
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [editingHistory, setEditingHistory] = useState<{ idx: number; item: HistoryItem } | null>(null);
@@ -190,7 +185,6 @@ export default function SitePage() {
     setFooterWebsite(content["footer_website"] ?? "https://gshs.app");
     setFooterGithub(content["footer_github"] ?? "https://github.com");
     setFooterEmail(content["footer_email"] ?? "contact@gshs.app");
-    setApplyDeadline(content["apply_deadline"] ?? "");
   }, [loading, content]);
 
   /* ─── 연락처 저장 ─── */
@@ -245,15 +239,6 @@ export default function SitePage() {
     await saveJsonKey("about_history", merged, setSavingHistory, setSavedHistory);
   };
 
-  /* ─── 지원하기 설정 저장 ─── */
-  const saveApply = async () => {
-    setSavingApply(true);
-    await saveKey("apply_deadline", applyDeadline);
-    setSavingApply(false);
-    setSavedApply(true);
-    setTimeout(() => setSavedApply(false), 2000);
-  };
-
   /* ─── 홈 미션 저장 ─── */
   const saveMission = async () => {
     setSavingMission(true);
@@ -300,21 +285,6 @@ export default function SitePage() {
   return (
     <div className="space-y-8">
       <h1 className="text-2xl font-extrabold text-zinc-100">사이트 설정</h1>
-
-      {/* ── 지원하기 설정 ── */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-        <h2 className="font-semibold text-zinc-200 mb-1">지원하기 설정</h2>
-        <p className="text-xs text-zinc-500 mb-4">모집 기한을 설정합니다. 기한이 지나면 지원하기 페이지 접근이 차단됩니다.</p>
-        <label className="block text-sm font-medium text-zinc-400 mb-1.5">모집 기한</label>
-        <input
-          type="datetime-local"
-          value={applyDeadline}
-          onChange={(e) => setApplyDeadline(e.target.value)}
-          className={inputClass}
-        />
-        <p className="text-xs text-zinc-600 mt-1.5">비워두면 기한 없이 항상 열려 있습니다.</p>
-        <SaveButton onClick={saveApply} saving={savingApply} saved={savedApply} />
-      </div>
 
       {/* ── 홈 미션 텍스트 ── */}
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">

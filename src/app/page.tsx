@@ -87,6 +87,12 @@ async function getSiteData() {
     .map(([year, events]) => ({ year, events }))
     .sort((a, b) => Number(b.year) - Number(a.year));
 
+  const now = new Date();
+  const applyStart = contentMap["apply_start"] ?? "";
+  const applyDeadline = contentMap["apply_deadline"] ?? "";
+  const notStarted = applyStart !== "" && new Date(applyStart) > now;
+  const applyOpen = !notStarted && (!applyDeadline || new Date(applyDeadline) > now);
+
   return {
     missionText: contentMap["mission_text"] ?? DEFAULT_MISSION,
     activities: parseJson<{ title: string; desc: string }[]>(contentMap["home_activities"], DEFAULT_ACTIVITIES),
@@ -94,6 +100,7 @@ async function getSiteData() {
     techstack: parseJson<{ name: string; category: string }[]>(contentMap["about_techstack"], DEFAULT_TECHSTACK),
     faqs: faqItems,
     history,
+    applyOpen,
   };
 }
 
@@ -108,7 +115,7 @@ async function getStats() {
 
 export default async function HomePage() {
   const [stats, siteData] = await Promise.all([getStats(), getSiteData()]);
-  const { missionText, faqs, history, activities, values, techstack } = siteData;
+  const { missionText, faqs, history, activities, values, techstack, applyOpen } = siteData;
   const missionParagraphs = missionText.split(/\n\n+/).filter(Boolean);
 
   return (
@@ -427,13 +434,23 @@ export default async function HomePage() {
           <p className="text-zinc-400 text-lg mb-10 leading-relaxed">
             개발에 관심 있는 경남과학고 학생이라면 누구든 환영합니다.
           </p>
-          <Link
-            href="/members"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-primary-600 text-white rounded-full font-semibold hover:bg-primary-500 transition-all shadow-lg shadow-primary-900/40 text-base"
-          >
-            멤버 보기
-            <ArrowRight size={18} />
-          </Link>
+          {applyOpen ? (
+            <Link
+              href="/apply"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-primary-600 text-white rounded-full font-semibold hover:bg-primary-500 transition-all shadow-lg shadow-primary-900/40 text-base"
+            >
+              지원하기
+              <ArrowRight size={18} />
+            </Link>
+          ) : (
+            <Link
+              href="/members"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-primary-600 text-white rounded-full font-semibold hover:bg-primary-500 transition-all shadow-lg shadow-primary-900/40 text-base"
+            >
+              멤버 보기
+              <ArrowRight size={18} />
+            </Link>
+          )}
         </FadeIn>
       </section>
     </>

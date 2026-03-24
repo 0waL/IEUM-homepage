@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Code2, Users, Trophy, Heart, BookOpen, Zap } from "lucide-react";
+import { Code2, Users, Trophy, Heart, BookOpen, Zap, ArrowRight } from "lucide-react";
 import { FadeIn } from "@/components/FadeIn";
 import { prisma } from "@/lib/prisma";
+import Link from "next/link";
 
 export const revalidate = 0;
 
@@ -70,6 +71,12 @@ export default async function AboutPage() {
   const items = await prisma.siteContent.findMany();
   const c: Record<string, string> = {};
   items.forEach((i) => { c[i.key] = i.value; });
+
+  const now = new Date();
+  const applyStart = c["apply_start"] ?? "";
+  const applyDeadline = c["apply_deadline"] ?? "";
+  const notStarted = applyStart !== "" && new Date(applyStart) > now;
+  const applyOpen = !notStarted && (!applyDeadline || new Date(applyDeadline) > now);
 
   const heroSubtitle = c["about_hero_subtitle"] ?? DEFAULT_HERO_SUBTITLE;
   const missionTitle = c["about_mission_title"] ?? DEFAULT_MISSION_TITLE;
@@ -202,6 +209,36 @@ export default async function AboutPage() {
             ))}
           </div>
         </div>
+      </section>
+      {/* Join CTA */}
+      <section className="py-32 bg-navy-900 border-t border-white/5">
+        <FadeIn className="max-w-3xl mx-auto px-6 sm:px-10 lg:px-16 text-center">
+          <h2 className="text-5xl font-black text-white mb-5 tracking-tighter">
+            이음과 함께
+            <br />
+            만들어요
+          </h2>
+          <p className="text-zinc-400 text-lg mb-10 leading-relaxed">
+            개발에 관심 있는 경남과학고 학생이라면 누구든 환영합니다.
+          </p>
+          {applyOpen ? (
+            <Link
+              href="/apply"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-primary-600 text-white rounded-full font-semibold hover:bg-primary-500 transition-all shadow-lg shadow-primary-900/40 text-base"
+            >
+              지원하기
+              <ArrowRight size={18} />
+            </Link>
+          ) : (
+            <Link
+              href="/members"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-primary-600 text-white rounded-full font-semibold hover:bg-primary-500 transition-all shadow-lg shadow-primary-900/40 text-base"
+            >
+              멤버 보기
+              <ArrowRight size={18} />
+            </Link>
+          )}
+        </FadeIn>
       </section>
     </div>
   );
