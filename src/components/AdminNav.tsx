@@ -8,6 +8,7 @@ const adminLinks = [
   { href: "/admin/posts", label: "게시글" },
   { href: "/admin/members", label: "멤버" },
   { href: "/admin/inquiries", label: "문의" },
+  { href: "/admin/apply", label: "지원하기" },
   { href: "/admin/site", label: "사이트 설정" },
   { href: "/admin/tokens", label: "초대 토큰" },
 ];

@@ -4,6 +4,7 @@ import { ClipboardList, Calendar, Users, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { ApplyDeadlineWatcher } from "@/components/ApplyDeadlineWatcher";
+import { ApplyForm } from "@/components/ApplyForm";
 
 export const revalidate = 0;
 
@@ -38,12 +39,40 @@ const QUALIFICATIONS = [
 ];
 
 export default async function ApplyPage() {
-  const deadlineSetting = await prisma.siteContent.findUnique({ where: { key: "apply_deadline" } });
+  const [startSetting, deadlineSetting, formUrlSetting] = await Promise.all([
+    prisma.siteContent.findUnique({ where: { key: "apply_start" } }),
+    prisma.siteContent.findUnique({ where: { key: "apply_deadline" } }),
+    prisma.siteContent.findUnique({ where: { key: "apply_form_url" } }),
+  ]);
+
+  const now = new Date();
   const deadline = deadlineSetting?.value ?? "";
-  const applyOpen = !deadline || new Date(deadline) > new Date();
+  const start = startSetting?.value ?? "";
+  const formUrl = formUrlSetting?.value ?? "";
+
+  const notStarted = start !== "" && new Date(start) > now;
+  const applyOpen = !notStarted && (!deadline || new Date(deadline) > now);
+
   const deadlineLabel = deadline
     ? new Date(deadline).toLocaleString("ko-KR", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" })
     : "";
+  const startLabel = start
+    ? new Date(start).toLocaleString("ko-KR", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" })
+    : "";
+
+  if (notStarted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-navy-950 px-6">
+        <FadeIn className="text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-zinc-800 mb-6">
+            <Calendar size={28} className="text-zinc-400" />
+          </div>
+          <h1 className="text-3xl font-extrabold text-white mb-3">아직 신청 기간이 아닙니다</h1>
+          <p className="text-zinc-400">{startLabel ? `${startLabel}부터 신청할 수 있습니다.` : "모집 일정이 곧 공개됩니다."}</p>
+        </FadeIn>
+      </div>
+    );
+  }
 
   if (!applyOpen) {
     return (
@@ -134,32 +163,23 @@ export default async function ApplyPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* Apply Form */}
       <section className="py-24 bg-navy-900">
-        <div className="max-w-4xl mx-auto px-6 sm:px-10 lg:px-16">
-          <FadeIn>
-            <div className="bg-gradient-to-br from-primary-950 to-navy-800 rounded-2xl border border-primary-900/40 p-12 text-center">
-              <h2 className="text-3xl font-extrabold text-white mb-3">지금 바로 지원하세요</h2>
-              <p className="text-zinc-400 mb-8">
-                궁금한 점은 문의 게시판을 통해 언제든지 질문해주세요.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <a
-                  href="https://forms.gle"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-primary-600 text-white rounded-full font-semibold hover:bg-primary-500 transition-colors"
-                >
-                  지원 폼 작성하기
-                </a>
-                <Link
-                  href="/inquiries/new"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-white/5 text-zinc-300 rounded-full font-semibold hover:bg-white/10 transition-colors border border-white/10"
-                >
-                  문의하기
-                </Link>
-              </div>
-            </div>
+        <div className="max-w-2xl mx-auto px-6 sm:px-10 lg:px-16">
+          <FadeIn className="mb-10">
+            <h2 className="text-4xl font-extrabold text-white mb-3">지원하기</h2>
+            <p className="text-zinc-400">아래 폼을 작성해 제출하시면 검토 후 연락드립니다.</p>
+          </FadeIn>
+          <FadeIn delay={80}>
+            <ApplyForm formUrl={formUrl} />
+          </FadeIn>
+          <FadeIn delay={100} className="mt-6 text-center">
+            <Link
+              href="/inquiries/new"
+              className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
+            >
+              궁금한 점은 문의 게시판을 이용해주세요
+            </Link>
           </FadeIn>
         </div>
       </section>

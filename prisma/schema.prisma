@@ -118,3 +118,15 @@ model InviteToken {
   expiresAt DateTime?
   createdAt DateTime  @default(now())
 }
+
+model Application {
+  id         String   @id @default(cuid())
+  name       String
+  grade      String   // 학년 (예: 1학년, 2학년, 3학년)
+  field      String   // 관심 분야
+  motivation String   // 지원 동기
+  email      String?
+  status     String   @default("pending") // pending | accepted | rejected
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}

@@ -23,12 +23,54 @@ const DEFAULT_ACTIVITIES = [
   { title: "스터디 & 세미나", desc: "서로의 지식을 나누는 스터디와 세미나를 정기적으로 진행합니다." },
   { title: "해커톤 & 공모전", desc: "다양한 해커톤과 공모전에 참여해 실력을 키우고 팀워크를 다집니다." },
 ];
-
+const DEFAULT_VALUES = [
+  { title: "실전 경험", desc: "교과서 밖에서, 실제로 사용되는 서비스를 직접 만들며 배웁니다." },
+  { title: "팀워크", desc: "혼자가 아닌 팀으로, 서로의 강점을 모아 더 큰 것을 만듭니다." },
+  { title: "성장", desc: "스터디, 해커톤, 공모전을 통해 지속적으로 실력을 키워갑니다." },
+  { title: "기여", desc: "우리가 만드는 서비스로 학교 구성원의 삶을 더 편리하게 만듭니다." },
+  { title: "지식 공유", desc: "배운 것을 나누고, 함께 공부하며 집단 지성을 키웁니다." },
+  { title: "도전", desc: "새로운 기술과 아이디어에 두려워하지 않고 도전합니다." },
+];
+const DEFAULT_TECHSTACK = [
+  { name: "React", category: "Frontend" },
+  { name: "Next.js", category: "Frontend" },
+  { name: "TypeScript", category: "Language" },
+  { name: "Tailwind CSS", category: "Styling" },
+  { name: "Node.js", category: "Backend" },
+  { name: "Prisma", category: "ORM" },
+  { name: "PostgreSQL", category: "Database" },
+  { name: "Figma", category: "Design" },
+];
 const DEFAULT_HISTORY = [
   { year: "2025", events: ["이음 동아리 공식 홈페이지 오픈", "gshs.app v2.0 출시"] },
   { year: "2024", events: ["gshs.app 리뉴얼 작업 시작", "교내 해커톤 참가", "신입부원 모집"] },
   { year: "2023", events: ["이음(IEUM) 동아리 창설", "gshs.app v1.0 개발 및 출시"] },
 ];
+
+const VALUE_ICONS = [Code2, Users, Trophy, Heart, BookOpen, Lightbulb];
+const VALUE_GRADIENTS = [
+  "from-blue-500 to-cyan-500",
+  "from-green-500 to-emerald-500",
+  "from-amber-500 to-yellow-500",
+  "from-rose-500 to-pink-500",
+  "from-primary-500 to-violet-500",
+  "from-orange-500 to-red-500",
+];
+const TECH_GRADIENTS = [
+  { color: "from-cyan-500/20 to-blue-500/20", border: "border-cyan-800/30" },
+  { color: "from-zinc-500/20 to-zinc-600/20", border: "border-zinc-700/30" },
+  { color: "from-blue-500/20 to-blue-600/20", border: "border-blue-800/30" },
+  { color: "from-teal-500/20 to-cyan-500/20", border: "border-teal-800/30" },
+  { color: "from-green-500/20 to-emerald-500/20", border: "border-green-800/30" },
+  { color: "from-primary-500/20 to-violet-500/20", border: "border-primary-800/30" },
+  { color: "from-blue-600/20 to-indigo-500/20", border: "border-blue-800/30" },
+  { color: "from-rose-500/20 to-pink-500/20", border: "border-rose-800/30" },
+];
+
+function parseJson<T>(val: string | undefined, fallback: T): T {
+  if (!val) return fallback;
+  try { return JSON.parse(val) as T; } catch { return fallback; }
+}
 
 async function getSiteData() {
   const [contentItems, faqItems] = await Promise.all([
@@ -37,26 +79,21 @@ async function getSiteData() {
   ]);
   const contentMap: Record<string, string> = {};
   contentItems.forEach((c) => { contentMap[c.key] = c.value; });
-  const rawHistory: { year: string; events: string[] }[] = (() => {
-    try { return contentMap["about_history"] ? JSON.parse(contentMap["about_history"]) : DEFAULT_HISTORY; }
-    catch { return DEFAULT_HISTORY; }
-  })();
+
+  const rawHistory = parseJson<{ year: string; events: string[] }[]>(contentMap["about_history"], DEFAULT_HISTORY);
   const map = new Map<string, string[]>();
   for (const item of rawHistory) map.set(item.year, [...(map.get(item.year) ?? []), ...item.events]);
   const history = Array.from(map.entries())
     .map(([year, events]) => ({ year, events }))
     .sort((a, b) => Number(b.year) - Number(a.year));
 
-  const activities: { title: string; desc: string }[] = (() => {
-    try { return contentMap["home_activities"] ? JSON.parse(contentMap["home_activities"]) : DEFAULT_ACTIVITIES; }
-    catch { return DEFAULT_ACTIVITIES; }
-  })();
-
   return {
     missionText: contentMap["mission_text"] ?? DEFAULT_MISSION,
+    activities: parseJson<{ title: string; desc: string }[]>(contentMap["home_activities"], DEFAULT_ACTIVITIES),
+    values: parseJson<{ title: string; desc: string }[]>(contentMap["about_values"], DEFAULT_VALUES),
+    techstack: parseJson<{ name: string; category: string }[]>(contentMap["about_techstack"], DEFAULT_TECHSTACK),
     faqs: faqItems,
     history,
-    activities,
   };
 }
 
@@ -71,7 +108,7 @@ async function getStats() {
 
 export default async function HomePage() {
   const [stats, siteData] = await Promise.all([getStats(), getSiteData()]);
-  const { missionText, faqs, history, activities } = siteData;
+  const { missionText, faqs, history, activities, values, techstack } = siteData;
   const missionParagraphs = missionText.split(/\n\n+/).filter(Boolean);
 
   return (
@@ -245,62 +282,22 @@ export default async function HomePage() {
             <p className="text-zinc-400 text-lg">이음의 핵심 가치</p>
           </FadeIn>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[
-              {
-                icon: Code2,
-                title: "실전 경험",
-                desc: "교과서 밖에서, 실제로 사용되는 서비스를 직접 만들며 배웁니다.",
-                gradient: "from-blue-500 to-cyan-500",
-                delay: 0,
-              },
-              {
-                icon: Users,
-                title: "팀워크",
-                desc: "혼자가 아닌 팀으로, 서로의 강점을 모아 더 큰 것을 만듭니다.",
-                gradient: "from-green-500 to-emerald-500",
-                delay: 60,
-              },
-              {
-                icon: Trophy,
-                title: "성장",
-                desc: "스터디, 해커톤, 공모전을 통해 지속적으로 실력을 키워갑니다.",
-                gradient: "from-amber-500 to-yellow-500",
-                delay: 120,
-              },
-              {
-                icon: Heart,
-                title: "기여",
-                desc: "우리가 만드는 서비스로 학교 구성원의 삶을 더 편리하게 만듭니다.",
-                gradient: "from-rose-500 to-pink-500",
-                delay: 0,
-              },
-              {
-                icon: BookOpen,
-                title: "지식 공유",
-                desc: "배운 것을 나누고, 함께 공부하며 집단 지성을 키웁니다.",
-                gradient: "from-primary-500 to-violet-500",
-                delay: 60,
-              },
-              {
-                icon: Lightbulb,
-                title: "도전",
-                desc: "새로운 기술과 아이디어에 두려워하지 않고 도전합니다.",
-                gradient: "from-orange-500 to-red-500",
-                delay: 120,
-              },
-            ].map((item) => (
-              <FadeIn key={item.title} delay={item.delay}>
-                <div className="bg-navy-900 rounded-2xl p-6 border border-transparent hover:border-primary-600/30 transition-all duration-300 hover:-translate-y-0.5 h-full">
-                  <div
-                    className={`w-10 h-10 bg-gradient-to-br ${item.gradient} rounded-xl flex items-center justify-center mb-4 shadow-lg`}
-                  >
-                    <item.icon size={18} className="text-white" />
+            {values.map((item, idx) => {
+              const Icon = VALUE_ICONS[idx % VALUE_ICONS.length];
+              const gradient = VALUE_GRADIENTS[idx % VALUE_GRADIENTS.length];
+              const delay = (idx % 3) * 60;
+              return (
+                <FadeIn key={idx} delay={delay}>
+                  <div className="bg-navy-900 rounded-2xl p-6 border border-transparent hover:border-primary-600/30 transition-all duration-300 hover:-translate-y-0.5 h-full">
+                    <div className={`w-10 h-10 bg-gradient-to-br ${gradient} rounded-xl flex items-center justify-center mb-4 shadow-lg`}>
+                      <Icon size={18} className="text-white" />
+                    </div>
+                    <h3 className="font-bold text-white mb-1.5">{item.title}</h3>
+                    <p className="text-zinc-400 text-sm leading-relaxed">{item.desc}</p>
                   </div>
-                  <h3 className="font-bold text-white mb-1.5">{item.title}</h3>
-                  <p className="text-zinc-400 text-sm leading-relaxed">{item.desc}</p>
-                </div>
-              </FadeIn>
-            ))}
+                </FadeIn>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -313,25 +310,17 @@ export default async function HomePage() {
             <p className="text-zinc-400 text-lg">이음이 사용하는 언어와 도구들</p>
           </FadeIn>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {[
-              { name: "React", category: "Frontend", color: "from-cyan-500/20 to-blue-500/20", border: "border-cyan-800/30" },
-              { name: "Next.js", category: "Frontend", color: "from-zinc-500/20 to-zinc-600/20", border: "border-zinc-700/30" },
-              { name: "TypeScript", category: "Language", color: "from-blue-500/20 to-blue-600/20", border: "border-blue-800/30" },
-              { name: "Tailwind CSS", category: "Styling", color: "from-teal-500/20 to-cyan-500/20", border: "border-teal-800/30" },
-              { name: "Node.js", category: "Backend", color: "from-green-500/20 to-emerald-500/20", border: "border-green-800/30" },
-              { name: "Prisma", category: "ORM", color: "from-primary-500/20 to-violet-500/20", border: "border-primary-800/30" },
-              { name: "PostgreSQL", category: "Database", color: "from-blue-600/20 to-indigo-500/20", border: "border-blue-800/30" },
-              { name: "Figma", category: "Design", color: "from-rose-500/20 to-pink-500/20", border: "border-rose-800/30" },
-            ].map((tech, i) => (
-              <FadeIn key={tech.name} delay={(i % 4) * 60}>
-                <div
-                  className={`bg-gradient-to-br ${tech.color} border ${tech.border} rounded-xl p-5 text-center hover:scale-105 transition-all duration-200`}
-                >
-                  <p className="tech-name font-semibold text-white">{tech.name}</p>
-                  <p className="text-xs text-zinc-500 mt-1">{tech.category}</p>
-                </div>
-              </FadeIn>
-            ))}
+            {techstack.map((tech, i) => {
+              const style = TECH_GRADIENTS[i % TECH_GRADIENTS.length];
+              return (
+                <FadeIn key={tech.name} delay={(i % 4) * 60}>
+                  <div className={`bg-gradient-to-br ${style.color} border ${style.border} rounded-xl p-5 text-center hover:scale-105 transition-all duration-200`}>
+                    <p className="tech-name font-semibold text-white">{tech.name}</p>
+                    <p className="text-xs text-zinc-500 mt-1">{tech.category}</p>
+                  </div>
+                </FadeIn>
+              );
+            })}
           </div>
         </div>
       </section>
