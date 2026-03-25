@@ -21,9 +21,6 @@ const VALUE_GRADIENTS = [
   "from-orange-500 to-red-500",
 ];
 
-const DEFAULT_HERO_SUBTITLE =
-  "연결하다, 잇다, 이음.\n학교와 기술을 이어 더 나은 학교 생활을 만듭니다.";
-const DEFAULT_MISSION_TITLE = "우리의 미션";
 const DEFAULT_MISSION_BODY =
   "이음은 경남과학고 학생들이 직접 기획하고 개발한 서비스를 운영하는 IT 동아리입니다.\n우리는 실제로 사용되는 제품을 만들며 실전 경험을 쌓고, 서로의 성장을 돕습니다.\n\n대표 프로젝트인 gshs.app은 경남과학고 학생들이 급식, 시간표, 공지사항 등 학교 정보를 한 곳에서 확인할 수 있는 플랫폼으로, 현재도 많은 학생들이 매일 사용하고 있습니다.";
 const DEFAULT_QUOTE = "연결하다, 잇다, 이음";
@@ -78,8 +75,6 @@ export default async function AboutPage() {
   const notStarted = applyStart !== "" && new Date(applyStart) > now;
   const applyOpen = !notStarted && (!applyDeadline || new Date(applyDeadline) > now);
 
-  const heroSubtitle = c["about_hero_subtitle"] ?? DEFAULT_HERO_SUBTITLE;
-  const missionTitle = c["about_mission_title"] ?? DEFAULT_MISSION_TITLE;
   const missionBody = c["about_mission_body"] ?? DEFAULT_MISSION_BODY;
   const quote = c["about_quote"] ?? DEFAULT_QUOTE;
   const quoteSub = c["about_quote_sub"] ?? DEFAULT_QUOTE_SUB;
@@ -101,9 +96,6 @@ export default async function AboutPage() {
             <h1 className="text-5xl md:text-7xl font-black text-white mb-4 tracking-tighter">
               이음(IEUM)이란?
             </h1>
-            <p className="text-xl text-zinc-400 leading-relaxed whitespace-pre-line">
-              {heroSubtitle}
-            </p>
           </FadeIn>
         </div>
       </section>
@@ -113,7 +105,6 @@ export default async function AboutPage() {
         <div className="max-w-4xl mx-auto px-6 sm:px-10 lg:px-16">
           <FadeIn className="grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
             <div>
-              <h2 className="text-3xl font-extrabold text-white mb-5">{missionTitle}</h2>
               {missionParagraphs.map((para, i) => (
                 <p key={i} className="text-zinc-400 leading-relaxed mb-4 last:mb-0">
                   {para}

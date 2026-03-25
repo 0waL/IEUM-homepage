@@ -7,9 +7,6 @@ import { Loader2, Save, Plus, Trash2, Edit2, Check, X } from "lucide-react";
 const DEFAULT_MISSION =
   "이음은 경남과학고 학생들이 직접 기획하고 개발한 서비스를 운영하는 IT 동아리입니다. 실제로 사용되는 제품을 만들며 실전 경험을 쌓고, 서로의 성장을 돕습니다.\n\n대표 프로젝트인 gshs.app은 경남과학고 학생들이 급식, 시간표, 공지사항 등 학교 정보를 한 곳에서 확인할 수 있는 플랫폼으로, 현재도 많은 학생들이 매일 사용하고 있습니다.";
 
-const DEFAULT_HERO_SUBTITLE =
-  "연결하다, 잇다, 이음.\n학교와 기술을 이어 더 나은 학교 생활을 만듭니다.";
-const DEFAULT_MISSION_TITLE = "우리의 미션";
 const DEFAULT_MISSION_BODY =
   "이음은 경남과학고 학생들이 직접 기획하고 개발한 서비스를 운영하는 IT 동아리입니다.\n우리는 실제로 사용되는 제품을 만들며 실전 경험을 쌓고, 서로의 성장을 돕습니다.\n\n대표 프로젝트인 gshs.app은 경남과학고 학생들이 급식, 시간표, 공지사항 등 학교 정보를 한 곳에서 확인할 수 있는 플랫폼으로, 현재도 많은 학생들이 매일 사용하고 있습니다.";
 const DEFAULT_QUOTE = "연결하다, 잇다, 이음";
@@ -131,8 +128,6 @@ export default function SitePage() {
   const [savedContact, setSavedContact] = useState<Record<string, boolean>>({});
 
   /* ── 소개 페이지 단순 텍스트 ── */
-  const [heroSubtitle, setHeroSubtitle] = useState("");
-  const [missionTitle, setMissionTitle] = useState("");
   const [missionBody, setMissionBody] = useState("");
   const [quote, setQuote] = useState("");
   const [quoteSub, setQuoteSub] = useState("");
@@ -173,8 +168,6 @@ export default function SitePage() {
   useEffect(() => {
     if (loading) return;
     setMissionText(content["mission_text"] ?? DEFAULT_MISSION);
-    setHeroSubtitle(content["about_hero_subtitle"] ?? DEFAULT_HERO_SUBTITLE);
-    setMissionTitle(content["about_mission_title"] ?? DEFAULT_MISSION_TITLE);
     setMissionBody(content["about_mission_body"] ?? DEFAULT_MISSION_BODY);
     setQuote(content["about_quote"] ?? DEFAULT_QUOTE);
     setQuoteSub(content["about_quote_sub"] ?? DEFAULT_QUOTE_SUB);
@@ -212,8 +205,6 @@ export default function SitePage() {
   const saveAllAbout = async () => {
     setSavingAboutAll(true);
     await Promise.all([
-      saveKey("about_hero_subtitle", heroSubtitle),
-      saveKey("about_mission_title", missionTitle),
       saveKey("about_mission_body", missionBody),
       saveKey("about_quote", quote),
       saveKey("about_quote_sub", quoteSub),
@@ -378,27 +369,6 @@ export default function SitePage() {
           ════════════════════════════════════════════ */}
       <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-6">
         <h2 className="font-semibold text-zinc-200">동아리 소개 페이지 (/about)</h2>
-
-        {/* 히어로 부제목 */}
-        <div>
-          <label className="block text-xs font-medium text-zinc-400 mb-1.5">히어로 부제목</label>
-          <textarea
-            value={heroSubtitle}
-            onChange={(e) => setHeroSubtitle(e.target.value)}
-            rows={2}
-            className={`${inputClass} resize-none`}
-          />
-        </div>
-
-        {/* 미션 제목 */}
-        <div>
-          <label className="block text-xs font-medium text-zinc-400 mb-1.5">미션 섹션 제목</label>
-          <input
-            value={missionTitle}
-            onChange={(e) => setMissionTitle(e.target.value)}
-            className={inputClass}
-          />
-        </div>
 
         {/* 미션 본문 */}
         <div>
