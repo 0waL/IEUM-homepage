@@ -3,6 +3,7 @@
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Save, Eye, EyeOff, Upload, X } from "lucide-react";
+import { renderMarkdown } from "@/lib/renderMarkdown";
 
 interface PostFormProps {
   initialData?: {
@@ -42,6 +43,22 @@ export function PostForm({ initialData }: PostFormProps) {
   const [published, setPublished] = useState(initialData?.published ?? false);
   const [tags, setTags] = useState(initialData?.tags ?? "");
   const [preview, setPreview] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const insertAtCursor = (before: string, after = "") => {
+    const ta = textareaRef.current;
+    if (!ta) return;
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+    const selected = content.slice(start, end);
+    const newContent =
+      content.slice(0, start) + before + selected + after + content.slice(end);
+    setContent(newContent);
+    requestAnimationFrame(() => {
+      ta.focus();
+      ta.setSelectionRange(start + before.length, start + before.length + selected.length);
+    });
+  };
   const [coverImage, setCoverImage] = useState<string | null>(initialData?.coverImage ?? null);
   const [imageUploading, setImageUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -148,7 +165,7 @@ export function PostForm({ initialData }: PostFormProps) {
 
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="text-sm font-medium text-gray-700">내용 * (마크다운 지원)</label>
+              <label className="text-sm font-medium text-zinc-400">내용 * (마크다운 지원)</label>
               <button
                 type="button"
                 onClick={() => setPreview(!preview)}
@@ -158,17 +175,46 @@ export function PostForm({ initialData }: PostFormProps) {
                 {preview ? "편집" : "미리보기"}
               </button>
             </div>
+
+            {/* 툴바 */}
+            {!preview && (
+              <div className="flex flex-wrap gap-1 mb-1.5">
+                {[
+                  { label: "H2", action: () => insertAtCursor("## ") },
+                  { label: "H3", action: () => insertAtCursor("### ") },
+                  { label: "B", action: () => insertAtCursor("**", "**") },
+                  { label: "code", action: () => insertAtCursor("`", "`") },
+                  { label: "```", action: () => insertAtCursor("```\n", "\n```") },
+                  { label: "─────", action: () => insertAtCursor("\n---\n") },
+                  { label: "- 목록", action: () => insertAtCursor("- ") },
+                  { label: "1. 목록", action: () => insertAtCursor("1. ") },
+                ].map(({ label, action }) => (
+                  <button
+                    key={label}
+                    type="button"
+                    onClick={action}
+                    className="px-2 py-1 text-xs bg-zinc-700 hover:bg-zinc-600 text-zinc-300 rounded transition-colors font-mono"
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
+
             {preview ? (
-              <div className="w-full min-h-[400px] p-4 bg-zinc-800 border border-zinc-700 rounded-lg">
-                <pre className="whitespace-pre-wrap font-sans text-sm text-zinc-300">{content}</pre>
+              <div className="w-full min-h-[400px] p-6 bg-zinc-800 border border-zinc-700 rounded-lg overflow-auto">
+                <div className="space-y-1">
+                  {renderMarkdown(content)}
+                </div>
               </div>
             ) : (
               <textarea
+                ref={textareaRef}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 required
                 rows={18}
-                placeholder={"# 제목\n\n내용을 입력하세요. 마크다운 형식을 지원합니다."}
+                placeholder={"# 제목\n\n내용을 입력하세요.\n\n## 소제목\n\n- 목록 항목\n\n---\n\n구분선 아래 내용"}
                 className={`${inputClass} font-mono`}
               />
             )}
