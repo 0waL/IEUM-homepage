@@ -6,6 +6,20 @@ export function applyInline(text: string): string {
     .replace(/`([^`]+)`/g, '<code class="bg-white/10 text-primary-300 px-1.5 py-0.5 rounded text-[0.875em] font-mono">$1</code>');
 }
 
+function isSpecialLine(line: string): boolean {
+  return (
+    line.startsWith("```") ||
+    line.trim() === "---" ||
+    line.startsWith("# ") ||
+    line.startsWith("## ") ||
+    line.startsWith("### ") ||
+    line.startsWith("- ") ||
+    line.startsWith("* ") ||
+    /^\d+\. /.test(line) ||
+    line.trim() === ""
+  );
+}
+
 export function renderMarkdown(content: string): React.ReactNode[] {
   const lines = content.split("\n");
   const elements: React.ReactNode[] = [];
@@ -43,9 +57,7 @@ export function renderMarkdown(content: string): React.ReactNode[] {
 
     /* ── 구분선 ── */
     if (line.trim() === "---") {
-      elements.push(
-        <hr key={`hr-${i}`} className="border-white/10 my-8" />
-      );
+      elements.push(<hr key={`hr-${i}`} className="border-white/10 my-8" />);
       i++;
       continue;
     }
@@ -92,9 +104,9 @@ export function renderMarkdown(content: string): React.ReactNode[] {
     }
 
     /* ── 순서 목록 ── */
-    if (line.match(/^\d+\. /)) {
+    if (/^\d+\. /.test(line)) {
       const items: string[] = [];
-      while (i < lines.length && lines[i].match(/^\d+\. /)) {
+      while (i < lines.length && /^\d+\. /.test(lines[i])) {
         items.push(lines[i].replace(/^\d+\. /, ""));
         i++;
       }
@@ -109,19 +121,22 @@ export function renderMarkdown(content: string): React.ReactNode[] {
       continue;
     }
 
-    /* ── 빈 줄 → 단락 구분 여백 ── */
+    /* ── 빈 줄 → 그냥 건너뜀 (단락은 아래 일반 단락 로직이 나눔) ── */
     if (line.trim() === "") {
-      elements.push(<div key={`gap-${i}`} className="h-4" />);
       i++;
       continue;
     }
 
-    /* ── 일반 단락 ── */
+    /* ── 일반 단락: 연속된 줄을 하나의 <p>로 묶음 ── */
+    const textLines: string[] = [];
+    while (i < lines.length && !isSpecialLine(lines[i])) {
+      textLines.push(lines[i]);
+      i++;
+    }
     elements.push(
-      <p key={i} className="text-zinc-300 leading-[1.85] my-1 text-[15px]"
-        dangerouslySetInnerHTML={{ __html: applyInline(line) }} />
+      <p key={`p-${i}`} className="text-zinc-300 leading-[1.85] mb-5 text-[15px]"
+        dangerouslySetInnerHTML={{ __html: textLines.map(applyInline).join("<br>") }} />
     );
-    i++;
   }
 
   return elements;

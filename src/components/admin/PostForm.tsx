@@ -203,7 +203,7 @@ export function PostForm({ initialData }: PostFormProps) {
 
             {preview ? (
               <div className="w-full min-h-[400px] p-6 bg-zinc-800 border border-zinc-700 rounded-lg overflow-auto">
-                <div className="space-y-1">
+                <div>
                   {renderMarkdown(content)}
                 </div>
               </div>

@@ -93,7 +93,7 @@ export default async function PostPage({ params }: Props) {
 
         {/* 본문 */}
         <div className="bg-navy-900/60 rounded-2xl px-8 py-8 border border-white/8">
-          <div className="space-y-1">
+          <div>
             {renderMarkdown(post.content)}
           </div>
         </div>
