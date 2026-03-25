@@ -70,21 +70,21 @@ function renderMarkdown(content: string) {
     /* ── 제목 ── */
     if (line.startsWith("# ")) {
       elements.push(
-        <h1 key={i} className="text-3xl font-extrabold text-white mt-10 mb-4 first:mt-0"
+        <h1 key={i} className="text-3xl font-extrabold text-white mt-14 mb-4 first:mt-0"
           dangerouslySetInnerHTML={{ __html: applyInline(line.slice(2)) }} />
       );
       i++; continue;
     }
     if (line.startsWith("## ")) {
       elements.push(
-        <h2 key={i} className="text-xl font-bold text-white mt-8 mb-3 pb-2.5 border-b border-white/10"
+        <h2 key={i} className="text-xl font-bold text-white mt-12 mb-3 pb-2.5 border-b border-white/10"
           dangerouslySetInnerHTML={{ __html: applyInline(line.slice(3)) }} />
       );
       i++; continue;
     }
     if (line.startsWith("### ")) {
       elements.push(
-        <h3 key={i} className="text-lg font-semibold text-zinc-100 mt-6 mb-2"
+        <h3 key={i} className="text-lg font-semibold text-zinc-100 mt-10 mb-2"
           dangerouslySetInnerHTML={{ __html: applyInline(line.slice(4)) }} />
       );
       i++; continue;
