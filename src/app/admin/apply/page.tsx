@@ -40,6 +40,7 @@ const STATUS_MAP = {
 
 export default function AdminApplyPage() {
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState("");
   const [applications, setApplications] = useState<Application[]>([]);
   const [stats, setStats] = useState<Stats>({ total: 0, pending: 0, accepted: 0, rejected: 0 });
   const [selected, setSelected] = useState<Application | null>(null);
@@ -54,14 +55,20 @@ export default function AdminApplyPage() {
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/admin/apply").then((r) => r.json()),
+      fetch("/api/admin/apply").then((r) => {
+        if (!r.ok) throw new Error(`지원자 데이터 로드 실패 (${r.status})`);
+        return r.json();
+      }),
       fetch("/api/admin/site-content").then((r) => r.json()),
     ]).then(([applyData, content]) => {
-      setApplications(applyData.applications);
-      setStats(applyData.stats);
+      setApplications(applyData.applications ?? []);
+      setStats(applyData.stats ?? { total: 0, pending: 0, accepted: 0, rejected: 0 });
       setApplyStart(content["apply_start"] ?? "");
       setApplyDeadline(content["apply_deadline"] ?? "");
       setFormUrl(content["apply_form_url"] ?? "");
+      setLoading(false);
+    }).catch((err: Error) => {
+      setFetchError(err.message);
       setLoading(false);
     });
   }, []);
@@ -109,6 +116,12 @@ export default function AdminApplyPage() {
   if (loading) return (
     <div className="flex items-center justify-center py-20">
       <Loader2 className="animate-spin text-zinc-500" size={24} />
+    </div>
+  );
+
+  if (fetchError) return (
+    <div className="flex items-center justify-center py-20">
+      <p className="text-red-400 text-sm">{fetchError}</p>
     </div>
   );
 

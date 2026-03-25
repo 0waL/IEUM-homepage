@@ -136,8 +136,8 @@ export default function SitePage() {
   const [missionBody, setMissionBody] = useState("");
   const [quote, setQuote] = useState("");
   const [quoteSub, setQuoteSub] = useState("");
-  const [aboutSaving, setAboutSaving] = useState<Record<string, boolean>>({});
-  const [aboutSaved, setAboutSaved] = useState<Record<string, boolean>>({});
+  const [savingAboutAll, setSavingAboutAll] = useState(false);
+  const [savedAboutAll, setSavedAboutAll] = useState(false);
 
   /* ── 핵심 가치 ── */
   const [values, setValues] = useState<ValueItem[]>([]);
@@ -209,12 +209,18 @@ export default function SitePage() {
     });
   };
 
-  const saveAboutField = async (key: string, value: string) => {
-    setAboutSaving((p) => ({ ...p, [key]: true }));
-    await saveKey(key, value);
-    setAboutSaving((p) => ({ ...p, [key]: false }));
-    setAboutSaved((p) => ({ ...p, [key]: true }));
-    setTimeout(() => setAboutSaved((p) => ({ ...p, [key]: false })), 2000);
+  const saveAllAbout = async () => {
+    setSavingAboutAll(true);
+    await Promise.all([
+      saveKey("about_hero_subtitle", heroSubtitle),
+      saveKey("about_mission_title", missionTitle),
+      saveKey("about_mission_body", missionBody),
+      saveKey("about_quote", quote),
+      saveKey("about_quote_sub", quoteSub),
+    ]);
+    setSavingAboutAll(false);
+    setSavedAboutAll(true);
+    setTimeout(() => setSavedAboutAll(false), 2000);
   };
 
   const saveJsonKey = async (
@@ -382,11 +388,6 @@ export default function SitePage() {
             rows={2}
             className={`${inputClass} resize-none`}
           />
-          <SaveButton
-            onClick={() => saveAboutField("about_hero_subtitle", heroSubtitle)}
-            saving={!!aboutSaving["about_hero_subtitle"]}
-            saved={!!aboutSaved["about_hero_subtitle"]}
-          />
         </div>
 
         {/* 미션 제목 */}
@@ -396,11 +397,6 @@ export default function SitePage() {
             value={missionTitle}
             onChange={(e) => setMissionTitle(e.target.value)}
             className={inputClass}
-          />
-          <SaveButton
-            onClick={() => saveAboutField("about_mission_title", missionTitle)}
-            saving={!!aboutSaving["about_mission_title"]}
-            saved={!!aboutSaved["about_mission_title"]}
           />
         </div>
 
@@ -414,11 +410,6 @@ export default function SitePage() {
             rows={5}
             className={`${inputClass} resize-y`}
           />
-          <SaveButton
-            onClick={() => saveAboutField("about_mission_body", missionBody)}
-            saving={!!aboutSaving["about_mission_body"]}
-            saved={!!aboutSaved["about_mission_body"]}
-          />
         </div>
 
         {/* 인용구 */}
@@ -428,11 +419,6 @@ export default function SitePage() {
             value={quote}
             onChange={(e) => setQuote(e.target.value)}
             className={inputClass}
-          />
-          <SaveButton
-            onClick={() => saveAboutField("about_quote", quote)}
-            saving={!!aboutSaving["about_quote"]}
-            saved={!!aboutSaved["about_quote"]}
           />
         </div>
 
@@ -444,12 +430,9 @@ export default function SitePage() {
             onChange={(e) => setQuoteSub(e.target.value)}
             className={inputClass}
           />
-          <SaveButton
-            onClick={() => saveAboutField("about_quote_sub", quoteSub)}
-            saving={!!aboutSaving["about_quote_sub"]}
-            saved={!!aboutSaved["about_quote_sub"]}
-          />
         </div>
+
+        <SaveButton onClick={saveAllAbout} saving={savingAboutAll} saved={savedAboutAll} />
       </div>
 
       {/* ── 핵심 가치 ── */}
